@@ -1,0 +1,43 @@
+---
+
+# SMTP trap
+mailhog:
+  image: mailhog/mailhog
+  ports:
+    - "8035:8025"
+  labels:
+    - "com.old_ecolutis.env=development"
+
+web:
+  build: ./docker/images/web
+  environment:
+    - "APPLICATION_ENV=development"
+    - "DOCKER_RUN_UID=1000"
+    - "DOCKER_RUN_GID=1000"
+  ports:
+    - "8039:80"
+  links:
+    - mailhog:mailhog
+    - postgres:postgres
+  labels:
+    - "com.old_ecolutis.env=development"
+  volumes:
+    - ".:/var/www/vhosts"
+
+postgres:
+  image: postgres
+  environment:
+    - POSTGRES_USER=devcontest
+    - POSTGRES_PASSWORD=devcontest
+  ports:
+    - "5467:5432"
+  volumes_from:
+    - datapostgres
+
+datapostgres:
+  image: tianon/true
+  labels:
+    - "com.ecolutis.container-type=data-only"
+    - "com.ecolutis.database-type=mysql"
+  volumes:
+    - /var/lib/postgresql/data
