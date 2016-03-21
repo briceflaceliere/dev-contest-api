@@ -1,0 +1,177 @@
+<?php
+
+namespace DevContest\DevContestApiBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * UserContestTest
+ *
+ * @ORM\Table(name="dc_user_contest_test")
+ * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\UserContestTestRepository")
+ */
+class UserContestTest
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="dc_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dc_start_ts", type="datetime", nullable=true)
+     */
+    private $startTs;
+
+    /**
+     * Set startTs
+     *
+     * @param \DateTime $startTs
+     *
+     * @return UserContest
+     */
+    public function setStartTs($startTs)
+    {
+        $this->startTs = $startTs;
+
+        return $this;
+    }
+
+    /**
+     * Get startTs
+     *
+     * @return \DateTime
+     */
+    public function getStartTs()
+    {
+        return $this->startTs;
+    }
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dc_end_ts", type="datetime", nullable=true)
+     */
+    private $endTs;
+
+    /**
+     * Set endTs
+     *
+     * @param \DateTime $endTs
+     *
+     * @return UserContest
+     */
+    public function setEndTs($endTs)
+    {
+        $this->endTs = $endTs;
+
+        return $this;
+    }
+
+    /**
+     * Get endTs
+     *
+     * @return \DateTime
+     */
+    public function getEndTs()
+    {
+        return $this->endTs;
+    }
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="dc_score", type="integer", nullable=true)
+     */
+    private $score;
+
+    /**
+     * Set score
+     *
+     * @param integer $score
+     *
+     * @return UserContest
+     */
+    public function setScore($score)
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+    /**
+     * Get score
+     *
+     * @return integer
+     */
+    public function getScore()
+    {
+        return $this->score;
+    }
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UserContest", inversedBy="userContestTests")
+     * @ORM\JoinColumn(name="dc_user_contest_id", referencedColumnName="dc_id")
+     */
+    protected $userContest;
+
+    /**
+     * @return UserContest
+     */
+    public function getUserContest()
+    {
+        return $this->userContest;
+    }
+
+    /**
+     * @param UserContest $userContest
+     * @return $this
+     */
+    public function setUserContest(UserContest $userContest)
+    {
+        $this->userContest = $userContest;
+        return $this;
+    }
+
+    /**
+     * @ORM\ManyToOne(targetEntity="ContestTest", inversedBy="userContestTests")
+     * @ORM\JoinColumn(name="dc_contest_test_id", referencedColumnName="dc_id")
+     */
+    protected $contestTest;
+
+    /**
+     * @return UserContest
+     */
+    public function getContestTest()
+    {
+        return $this->contestTest;
+    }
+
+    /**
+     * @param ContestTest $contestTest
+     * @return $this
+     */
+    public function setContestTest(ContestTest $contestTest)
+    {
+        $this->contestTest = $contestTest;
+        return $this;
+    }
+
+
+}
+
