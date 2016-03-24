@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * UserContestTest
  *
- * @ORM\Table(name="dc_user_contest_test")
+ * @ORM\Table()
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\UserContestTestRepository")
  */
 class UserContestTest
@@ -15,7 +15,7 @@ class UserContestTest
     /**
      * @var integer
      *
-     * @ORM\Column(name="dc_id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -34,7 +34,7 @@ class UserContestTest
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dc_start_ts", type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $startTs;
 
@@ -65,7 +65,7 @@ class UserContestTest
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dc_end_ts", type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $endTs;
 
@@ -96,7 +96,7 @@ class UserContestTest
     /**
      * @var integer
      *
-     * @ORM\Column(name="dc_score", type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $score;
 
@@ -126,7 +126,7 @@ class UserContestTest
 
     /**
      * @ORM\ManyToOne(targetEntity="UserContest", inversedBy="userContestTests")
-     * @ORM\JoinColumn(name="dc_user_contest_id", referencedColumnName="dc_id")
+     * @ORM\JoinColumn(referencedColumnName="dc_id")
      */
     protected $userContest;
 
@@ -150,7 +150,7 @@ class UserContestTest
 
     /**
      * @ORM\ManyToOne(targetEntity="ContestTest", inversedBy="userContestTests")
-     * @ORM\JoinColumn(name="dc_contest_test_id", referencedColumnName="dc_id")
+     * @ORM\JoinColumn(referencedColumnName="dc_id")
      */
     protected $contestTest;
 

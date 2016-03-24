@@ -1,4 +1,7 @@
 services:
+  dev_contest.api.doctrine.dev_contest_naming_strategy:
+    class: DevContest\DevContestApiBundle\Doctrine\DevContestNamingStrategy
+    arguments: []
 #    dev_contest_api.example:
 #        class: DevContest\DevContestApiBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]

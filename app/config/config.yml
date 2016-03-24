@@ -56,6 +56,7 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
+        naming_strategy: dev_contest.api.doctrine.dev_contest_naming_strategy
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -76,10 +77,10 @@ fos_rest:
             xml:  true
             json: true
         templating_formats:
-            html: true
+            html: false
     format_listener:
         rules:
-            - { path: ^/, priorities: [ html, json, xml ], fallback_format: ~, prefer_extension: true }
+            - { path: ^/api, priorities: [json, xml], fallback_format: json, prefer_extension: true }
         media_type:
             version_regex: '/(v|version)=(?P<version>[0-9\.]+)/'
     exception:
@@ -105,3 +106,12 @@ fos_http_cache:
                     cache_control: { public: true, max_age: 15, s_maxage: 30 }
                     last_modified: "-1 hour"
                     vary: [Accept-Encoding, Accept-Language]
+
+fos_oauth_server:
+    db_driver: orm       # Drivers available: orm, mongodb, or propel
+    client_class:        DevContest\DevContestApiBundle\Entity\Client
+    access_token_class:  DevContest\DevContestApiBundle\Entity\AccessToken
+    refresh_token_class: DevContest\DevContestApiBundle\Entity\RefreshToken
+    auth_code_class:     DevContest\DevContestApiBundle\Entity\AuthCode
+
+nelmio_api_doc: ~

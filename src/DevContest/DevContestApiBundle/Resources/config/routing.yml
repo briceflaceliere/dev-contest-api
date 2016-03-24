@@ -1,0 +1,3 @@
+user:
+    type: rest
+    resource: DevContest\DevContestApiBundle\Controller\UserController

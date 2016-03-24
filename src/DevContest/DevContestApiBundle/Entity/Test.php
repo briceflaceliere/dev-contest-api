@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Test
  *
- * @ORM\Table(name="dc_test")
+ * @ORM\Table()
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\TestRepository")
  */
 class Test
@@ -20,7 +20,7 @@ class Test
     /**
      * @var integer
      *
-     * @ORM\Column(name="dc_id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -40,7 +40,7 @@ class Test
     /**
      * @var string
      *
-     * @ORM\Column(name="dc_title", type="string", length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private $title;
 
@@ -94,9 +94,9 @@ class Test
 
     /**
      * @ORM\ManyToMany(targetEntity="Language")
-     * @ORM\JoinTable(name="dc_test_language",
-     *   joinColumns={@ORM\JoinColumn(name="dc_test_id", referencedColumnName="dc_id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(name="dc_language_id", referencedColumnName="dc_name")})
+     * @ORM\JoinTable(
+     *   joinColumns={@ORM\JoinColumn(referencedColumnName="dc_id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(referencedColumnName="dc_name")})
      */
     protected $languages;
 

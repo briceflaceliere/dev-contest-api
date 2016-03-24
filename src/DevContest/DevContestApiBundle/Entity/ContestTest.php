@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ContestTest
  *
- * @ORM\Table(name="dc_contest_test")
+ * @ORM\Table()
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\ContestTestRepository")
  */
 class ContestTest
@@ -19,7 +19,7 @@ class ContestTest
     /**
      * @var integer
      *
-     * @ORM\Column(name="dc_id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -38,7 +38,7 @@ class ContestTest
     /**
      * @var integer
      *
-     * @ORM\Column(name="dc_number", type="integer")
+     * @ORM\Column(type="integer")
      */
     private $number;
 
@@ -68,7 +68,7 @@ class ContestTest
 
     /**
      * @ORM\ManyToOne(targetEntity="Contest", inversedBy="contestTests")
-     * @ORM\JoinColumn(name="dc_contest_id", referencedColumnName="dc_id")
+     * @ORM\JoinColumn(referencedColumnName="dc_id")
      */
     protected $contest;
 
@@ -92,7 +92,7 @@ class ContestTest
 
     /**
      * @ORM\ManyToOne(targetEntity="Test", inversedBy="contestTests")
-     * @ORM\JoinColumn(name="dc_test_id", referencedColumnName="dc_id")
+     * @ORM\JoinColumn(referencedColumnName="dc_id")
      */
     protected $test;
 
@@ -158,7 +158,7 @@ class ContestTest
 
     /**
      * @ORM\OneToOne(targetEntity="ContestTest", inversedBy="previousContestTest")
-     * @ORM\JoinColumn(name="dc_next_contest_test_id", referencedColumnName="dc_id", nullable=true)
+     * @ORM\JoinColumn(referencedColumnName="dc_id", nullable=true)
      */
     protected $nextContestTest;
 

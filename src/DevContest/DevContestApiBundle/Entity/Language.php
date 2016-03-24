@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Language
  *
- * @ORM\Table(name="dc_language")
+ * @ORM\Table()
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\LanguageRepository")
  */
 class Language
@@ -15,7 +15,7 @@ class Language
     /**
      * @var integer
      *
-     * @ORM\Column(name="dc_name", type="string", length=40)
+     * @ORM\Column(type="string", length=40)
      * @ORM\Id
      */
     protected $name;
@@ -49,7 +49,7 @@ class Language
     /**
      * @var string
      *
-     * @ORM\Column(name="dc_logo", type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     protected $logo;
 

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Contest
  *
- * @ORM\Table(name="dc_contest", uniqueConstraints={
+ * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="contest_name_idx", columns={"dc_name"})
  * })
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\ContestRepository")
@@ -24,7 +24,7 @@ class Contest
     /**
      * @var integer
      *
-     * @ORM\Column(name="dc_id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -44,7 +44,7 @@ class Contest
     /**
      * @var string
      *
-     * @ORM\Column(name="dc_name", type="string", length=100)
+     * @ORM\Column(type="string", length=100)
      */
     private $name;
 
@@ -75,7 +75,7 @@ class Contest
     /**
      * @var string
      *
-     * @ORM\Column(name="dc_logo", type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $logo;
 
@@ -106,7 +106,7 @@ class Contest
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dc_start_ts", type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $startTs;
 
@@ -137,7 +137,7 @@ class Contest
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dc_end_ts", type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $endTs;
 
@@ -167,9 +167,9 @@ class Contest
 
     /**
      * @ORM\ManyToMany(targetEntity="Language")
-     * @ORM\JoinTable(name="dc_contest_language",
-     *   joinColumns={@ORM\JoinColumn(name="dc_contest_id", referencedColumnName="dc_id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(name="dc_language_id", referencedColumnName="dc_name")})
+     * @ORM\JoinTable(
+     *   joinColumns={@ORM\JoinColumn(referencedColumnName="dc_id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(referencedColumnName="dc_name")})
      */
     protected $languages;
 
@@ -247,7 +247,7 @@ class Contest
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="UserContest", mappedBy="dc_contest_id")
+     * @ORM\OneToMany(targetEntity="UserContest", mappedBy="contest")
      */
     protected $userContests;
 

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * User
  *
- * @ORM\Table(name="dc_user", uniqueConstraints={
+ * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="nickname_idx", columns={"dc_nickname"})
  * })
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\UserRepository")
@@ -22,7 +22,7 @@ class User
     /**
      * @var integer
      *
-     * @ORM\Column(name="dc_id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -43,7 +43,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="dc_nickname", type="string", length=40)
+     * @ORM\Column(type="string", length=40)
      */
     protected $nickname;
 
@@ -70,9 +70,9 @@ class User
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="UserContest", mappedBy="dc_user_id")
+     * @ORM\OneToMany(targetEntity="UserContest", mappedBy="user")
      */
-    protected $userContexts;
+    protected $userContests;
 
 
     /**
@@ -80,32 +80,58 @@ class User
      */
     public function getUserContests()
     {
-        return $this->userContexts;
+        return $this->userContests;
     }
 
     /**
      * Set contest test
      *
-     * @param ArrayCollection $userContexts
+     * @param ArrayCollection $userContests
      * @return $this
      */
-    public function setContestTests(ArrayCollection $userContexts)
+    public function setContestTests(ArrayCollection $userContests)
     {
-        $this->userContexts = $userContexts;
+        $this->userContests = $userContests;
         return $this;
     }
 
     /**
      * Add contest test
      *
-     * @param UserContest $userContext
+     * @param UserContest $userContest
      * @return $this
      */
-    public function addContestTest(UserContest $userContext)
+    public function addContestTest(UserContest $userContest)
     {
-        $this->userContexts->add($userContext);
+        $this->userContest->add($userContest);
         return $this;
     }
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $githubId;
+
+    /**
+     * @return string
+     */
+    public function getGithubId()
+    {
+        return $this->githubId;
+    }
+
+    /**
+     * @param string $githubId
+     * @return $this
+     */
+    public function setGithubId($githubId)
+    {
+        $this->githubId = $githubId;
+        return $this;
+    }
+
 
 }
 

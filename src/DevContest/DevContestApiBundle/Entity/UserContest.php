@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * UserContest
  *
- * @ORM\Table(name="dc_user_contest")
+ * @ORM\Table()
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\UserContestRepository")
  */
 class UserContest
@@ -15,7 +15,7 @@ class UserContest
     /**
      * @var integer
      *
-     * @ORM\Column(name="dc_id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -34,7 +34,7 @@ class UserContest
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dc_start_ts", type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $startTs;
 
@@ -65,7 +65,7 @@ class UserContest
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dc_end_ts", type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $endTs;
 
@@ -96,7 +96,7 @@ class UserContest
     /**
      * @var integer
      *
-     * @ORM\Column(name="dc_score", type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $score;
 
@@ -125,8 +125,8 @@ class UserContest
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="user")
-     * @ORM\JoinColumn(name="dc_user_id", referencedColumnName="dc_id")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="userContests")
+     * @ORM\JoinColumn(referencedColumnName="dc_id")
      */
     protected $user;
 
@@ -149,7 +149,7 @@ class UserContest
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="UserContestTest", mappedBy="dc_user_contest_id")
+     * @ORM\OneToMany(targetEntity="UserContestTest", mappedBy="userContest")
      */
     protected $userContestTests;
 
@@ -188,7 +188,7 @@ class UserContest
 
     /**
      * @ORM\ManyToOne(targetEntity="Contest", inversedBy="userContests")
-     * @ORM\JoinColumn(name="dc_contest_id", referencedColumnName="dc_id")
+     * @ORM\JoinColumn(referencedColumnName="dc_id")
      */
     protected $contest;
 
@@ -216,7 +216,7 @@ class UserContest
 
     /**
      * @ORM\ManyToOne(targetEntity="Language")
-     * @ORM\JoinColumn(name="dc_language_id", referencedColumnName="dc_name")
+     * @ORM\JoinColumn(referencedColumnName="dc_name")
      */
     protected $language;
 
