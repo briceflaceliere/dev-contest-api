@@ -4,6 +4,7 @@ namespace DevContest\DevContestApiBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * User
@@ -12,11 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(name="nickname_idx", columns={"dc_nickname"})
  * })
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\UserRepository")
+ *
+ * @JMS\ExclusionPolicy("all")
  */
 class User
 {
     public function __construct() {
-        $this->userContexts = new ArrayCollection();
+        $this->userContests = new ArrayCollection();
     }
 
     /**
@@ -25,6 +28,10 @@ class User
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMS\Expose
+     * @JMS\Type("integer")
+     * @JMS\Since("0.1")
      */
     protected $id;
 
@@ -44,6 +51,10 @@ class User
      * @var string
      *
      * @ORM\Column(type="string", length=40)
+     *
+     * @JMS\Expose
+     * @JMS\Type("string")
+     * @JMS\Since("0.1")
      */
     protected $nickname;
 
@@ -84,12 +95,12 @@ class User
     }
 
     /**
-     * Set contest test
+     * Set user contests
      *
      * @param ArrayCollection $userContests
      * @return $this
      */
-    public function setContestTests(ArrayCollection $userContests)
+    public function setUserContests(ArrayCollection $userContests)
     {
         $this->userContests = $userContests;
         return $this;
@@ -101,7 +112,7 @@ class User
      * @param UserContest $userContest
      * @return $this
      */
-    public function addContestTest(UserContest $userContest)
+    public function addUserContest(UserContest $userContest)
     {
         $this->userContest->add($userContest);
         return $this;

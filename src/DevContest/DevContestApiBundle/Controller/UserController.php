@@ -29,13 +29,12 @@ class UserController extends FOSRestController
      */
     public function getUsersAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-
         $users = $this->getDoctrine()
             ->getRepository('DevContestApiBundle:User')
             ->findAll();
 
-        $view = $this->view($users, 200);
+        $data = ['users' => $users];
 
-        return  $this->handleView($view);
+        return $data;
     }
 } 

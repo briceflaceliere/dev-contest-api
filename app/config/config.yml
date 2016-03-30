@@ -69,18 +69,21 @@ swiftmailer:
 fos_rest:
     disable_csrf_role: ROLE_API
     param_fetcher_listener: true
+    routing_loader:
+        default_format: json
+        include_format: false
     view:
         mime_types:
             json: ['application/json', 'application/json;version=1.0', 'application/json;version=1.1', 'application/json;version=1.2']
         view_response_listener: 'force'
         formats:
-            xml:  true
+            xml:  false
             json: true
         templating_formats:
             html: false
     format_listener:
         rules:
-            - { path: ^/api, priorities: [json, xml], fallback_format: json, prefer_extension: true }
+            - { path: ^/api, priorities: [json], fallback_format: json, prefer_extension: true }
         media_type:
             version_regex: '/(v|version)=(?P<version>[0-9\.]+)/'
     exception:
@@ -114,4 +117,5 @@ fos_oauth_server:
     refresh_token_class: DevContest\DevContestApiBundle\Entity\RefreshToken
     auth_code_class:     DevContest\DevContestApiBundle\Entity\AuthCode
 
-nelmio_api_doc: ~
+nelmio_api_doc:
+    name: DevContest API documentation
