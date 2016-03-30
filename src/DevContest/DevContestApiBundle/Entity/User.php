@@ -9,7 +9,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
 
 
 /**
- * User
+ * User class
  *
  * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="nickname_idx", columns={"dc_nickname"})
@@ -26,6 +26,8 @@ class User
     }
 
     /**
+     * Identifier
+     *
      * @var integer
      *
      * @ORM\Column(type="integer")
@@ -51,6 +53,8 @@ class User
 
 
     /**
+     * Nickname
+     *
      * @var string
      *
      * @ORM\Column(type="string", length=40)

@@ -119,3 +119,7 @@ fos_oauth_server:
 
 nelmio_api_doc:
     name: DevContest API documentation
+    sandbox:
+        request_format:
+            formats:
+                json:  application/json

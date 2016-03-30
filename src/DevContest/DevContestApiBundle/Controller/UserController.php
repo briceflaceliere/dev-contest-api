@@ -20,8 +20,15 @@ class UserController extends FOSRestController
     /**
      * @ApiDoc(
      *   resource = true,
+     *   resourceDescription="Operations on users.",
+     *   description="Retrieving users",
      *   statusCodes = {
-     *     200 = "Returned when successful"
+     *     200 = "Success",
+     *     403 = "Insufficient access rights"
+     *   },
+     *   output  = {
+     *     "class" = "DevContest\DevContestApiBundle\Entity\User",
+     *     "parsers" = {"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
      *   }
      * )
      *
