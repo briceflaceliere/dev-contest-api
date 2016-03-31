@@ -26,22 +26,30 @@ class UserController extends FOSRestController
      *     200 = "Success",
      *     403 = "Insufficient access rights"
      *   },
-     *   output  = {
-     *     "class" = "DevContest\DevContestApiBundle\Entity\User",
-     *     "parsers" = {"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *   }
+     *   output  = "DevContest\DevContestApiBundle\Entity\User"
      * )
+     *
+     * @Rest\QueryParam(name="page", requirements="\d+", default="1", description="Page of the result")
+     * @Rest\QueryParam(name="limit", requirements="([0-9]{1,2}|100)", default="25", description="Limit of the result")
      *
      * @Rest\View
      */
     public function getUsersAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
+        $limit = $paramFetcher->get('limit');
+        $page = $paramFetcher->get('page');
+
         $users = $this->getDoctrine()
             ->getRepository('DevContestApiBundle:User')
-            ->findAll();
+            ->qFindAll();
 
-        $data = ['users' => $users];
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $users,
+            $page,
+            $limit
+        );
 
-        return $data;
+        return $pagination;
     }
 } 

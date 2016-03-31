@@ -5,7 +5,6 @@ namespace DevContest\DevContestApiBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
-use Hateoas\Configuration\Annotation as Hateoas;
 
 
 /**
@@ -17,7 +16,6 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\UserRepository")
  *
  * @JMS\ExclusionPolicy("all")
- * @Hateoas\Relation("self", href = "expr('/api/users/' ~ object.getId())")
  */
 class User
 {
