@@ -1,8 +1,8 @@
 {
-    "name": "gimler/symfony-rest-edition",
-    "license": "MIT",
+    "name": "dev-contest/dev-contest-api",
+    "license": "private",
     "type": "project",
-    "description": "The \"Symfony REST Edition\" distribution",
+    "description": "The DevContest Api",
     "autoload": {
         "psr-4": { "": "src/" }
     },
