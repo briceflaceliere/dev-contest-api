@@ -1,0 +1,22 @@
+Knp\Component\Pager\Pagination\AbstractPagination:
+    exclusion_policy: ALL
+    properties:
+        items:
+            expose: true
+            access_type: public_method
+            accessor:
+                getter: getItems
+            type: array
+            serialized_name: items
+        currentPageNumber:
+            expose: true
+            type: integer
+            serialized_name: page
+        numItemsPerPage:
+            expose: true
+            type: integer
+            serialized_name: limit
+        totalCount:
+            expose: true
+            type: integer
+            serialized_name: total_items
