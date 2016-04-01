@@ -10,6 +10,7 @@ DevContest - Dev
 - Ajout des alias docker :
     ```
     alias devcontest="docker exec -u 1000:1000 -it devcontestapi_web_1 php app/console"
+    
     alias devcontest-psql="PGPASSWORD=devcontest psql -h 127.0.0.1 -p 5467 -U devcontest devcontest"
     ```
 - Ajout dans `/etc/hosts` : `127.0.0.1 devcontest.perso.dev`
