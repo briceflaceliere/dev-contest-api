@@ -24,7 +24,7 @@ Url de l'api par defaut : `http://devcontest.perso.dev:8039/app_dev.php/api`
 
 Doc de l'api :  `http://devcontest.perso.dev:8039/app_dev.php/api/doc`
 
-Executé un commande symfony : `devcontest cmdSymfony`
+Executé un commande symfony : `devcontest app/console apcmdSymfony`
 
 3) Dependances
 ----------------------------------
