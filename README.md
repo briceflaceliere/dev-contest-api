@@ -25,7 +25,7 @@ DevContest - Dev
     - Doc :  `http://localhost:8039/app_dev.php/api/doc`
     - Mailhog : 'http://localhost:8035/'
     - Executé une commande symfony : `dca-cmd app/console cmdSymfony`
-    - Phpunit : `dca-cmd bin/phpunit`
+    - Exucute test Phpunit : `dca-cmd bin/phpunit -c app/`
 
 3) Dependances
 ----------------------------------
