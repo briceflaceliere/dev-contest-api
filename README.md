@@ -15,7 +15,8 @@ DevContest - Dev
 
 - Lancer les container docker : `dca up -d`
 - Installation des dependances php : `dca-cmd composer install`
-- Création du schema : `dca-cmd app/console doctrine:schema:create`
+- Création de la bdd de test : `dca-cmd app/console --env=test doctrine:create:database`
+- Update du schema : `dca-cmd app/console doctrine:schema:create`
 
 
 2) Utilisation
@@ -25,7 +26,7 @@ DevContest - Dev
     - Doc :  `http://localhost:8039/app_dev.php/api/doc`
     - Mailhog : 'http://localhost:8035/'
     - Executé une commande symfony : `dca-cmd app/console cmdSymfony`
-    - Exucute test Phpunit : `dca-cmd bin/phpunit -c app/`
+    - Executé les tests Phpunit : `dca-cmd bin/phpunit -c app/`
 
 3) Dependances
 ----------------------------------
@@ -39,3 +40,4 @@ L'api utilisent plusieurs dependances :
 - Serialisation des entity : JMSSerializerBundle (http://jmsyst.com/bundles/JMSSerializerBundle)
 - Api Rest : FOSRestBundle (https://github.com/FriendsOfSymfony/FOSRestBundle)
 - Api hypermedia : BazingaHateoasBundle (https://github.com/willdurand/BazingaHateoasBundle)
+- Test Api : PHPUnit et LiipFunctionalTestBundle (https://github.com/liip/LiipFunctionalTestBundle)
