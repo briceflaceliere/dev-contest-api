@@ -1,6 +1,7 @@
 DevContest - Dev
 ========================
 
+![Codeship status](https://codeship.com/projects/b13b9780-dbed-0133-f651-1e79fc1c4a8a/status?branch=master)
 
 1) Installation
 ----------------------------------
