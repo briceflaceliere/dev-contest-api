@@ -10,12 +10,13 @@ namespace DevContest\DevContestApiBundle\DataFixtures\ORM;
 
 
 use DevContest\DevContestApiBundle\Entity\User;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class LoadUserData implements FixtureInterface, ContainerAwareInterface
+class LoadUserData extends AbstractFixture implements ContainerAwareInterface
 {
     /**
      * @var ContainerInterface
@@ -49,5 +50,8 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($user2);
 
         $manager->flush();
+
+        $this->addReference('user1', $user1);
+        $this->addReference('user2', $user2);
     }
 } 
