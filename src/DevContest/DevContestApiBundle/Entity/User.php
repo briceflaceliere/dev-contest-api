@@ -5,6 +5,8 @@ namespace DevContest\DevContestApiBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
@@ -16,6 +18,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\UserRepository")
  *
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity("nickname")
  */
 class User
 {
@@ -35,6 +38,7 @@ class User
      * @JMS\Expose
      * @JMS\Type("integer")
      * @JMS\Since("0.1")
+     *
      */
     protected $id;
 
@@ -60,6 +64,9 @@ class User
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\Since("0.1")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Regex("/^\w+/")
      */
     protected $nickname;
 
