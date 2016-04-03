@@ -14,3 +14,15 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+framework:
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+
+liip_functional_test:
+    command_verbosity: debug
+
+doctrine:
+    dbal:
+        dbname:   %database_name%_test
