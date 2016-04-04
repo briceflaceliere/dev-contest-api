@@ -18,7 +18,7 @@ DevContest - Dev
 
 - Lancer les container docker : `dca up -d`
 - Installation des dependances php : `dca-cmd composer install`
-- Création de la bdd de test : `dca-cmd app/console --env=test doctrine:create:database`
+- Création de la bdd de test : `dca-cmd app/console --env=test doctrine:database:create`
 - Update du schema : `dca-cmd app/console doctrine:schema:create`
 
 
