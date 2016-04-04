@@ -14,3 +14,5 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
     github_client_id: ~
     github_client_secret: ~
+    router.request_context.host: 'localhost:8039'
+    router.request_context.scheme: http
