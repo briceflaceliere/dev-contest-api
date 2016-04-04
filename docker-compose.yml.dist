@@ -6,7 +6,7 @@ mailhog:
     - "8035:8025"
 
 engine:
-    build: ./docker/engine/
+    image: bflaceliere/php7-fpm-symfony
     volumes:
         - ".:/home/docker:rw"
         - "./docker/engine/php.ini:/usr/local/etc/php/conf.d/custom.ini:ro"
