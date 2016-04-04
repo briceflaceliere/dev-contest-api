@@ -11,7 +11,9 @@ DevContest - Dev
 - Ajout et modifier les alias docker :
     
     `alias dca="docker-compose -f PATHTODOCKERCOMPOSE.yml"`
+
     `alias dca-cmd="docker exec -u 1000:1000 -it devcontestapi_engine_1"`
+
     `alias dca-psql="docker exec -it devcontestapi_postgres_1 psql -h 127.0.0.1 -U devcontest devcontest"`
 
 - Lancer les container docker : `dca up -d`
