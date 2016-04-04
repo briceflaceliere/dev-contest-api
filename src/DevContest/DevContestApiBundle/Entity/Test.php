@@ -4,12 +4,15 @@ namespace DevContest\DevContestApiBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Test
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\TestRepository")
+ * @JMS\ExclusionPolicy("all")
  */
 class Test
 {
@@ -23,6 +26,10 @@ class Test
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMS\Expose
+     * @JMS\Type("integer")
+     * @JMS\Since("0.1")
      */
     private $id;
 
@@ -41,6 +48,13 @@ class Test
      * @var string
      *
      * @ORM\Column(type="string", length=255)
+     *
+     * @JMS\Expose
+     * @JMS\Type("string")
+     * @JMS\Since("0.1")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Regex("/^\w+/")
      */
     private $title;
 
@@ -66,6 +80,44 @@ class Test
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(type="text")
+     * 
+     * @JMS\Expose
+     * @JMS\Type("string")
+     * @JMS\Since("0.1")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Regex("/^\w+/")
+     */
+    private $description;
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Test
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
 

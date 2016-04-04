@@ -1,3 +1,6 @@
 dev_contest.api.user:
     type: rest
     resource: DevContest\DevContestApiBundle\Controller\UserController
+dev_contest.api.test:
+    type: rest
+    resource: DevContest\DevContestApiBundle\Controller\TestController
