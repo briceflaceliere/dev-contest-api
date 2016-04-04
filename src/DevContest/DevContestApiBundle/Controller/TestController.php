@@ -1,14 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: brice
- * Date: 22/03/16
- * Time: 19:13
- */
 
 namespace DevContest\DevContestApiBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Util\Codes;
@@ -19,23 +12,23 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 
 /**
- * Class UserController
+ * Class TestController
  * @package DevContest\DevContestApiBundle\Controller
  *
  *
  *
  */
-class UserController extends AbstractController
+class TestController extends AbstractController
 {
     /**
-     * Get users
+     * Get tests
      *
      * @param Request $request
      * @param ParamFetcherInterface $paramFetcher
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      *
      * @ApiDoc(
-     *   resource = "Users",
+     *   resource = "Tests",
      *   statusCodes = {
      *     200 = "Success",
      *     403 = "Insufficient access rights"
@@ -48,90 +41,90 @@ class UserController extends AbstractController
      *
      * @Rest\View
      */
-    public function getUsersAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getTestsAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return parent::getObjects('DevContestApiBundle:User', $request, $paramFetcher);        
+        return parent::getObjects('DevContestApiBundle:Test', $request, $paramFetcher);        
     }
 
     /**
-     * Get user
+     * Get test
      *
-     * @param integer $id Id of the user
-     * @return \DevContest\DevContestApiBundle\Entity\User
+     * @param integer $id Id of the test
+     * @return \DevContest\DevContestApiBundle\Entity\Test
      *
      * @ApiDoc(
-     *   resource = "Users",
+     *   resource = "Tests",
      *   statusCodes = {
      *     200 = "Success",
      *     403 = "Insufficient access rights",
-     *     404 = "User not found"
+     *     404 = "Test not found"
      *   },
-     *   output  = "DevContest\DevContestApiBundle\Entity\User"
+     *   output  = "DevContest\DevContestApiBundle\Entity\Test"
      * )
      *
      * @Rest\View()
      * @Rest\Route(requirements={"id"="[0-9]+"})
      */
-    public function getUserAction($id)
+    public function getTestAction($id)
     {
-        return parent::getObject('DevContestApiBundle:User', $id);        
+        return parent::getObject('DevContestApiBundle:Test', $id);        
     }
 
     /**
-     * Create user
+     * Create Test
      *
      * @param Request $request
      * @return array
      *
      * @ApiDoc(
-     *   resource = "Users",
+     *   resource = "Tests",
      *   statusCodes = {
      *     201 = "Success",
      *     403 = "Insufficient access rights"
      *   },
-     *   input   = "DevContest\DevContestApiBundle\Form\Type\UserType"
+     *   input   = "DevContest\DevContestApiBundle\Form\Type\TestType"
      * )
      *
      * @Rest\View()
      */
-    public function postUsersAction(Request $request)
+    public function postTestsAction(Request $request)
     {
-        return parent::postObjects('DevContestApiBundle:User', $request);        
+        return parent::postObjects('DevContestApiBundle:Test', $request);        
     }
 
     /**
-     * Update user
+     * Update Test
      *
      * @param Request $request
-     * @param integer $id Id of the user
+     * @param integer $id Id of the Test
      * @return array
      *
      * @ApiDoc(
-     *   resource = "Users",
+     *   resource = "Tests",
      *   statusCodes = {
      *     204 = "Success",
      *     403 = "Insufficient access rights"
      *   },
-     *   input   = "DevContest\DevContestApiBundle\Form\Type\UserType"
+     *   input   = "DevContest\DevContestApiBundle\Form\Type\TestType"
      * )
      *
      * @Rest\Route(requirements={"id"="[0-9]+"})
      * @Rest\View()
      */
-    public function putUsersAction(Request $request, $id)
+    public function putTestsAction(Request $request, $id)
     {
-        return parent::putObjects('DevContestApiBundle:User', $request, $id);        
+        return parent::putObjects('DevContestApiBundle:Test', $request, $id);        
     }
 
     /**
-     * Delete user
+     * Delete Test
      *
      * @param Request $request
-     * @param integer $id Id of the user
+     * @param integer $id Id of the Test
      * @return array
      *
      * @ApiDoc(
-     *   resource = "Users",
+     *   resource = "Tests",
      *   statusCodes = {
      *     204 = "Success",
      *     403 = "Insufficient access rights"
@@ -141,8 +134,8 @@ class UserController extends AbstractController
      * @Rest\Route(requirements={"id"="[0-9]+"})
      * @Rest\View()
      */
-    public function deleteUsersAction(Request $request, $id)
+    public function deleteTestsAction(Request $request, $id)
     {
-        return parent::deleteObjects('DevContestApiBundle:User', $request, $id);        
+        return parent::deleteObjects('DevContestApiBundle:Test', $request, $id);        
     }
 } 
