@@ -28,8 +28,9 @@ DevContest - Dev
     - Url de l'api : `http://localhost:8039/app_dev.php/api`
     - Doc :  `http://localhost:8039/app_dev.php/api/doc`
     - Mailhog : 'http://localhost:8035/'
-    - Executé une commande symfony : `dca-cmd app/console cmdSymfony`
-    - Executé les tests Phpunit : `dca-cmd bin/phpunit -c app/`
+    - Executer une commande symfony : `dca-cmd app/console cmdSymfony`
+    - Executer les tests Phpunit : `dca-cmd bin/phpunit -c app/`
+    - Insertion des fixtures : `dca-cmd app/console doctrine:fixtures:load`
 
 3) Dependances
 ----------------------------------
