@@ -10,12 +10,11 @@ engine:
     extends:
         file: docker/common.yml
         service: baseengine
+    user: "106:111"
     links:
         - "postgres:postgres"
 
 postgres:
-    ports:
-        - "5467:5432"
     extends:
         file: docker/common.yml
         service: basepostgres

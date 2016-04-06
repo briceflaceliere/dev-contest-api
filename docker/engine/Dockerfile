@@ -42,3 +42,5 @@ RUN curl -sS https://getcomposer.org/installer | php \
 
 RUN echo "alias php='php -dzend_extension=xdebug.so'" >> ~/.bashrc
 RUN echo "alias composer='php $(which composer)'" >> ~/.bashrc
+
+RUN mkdir /.composer && chmod -R 777 /.composer
