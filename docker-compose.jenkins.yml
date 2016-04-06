@@ -1,0 +1,21 @@
+
+
+# SMTP trap
+mailhog:
+    extends:
+        file: docker/common.yml
+        service: basemailhog
+
+engine:
+    extends:
+        file: docker/common.yml
+        service: baseengine
+    links:
+        - "postgres:postgres"
+
+postgres:
+    ports:
+        - "5467:5432"
+    extends:
+        file: docker/common.yml
+        service: basepostgres

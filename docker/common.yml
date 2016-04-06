@@ -1,0 +1,30 @@
+
+# SMTP trap
+basemailhog:
+  image: mailhog/mailhog
+
+baseengine:
+    image: bflaceliere/php7-fpm-symfony
+    volumes:
+        - "..:/home/docker:rw"
+        - "../docker/engine/php.ini:/usr/local/etc/php/conf.d/custom.ini:ro"
+    user: "1000:1000"
+    working_dir: "/home/docker"
+
+basefront:
+    image: nginx
+    volumes:
+        - "..:/home/docker:ro"
+        - "../docker/front/default.conf:/etc/nginx/conf.d/default.conf:ro"
+
+basepostgres:
+    image: postgres
+    environment:
+        - POSTGRES_USER=devcontest
+        - POSTGRES_PASSWORD=devcontest
+        - PGPASSWORD=devcontest
+
+basedatapostgres:
+    image: tianon/true
+    volumes:
+        - /var/lib/postgresql/data
