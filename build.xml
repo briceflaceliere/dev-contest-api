@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="DevContest Api" default="ci" basedir=".">
+    <property name="source" value="src" />
+
+    <target name="ci"
+            description="Tâche d'intégration continue"
+            depends="clean,qa"
+            />
+
+    <target name="clean" description="Vide les répertoires d'artefacts">
+        <delete dir="${project.basedir}/build/code-browser" />
+        <delete dir="${project.basedir}/build/coverage" />
+        <delete dir="${project.basedir}/build/logs" />
+        <delete dir="${project.basedir}/build/pdepend" />
+
+        <mkdir dir="${project.basedir}/build/code-browser" />
+        <mkdir dir="${project.basedir}/build/coverage" />
+        <mkdir dir="${project.basedir}/build/logs" />
+        <mkdir dir="${project.basedir}/build/pdepend" />
+
+        <exec command="bin/phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard" />
+        <exec command="app/console --env=test doctrine:database:create --if-not-exists" />
+    </target>
+
+    <target name="qa" description="Lance les outils d'analyse">
+        <phingcall target="annalyse" />
+        <phingcall target="test" />
+        <phingcall target="report" />
+    </target>
+
+    <target name="annalyse">
+        <phpdepend file="${project.basedir}/${source}">
+            <logger type="jdepend-xml" outfile="${project.basedir}/build/logs/jdepend.xml" />
+            <logger type="jdepend-chart" outfile="${project.basedir}/build/pdepend/dependencies.svg" />
+            <logger type="overview-pyramid" outfile="${project.basedir}/build/pdepend/overview-pyramid.svg" />
+        </phpdepend>
+
+        <phpmd file="${project.basedir}/${source}">
+            <formatter type="xml" outfile="${project.basedir}/build/phpmd.xml" />
+        </phpmd>
+
+        <phpcpd file="${project.basedir}/${source}">
+            <formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>
+        </phpcpd>
+
+        <exec logoutput="true" dir="${project.basedir}" command="${project.basedir}/bin/phploc --log-csv '${project.basedir}/build/logs/phploc.csv' '${project.basedir}/${source}'" escape="false" />
+
+        <phpcodesniffer standard="Zend">
+            <fileset dir="${project.basedir}/${source}">
+                <include name="**/*.php"/>
+            </fileset>
+            <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
+        </phpcodesniffer>
+    </target>
+
+    <target name="test">
+        <exec logoutput="true" dir="${project.basedir}/${source}" command="${project.basedir}/bin/phpunit -c ${project.basedir}/app/" escape="false" />
+    </target>
+
+    <target name="report">
+        <exec logoutput="true" dir="${project.basedir}/${source}" command="${project.basedir}/bin/phpcb --log '${project.basedir}/build/logs' --source '${project.basedir}/${source}' --output '${project.basedir}/build/code-browser'" escape="false" />
+    </target>
+
+</project>

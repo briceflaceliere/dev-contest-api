@@ -1,9 +1,13 @@
 /web/bundles/
 /app/cache/*
 /app/logs/*
+/build/*
 /build/
 /vendor/
 /bin/
 /composer.phar
+!/build/.gitkeep
 app/config/parameters.yml
 docker-compose.yml
+.pdepend
+.composer
