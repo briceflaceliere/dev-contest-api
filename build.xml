@@ -18,6 +18,12 @@
         <mkdir dir="${project.basedir}/build/logs" />
         <mkdir dir="${project.basedir}/build/pdepend" />
 
+        <chmod mode="0777" file="${project.basedir}/build/code-browser" />
+        <chmod mode="0777" file="${project.basedir}/build/coverage" />
+        <chmod mode="0777" file="${project.basedir}/build/logs" />
+        <chmod mode="0777" file="${project.basedir}/build/pdepend" />
+        <chmod mode="0777" file="${project.basedir}/build" />
+
         <exec command="bin/phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard" />
         <exec command="app/console --env=test doctrine:database:create --if-not-exists" />
     </target>
