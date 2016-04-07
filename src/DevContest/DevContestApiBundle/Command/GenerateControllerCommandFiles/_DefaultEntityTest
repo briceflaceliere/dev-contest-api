@@ -1,0 +1,82 @@
+<?php
+
+namespace DevContest\{{Bundle}}\Tests\Controller;
+
+use DevContest\{{Bundle}}\Tests\WebTestCase;
+use Doctrine\ORM\Tools\SchemaTool;
+
+class {{Entity}}ControllerTest extends WebTestCase
+{
+
+    protected $loadFixtures = [
+        'DevContest\{{Bundle}}\DataFixtures\ORM\Load{{Entity}}Data',
+    ];
+
+    public function testGet{{Entities}}Action()
+    {
+        $response = $this->defaultGetListTest($this->getUrl('get_{{entities}}'));
+        $data = json_decode($response->getContent(), true);
+        $this->assertGreaterThan(0, count($data['items']));
+    }
+
+    public function testGet{{Entities}}ction()
+    {
+        ${{entity}}1Id = $this->fixtures->getReference('{{entity}}1')->getId();
+
+        $response = $this->defaultGetTest($this->getUrl('get_{{entity}}', ['id' => ${{entity}}1Id]));
+
+        $data = json_decode($response->getContent(), true);
+
+        /**
+         * Fill the assert
+         * $this->assertArrayHasKey('@key', $data);
+         * $this->assertEquals('@value', $data['@key']);
+         */
+    }
+
+    public function testDelele{{Entities}}Action()
+    {
+        ${{entity}}1Id = $this->fixtures->getReference('{{entity}}1')->getId();
+
+        $response = $this->defaultDeleteTest($this->getUrl('delete_{{entities}}', ['id' => ${{entity}}1Id]));
+    }
+
+    /**
+     * @dataProvider {{entity}}Provider
+     */
+    public function testPost{{Entities}}Action(${{entity}})
+    {
+        $response = $this->defaultPostTest($this->getUrl('post_{{entities}}'), ['{{entity}}' => ${{entity}}]);
+
+        $this->client->request('POST', $this->getUrl('post_{{entities}}'), ['{{entity}}' => ${{entity}}]);
+        $response = $this->client->getResponse();
+        $this->assertEquals(201, $response->getStatusCode(), $response->getContent());
+    }
+
+    /**
+     * @dataProvider {{entity}}Provider
+     */
+    public function testPut{{Entities}}Action(${{entity}})
+    {
+        ${{entity}}1Id = $this->fixtures->getReference('{{entity}}1')->getId();
+
+        $response = $this->defaultPutTest($this->getUrl('put_{{entities}}', ['id' => ${{entity}}1Id]), ['{{entity}}' => ${{entity}}]);
+
+        // Check update
+        $this->client->request('GET', $this->getUrl('get_{{entity}}', ['id' => ${{entity}}1Id]));
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
+        $data = json_decode($response->getContent(), true);
+
+        /**
+         * Fill the assert
+         * $this->assertEquals(${{entity}}['@key'], $data['@key']);
+         */
+    }
+
+    public function {{entity}}Provider()
+    {
+        return [
+        ];
+    }
+}

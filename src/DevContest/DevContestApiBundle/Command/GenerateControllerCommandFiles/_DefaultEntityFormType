@@ -1,0 +1,19 @@
+<?php
+
+namespace DevContest\{{Bundle}}\Form\Type;
+
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+class {{Entity}}Type extends AbstractType
+{
+    public function getName()
+    {
+        return '{{entity}}';
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+    }
+}
