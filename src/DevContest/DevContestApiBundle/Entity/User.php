@@ -8,7 +8,6 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
 /**
  * User class
  *
@@ -22,9 +21,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class User
 {
-    public function __construct() {
-        $this->userContests = new ArrayCollection();
-    }
 
     /**
      * Identifier
@@ -38,21 +34,8 @@ class User
      * @JMS\Expose
      * @JMS\Type("integer")
      * @JMS\Since("0.1")
-     *
      */
     protected $id;
-
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
 
     /**
      * Nickname
@@ -69,6 +52,36 @@ class User
      * @Assert\Regex("/^\w+/")
      */
     protected $nickname;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UserContest", mappedBy="user")
+     */
+    protected $userContests;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $githubId;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->userContests = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Get Nickname
@@ -89,14 +102,9 @@ class User
     public function setNickname($nickname)
     {
         $this->nickname = $nickname;
+
         return $this;
     }
-
-    /**
-     * @ORM\OneToMany(targetEntity="UserContest", mappedBy="user")
-     */
-    protected $userContests;
-
 
     /**
      * @return ArrayCollection
@@ -115,6 +123,7 @@ class User
     public function setUserContests(ArrayCollection $userContests)
     {
         $this->userContests = $userContests;
+
         return $this;
     }
 
@@ -127,15 +136,9 @@ class User
     public function addUserContest(UserContest $userContest)
     {
         $this->userContest->add($userContest);
+
         return $this;
     }
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $githubId;
 
     /**
      * @return string
@@ -152,9 +155,7 @@ class User
     public function setGithubId($githubId)
     {
         $this->githubId = $githubId;
+
         return $this;
     }
-
-
 }
-

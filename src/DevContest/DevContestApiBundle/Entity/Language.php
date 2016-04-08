@@ -20,6 +20,12 @@ class Language
      */
     protected $name;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    protected $logo;
 
     /**
      * Get name
@@ -31,11 +37,10 @@ class Language
         return $this->name;
     }
 
-
     /**
      * Set name
      *
-     * @param $name
+     * @param string $name
      * @return $this
      */
     public function setName($name)
@@ -44,14 +49,6 @@ class Language
 
         return $this;
     }
-
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    protected $logo;
 
     /**
      * Get Logo
@@ -72,8 +69,7 @@ class Language
     public function setLogo($logo)
     {
         $this->logo = $logo;
+
         return $this;
     }
-
 }
-

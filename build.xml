@@ -35,7 +35,7 @@
 
         <exec logoutput="true" dir="${project.basedir}" command="${project.basedir}/bin/phploc --log-csv '${project.basedir}/build/logs/phploc.csv' '${project.basedir}/${source}'" escape="false" />
 
-        <phpcodesniffer standard="${project.basedir}/app/ruleset.xml" tabWidth="4" showWarnings="false">
+        <phpcodesniffer standard="${project.basedir}/app/ruleset.xml" tabWidth="4">
             <fileset dir="${project.basedir}/${source}">
                 <include name="**/*.php"/>
             </fileset>
@@ -55,7 +55,7 @@
     </target>
 
     <target name="checkstyle">
-        <exec logoutput="true" command="bin/phpcs --extensions='php' --severity=1 --error-severity=1 --warning-severity=8 --standard=${project.basedir}/app/ruleset.xml --tab-width=4 ${project.basedir}/${source}" />
+        <exec logoutput="true" command="bin/phpcs --extensions='php' --standard=${project.basedir}/app/ruleset.xml --tab-width=4 ${project.basedir}/${source}" />
     </target>
 
     <target name="fix">

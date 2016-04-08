@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Contest
+ * Contest entity
  *
  * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="contest_name_idx", columns={"dc_name"})
@@ -15,12 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Contest
 {
-    public function __construct() {
-        $this->languages = new ArrayCollection();
-        $this->contestTests = new ArrayCollection();
-        $this->userContests = new ArrayCollection();
-    }
-
     /**
      * @var integer
      *
@@ -30,6 +24,62 @@ class Contest
      */
     private $id;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=100)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $logo;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $startTs;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $endTs;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ContestTest", mappedBy="dc_contest_id")
+     * @ORM\OrderBy({"dc_number" = "ASC"})
+     */
+    protected $contestTests;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UserContest", mappedBy="contest")
+     */
+    protected $userContests;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Language")
+     * @ORM\JoinTable(
+     *   joinColumns={@ORM\JoinColumn(referencedColumnName="dc_id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(referencedColumnName="dc_name")})
+     */
+    protected $languages;
+
+    /**
+     * Contructor
+     */
+    public function __construct()
+    {
+        $this->languages = new ArrayCollection();
+        $this->contestTests = new ArrayCollection();
+        $this->userContests = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -40,13 +90,6 @@ class Contest
     {
         return $this->id;
     }
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=100)
-     */
-    private $name;
 
     /**
      * Set name
@@ -73,13 +116,6 @@ class Contest
     }
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $logo;
-
-    /**
      * Set logo
      *
      * @param string $logo
@@ -102,13 +138,6 @@ class Contest
     {
         return $this->logo;
     }
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $startTs;
 
     /**
      * Set startTs
@@ -135,13 +164,6 @@ class Contest
     }
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $endTs;
-
-    /**
      * Set endTs
      *
      * @param \DateTime $endTs
@@ -166,14 +188,6 @@ class Contest
     }
 
     /**
-     * @ORM\ManyToMany(targetEntity="Language")
-     * @ORM\JoinTable(
-     *   joinColumns={@ORM\JoinColumn(referencedColumnName="dc_id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(referencedColumnName="dc_name")})
-     */
-    protected $languages;
-
-    /**
      * Get languages
      *
      * @return ArrayCollection
@@ -192,6 +206,7 @@ class Contest
     public function setLanguages(ArrayCollection $languages)
     {
         $this->languages = $languages;
+
         return $this;
     }
 
@@ -204,15 +219,9 @@ class Contest
     public function addLanguage(Language $language)
     {
         $this->languages->add($language);
+
         return $this;
     }
-
-    /**
-     * @ORM\OneToMany(targetEntity="ContestTest", mappedBy="dc_contest_id")
-     * @ORM\OrderBy({"dc_number" = "ASC"})
-     */
-    protected $contestTests;
-
 
     /**
      * @return ArrayCollection
@@ -231,6 +240,7 @@ class Contest
     public function setContestTests(ArrayCollection $contestTests)
     {
         $this->contestTests = $contestTests;
+
         return $this;
     }
 
@@ -243,16 +253,13 @@ class Contest
     public function addContestTest(ContestTest $contestTest)
     {
         $this->contestTests->add($contestTest);
+
         return $this;
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="UserContest", mappedBy="contest")
-     */
-    protected $userContests;
-
-
-    /**
+     * Get user contests
+     *
      * @return ArrayCollection
      */
     public function getUserContests()
@@ -269,6 +276,7 @@ class Contest
     public function setUserContests(ArrayCollection $userContests)
     {
         $this->userContests = $userContests;
+
         return $this;
     }
 
@@ -281,8 +289,7 @@ class Contest
     public function addUserContest(UserContest $userContest)
     {
         $this->userContests->add($userContest);
+
         return $this;
     }
-
 }
-

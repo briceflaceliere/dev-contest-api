@@ -12,6 +12,10 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Liip\FunctionalTestBundle\Test\WebTestCase as ParentWebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class WebTestCase
+ * @package DevContest\DevContestApiBundle\Tests
+ */
 class WebTestCase extends ParentWebTestCase
 {
     protected $loadFixtures = [];
@@ -20,6 +24,10 @@ class WebTestCase extends ParentWebTestCase
 
     protected $client;
 
+    /**
+     * @inheritdoc
+     * @throws \Doctrine\ORM\Tools\ToolsException
+     */
     public function setUp()
     {
         $em = $this->getContainer()->get('doctrine')->getManager();

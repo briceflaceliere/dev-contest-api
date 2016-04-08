@@ -17,7 +17,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-
 /**
  * Class UserController
  * @package DevContest\DevContestApiBundle\Controller
@@ -30,7 +29,7 @@ class UserController extends AbstractController
     /**
      * Get users
      *
-     * @param Request $request
+     * @param Request               $request
      * @param ParamFetcherInterface $paramFetcher
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      *
@@ -50,7 +49,7 @@ class UserController extends AbstractController
      */
     public function getUsersAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return parent::getObjects('DevContestApiBundle:User', $request, $paramFetcher);        
+        return parent::getObjects('DevContestApiBundle:User', $request, $paramFetcher);
     }
 
     /**
@@ -74,7 +73,7 @@ class UserController extends AbstractController
      */
     public function getUserAction($id)
     {
-        return parent::getObject('DevContestApiBundle:User', $id);        
+        return parent::getObject('DevContestApiBundle:User', $id);
     }
 
     /**
@@ -96,14 +95,14 @@ class UserController extends AbstractController
      */
     public function postUsersAction(Request $request)
     {
-        return parent::postObjects('DevContestApiBundle:User', $request);        
+        return parent::postObjects('DevContestApiBundle:User', $request);
     }
 
     /**
      * Update user
      *
      * @param Request $request
-     * @param integer $id Id of the user
+     * @param integer $id      Id of the user
      * @return array
      *
      * @ApiDoc(
@@ -120,14 +119,14 @@ class UserController extends AbstractController
      */
     public function putUsersAction(Request $request, $id)
     {
-        return parent::putObjects('DevContestApiBundle:User', $request, $id);        
+        return parent::putObjects('DevContestApiBundle:User', $request, $id);
     }
 
     /**
      * Delete user
      *
      * @param Request $request
-     * @param integer $id Id of the user
+     * @param integer $id      Id of the user
      * @return array
      *
      * @ApiDoc(
@@ -143,6 +142,6 @@ class UserController extends AbstractController
      */
     public function deleteUsersAction(Request $request, $id)
     {
-        return parent::deleteObjects('DevContestApiBundle:User', $request, $id);        
+        return parent::deleteObjects('DevContestApiBundle:User', $request, $id);
     }
-} 
+}

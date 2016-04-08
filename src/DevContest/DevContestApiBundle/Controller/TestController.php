@@ -10,7 +10,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-
 /**
  * Class TestController
  * @package DevContest\DevContestApiBundle\Controller
@@ -23,7 +22,7 @@ class TestController extends AbstractController
     /**
      * Get tests
      *
-     * @param Request $request
+     * @param Request               $request
      * @param ParamFetcherInterface $paramFetcher
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      *
@@ -43,7 +42,7 @@ class TestController extends AbstractController
      */
     public function getTestsAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return parent::getObjects('DevContestApiBundle:Test', $request, $paramFetcher);        
+        return parent::getObjects('DevContestApiBundle:Test', $request, $paramFetcher);
     }
 
     /**
@@ -67,7 +66,7 @@ class TestController extends AbstractController
      */
     public function getTestAction($id)
     {
-        return parent::getObject('DevContestApiBundle:Test', $id);        
+        return parent::getObject('DevContestApiBundle:Test', $id);
     }
 
     /**
@@ -89,14 +88,14 @@ class TestController extends AbstractController
      */
     public function postTestsAction(Request $request)
     {
-        return parent::postObjects('DevContestApiBundle:Test', $request);        
+        return parent::postObjects('DevContestApiBundle:Test', $request);
     }
 
     /**
      * Update Test
      *
      * @param Request $request
-     * @param integer $id Id of the Test
+     * @param integer $id      Id of the Test
      * @return array
      *
      * @ApiDoc(
@@ -113,14 +112,14 @@ class TestController extends AbstractController
      */
     public function putTestsAction(Request $request, $id)
     {
-        return parent::putObjects('DevContestApiBundle:Test', $request, $id);        
+        return parent::putObjects('DevContestApiBundle:Test', $request, $id);
     }
 
     /**
      * Delete Test
      *
      * @param Request $request
-     * @param integer $id Id of the Test
+     * @param integer $id      Id of the Test
      * @return array
      *
      * @ApiDoc(
@@ -136,6 +135,6 @@ class TestController extends AbstractController
      */
     public function deleteTestsAction(Request $request, $id)
     {
-        return parent::deleteObjects('DevContestApiBundle:Test', $request, $id);        
+        return parent::deleteObjects('DevContestApiBundle:Test', $request, $id);
     }
-} 
+}
