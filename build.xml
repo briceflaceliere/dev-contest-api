@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="DevContest Api" default="ci" basedir=".">
+<project name="DevContest Api" default="test" basedir=".">
     <property name="source" value="src" />
 
-    <target name="ci"
-            description="Tâche d'intégration continue"
-            depends="clean,qa"
-            />
-
-    <target name="clean" description="Vide les répertoires d'artefacts">
+    <target name="ci" description="Tâche d'intégration continue">
         <delete dir="${project.basedir}/build/code-browser" />
         <delete dir="${project.basedir}/build/coverage" />
         <delete dir="${project.basedir}/build/logs" />
@@ -24,17 +19,6 @@
         <chmod mode="0777" file="${project.basedir}/build/pdepend" />
         <chmod mode="0777" file="${project.basedir}/build" />
 
-        <exec command="bin/phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard" />
-        <exec command="app/console --env=test doctrine:database:create --if-not-exists" />
-    </target>
-
-    <target name="qa" description="Lance les outils d'analyse">
-        <phingcall target="annalyse" />
-        <phingcall target="test" />
-        <phingcall target="report" />
-    </target>
-
-    <target name="annalyse">
         <phpdepend file="${project.basedir}/${source}">
             <logger type="jdepend-xml" outfile="${project.basedir}/build/logs/jdepend.xml" />
             <logger type="jdepend-chart" outfile="${project.basedir}/build/pdepend/dependencies.svg" />
@@ -51,20 +35,33 @@
 
         <exec logoutput="true" dir="${project.basedir}" command="${project.basedir}/bin/phploc --log-csv '${project.basedir}/build/logs/phploc.csv' '${project.basedir}/${source}'" escape="false" />
 
-        <phpcodesniffer standard="Zend">
+        <phpcodesniffer standard="${project.basedir}/app/ruleset.xml" tabWidth="4" showWarnings="false">
             <fileset dir="${project.basedir}/${source}">
                 <include name="**/*.php"/>
             </fileset>
             <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
         </phpcodesniffer>
+        <phingcall target="phpunit" />
+
+        <exec logoutput="true" command="${project.basedir}/bin/phpcb --log '${project.basedir}/build/logs' --source '${project.basedir}/${source}' --output '${project.basedir}/build/code-browser'" escape="false" />
+
     </target>
 
-    <target name="test">
+    <target name="test" depends="phpunit, checkstyle" />
+
+    <target name="phpunit">
+        <exec command="app/console --env=test doctrine:database:create --if-not-exists" />
         <exec logoutput="true" dir="${project.basedir}/${source}" command="${project.basedir}/bin/phpunit -c ${project.basedir}/app/" escape="false" />
     </target>
 
-    <target name="report">
-        <exec logoutput="true" command="${project.basedir}/bin/phpcb --log '${project.basedir}/build/logs' --source '${project.basedir}/${source}' --output '${project.basedir}/build/code-browser'" escape="false" />
+    <target name="checkstyle">
+        <exec logoutput="true" command="bin/phpcs --extensions='php' --severity=1 --error-severity=1 --warning-severity=8 --standard=${project.basedir}/app/ruleset.xml --tab-width=4 ${project.basedir}/${source}" />
     </target>
+
+    <target name="fix">
+        <exec logoutput="true" command="bin/phpcbf --extensions='php' --standard=${project.basedir}/app/ruleset.xml --tab-width=4 ${project.basedir}/${source}" />
+        <phingcall target="checkstyle" />
+    </target>
+
 
 </project>

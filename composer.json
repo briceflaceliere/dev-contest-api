@@ -38,7 +38,6 @@
         "pdepend/pdepend" : "*",
         "phpmd/phpmd" : "@stable",
         "sebastian/phpcpd": "*",
-        "escapestudios/symfony2-coding-standard": "~2.0",
         "mayflower/php-codebrowser": "~1.1"
     },
     "scripts": {
