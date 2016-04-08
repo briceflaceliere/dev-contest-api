@@ -25,13 +25,20 @@
         "hautelook/templated-uri-bundle": "^2.0",
         "willdurand/rest-extra-bundle": "^1.0",
         "friendsofsymfony/oauth-server-bundle": "dev-master",
-        "knplabs/knp-paginator-bundle": "^2.5"
+        "knplabs/knp-paginator-bundle": "^2.5",
+        "phing/phing": "2.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
-        "doctrine/doctrine-fixtures-bundle": "^2.3",
+        "doctrine/doctrine-fixtures-bundle": "~2.3",
         "phpunit/phpunit": "~5.0",
-        "liip/functional-test-bundle": "^1.5"
+        "liip/functional-test-bundle": "~1.5",
+        "squizlabs/php_codesniffer": "2.*",
+        "phploc/phploc": "*",
+        "pdepend/pdepend" : "*",
+        "phpmd/phpmd" : "@stable",
+        "sebastian/phpcpd": "*",
+        "mayflower/php-codebrowser": "~1.1"
     },
     "scripts": {
         "post-install-cmd": [

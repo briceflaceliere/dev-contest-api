@@ -30,8 +30,9 @@ https://trello.com/b/ryMwROFV/devcontest
     - Doc :  `http://localhost:8039/app_dev.php/api/doc`
     - Mailhog : 'http://localhost:8035/'
     - Executer une commande symfony : `dca-cmd app/console cmdSymfony`
-    - Executer les tests Phpunit : `dca-cmd bin/phpunit -c app/`
     - Insertion des fixtures : `dca-cmd app/console doctrine:fixtures:load`
+    - Fix automatique des erreur de style: `dca-cmd bin/phing fix`
+    - Executer les tests: `dca-cmd bin/phing test`
 
 3) Dependances
 ----------------------------------

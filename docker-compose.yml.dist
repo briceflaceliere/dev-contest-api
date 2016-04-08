@@ -1,42 +1,39 @@
 
 # SMTP trap
 mailhog:
-  image: mailhog/mailhog
-  ports:
-    - "8035:8025"
+    extends:
+        file: docker/common.yml
+        service: basemailhog
+    ports:
+        - "8035:8025"
 
 engine:
-    image: bflaceliere/php7-fpm-symfony
-    volumes:
-        - ".:/home/docker:rw"
-        - "./docker/engine/php.ini:/usr/local/etc/php/conf.d/custom.ini:ro"
+    extends:
+        file: docker/common.yml
+        service: baseengine
     links:
         - "postgres:postgres"
         - "mailhog:mailhog"
-    working_dir: "/home/docker"
 
 front:
-    image: nginx
     ports:
         - "8039:80"
+    extends:
+        file: docker/common.yml
+        service: basefront
     links:
         - "engine:engine"
-    volumes:
-        - ".:/home/docker:ro"
-        - "./docker/front/default.conf:/etc/nginx/conf.d/default.conf:ro"
 
 postgres:
-    image: postgres
-    environment:
-        - POSTGRES_USER=devcontest
-        - POSTGRES_PASSWORD=devcontest
-        - PGPASSWORD=devcontest
     ports:
         - "5467:5432"
+    extends:
+        file: docker/common.yml
+        service: basepostgres
     volumes_from:
         - datapostgres
 
 datapostgres:
-    image: tianon/true
-    volumes:
-        - /var/lib/postgresql/data
+    extends:
+        file: docker/common.yml
+        service: basedatapostgres

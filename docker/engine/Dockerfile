@@ -23,6 +23,7 @@ RUN curl -L -o /tmp/xdebug-2.4.0.tgz http://xdebug.org/files/xdebug-2.4.0.tgz \
     && rm -r /tmp/xdebug-2.4.0.tgz \
     && mv xdebug-2.4.0 /usr/src/php/ext/xdebug
 
+
 RUN docker-php-ext-install \
         mcrypt \
         mbstring \
@@ -42,3 +43,8 @@ RUN curl -sS https://getcomposer.org/installer | php \
 
 RUN echo "alias php='php -dzend_extension=xdebug.so'" >> ~/.bashrc
 RUN echo "alias composer='php $(which composer)'" >> ~/.bashrc
+
+RUN addgroup --gid 1000 docker
+RUN addgroup --gid 111 jenkins
+RUN useradd -m -s /bin/bash -u 1000 -g 1000 docker
+RUN useradd -m -s /bin/bash -u 106 -g 111 jenkins
