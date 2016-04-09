@@ -44,7 +44,7 @@ RUN curl -sS https://getcomposer.org/installer | php \
 RUN echo "alias php='php -dzend_extension=xdebug.so'" >> ~/.bashrc
 RUN echo "alias composer='php $(which composer)'" >> ~/.bashrc
 
-RUN addgroup --gid 1000 docker
+RUN addgroup --gid 1000 usrdocker
 RUN addgroup --gid 111 jenkins
-RUN useradd -m -s /bin/bash -u 1000 -g 1000 docker
+RUN useradd -m -s /bin/bash -u 1000 -g 1000 usrdocker
 RUN useradd -m -s /bin/bash -u 106 -g 111 jenkins
