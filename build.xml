@@ -25,10 +25,6 @@
             <logger type="overview-pyramid" outfile="${project.basedir}/build/pdepend/overview-pyramid.svg" />
         </phpdepend>
 
-        <phpmd file="${project.basedir}/${source}">
-            <formatter type="xml" outfile="${project.basedir}/build/phpmd.xml" />
-        </phpmd>
-
         <phpcpd file="${project.basedir}/${source}">
             <formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>
         </phpcpd>
@@ -41,6 +37,7 @@
             </fileset>
             <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
         </phpcodesniffer>
+
         <phingcall target="phpunit" />
 
         <exec logoutput="true" command="${project.basedir}/bin/phpcb --log '${project.basedir}/build/logs' --source '${project.basedir}/${source}' --output '${project.basedir}/build/code-browser'" escape="false" />

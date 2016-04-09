@@ -36,7 +36,6 @@
         "squizlabs/php_codesniffer": "2.*",
         "phploc/phploc": "*",
         "pdepend/pdepend" : "*",
-        "phpmd/phpmd" : "@stable",
         "sebastian/phpcpd": "*",
         "mayflower/php-codebrowser": "~1.1"
     },
