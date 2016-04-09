@@ -2,17 +2,26 @@
 
 namespace DevContest\{{Bundle}}\Form\Type;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * Form {{Entity}}
+ * @package DevContest\{{Bundle}}\Form\Type
+ */
 class {{Entity}}Type extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return '{{entity}}';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
     }

@@ -2,7 +2,6 @@
 
 namespace DevContest\{{Bundle}}\DataFixtures\ORM;
 
-
 use DevContest\{{Bundle}}\Entity\{{Entity}};
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -10,6 +9,10 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Class Load{{Entity}}Data
+ * @package DevContest\{{Bundle}}\DataFixtures
+ */
 class Load{{Entity}}Data extends AbstractFixture implements ContainerAwareInterface
 {
     /**
@@ -33,6 +36,10 @@ class Load{{Entity}}Data extends AbstractFixture implements ContainerAwareInterf
         return $this->container;
     }
 
+    /**
+     * Load {{Entity}} fixtures
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $data1 = new {{Entity}}();
@@ -46,4 +53,4 @@ class Load{{Entity}}Data extends AbstractFixture implements ContainerAwareInterf
         $this->addReference('{{entity}}1', $data1);
         $this->addReference('{{entity}}2', $data2);
     }
-} 
+}

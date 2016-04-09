@@ -5,6 +5,10 @@ namespace DevContest\{{Bundle}}\Tests\Controller;
 use DevContest\{{Bundle}}\Tests\WebTestCase;
 use Doctrine\ORM\Tools\SchemaTool;
 
+/**
+ * Class tests the {{Entity}}Controller
+ * @package DevContest\{{Bundle}}\Tests\Controller
+ */
 class {{Entity}}ControllerTest extends WebTestCase
 {
 
@@ -12,6 +16,9 @@ class {{Entity}}ControllerTest extends WebTestCase
         'DevContest\{{Bundle}}\DataFixtures\ORM\Load{{Entity}}Data',
     ];
 
+    /**
+     * Test of get{{Entities}}Action method
+     */
     public function testGet{{Entities}}Action()
     {
         $response = $this->defaultGetListTest($this->getUrl('get_{{entities}}'));
@@ -19,7 +26,10 @@ class {{Entity}}ControllerTest extends WebTestCase
         $this->assertGreaterThan(0, count($data['items']));
     }
 
-    public function testGet{{Entities}}ction()
+    /**
+     * Test of get{{Entity}}Action method
+     */
+    public function testGet{{Entity}}Action()
     {
         ${{entity}}1Id = $this->fixtures->getReference('{{entity}}1')->getId();
 
@@ -34,6 +44,9 @@ class {{Entity}}ControllerTest extends WebTestCase
          */
     }
 
+    /**
+     * Test of delele{{Entities}}Action method
+     */
     public function testDelele{{Entities}}Action()
     {
         ${{entity}}1Id = $this->fixtures->getReference('{{entity}}1')->getId();
@@ -42,6 +55,9 @@ class {{Entity}}ControllerTest extends WebTestCase
     }
 
     /**
+     * Test of post${{Entity}}Action method
+     *
+     * @param array ${{entity}}
      * @dataProvider {{entity}}Provider
      */
     public function testPost{{Entities}}Action(${{entity}})
@@ -54,6 +70,9 @@ class {{Entity}}ControllerTest extends WebTestCase
     }
 
     /**
+     * Test of put${{Entity}}Action method
+     *
+     * @param array ${{entity}}
      * @dataProvider {{entity}}Provider
      */
     public function testPut{{Entities}}Action(${{entity}})
@@ -74,9 +93,12 @@ class {{Entity}}ControllerTest extends WebTestCase
          */
     }
 
+    /**
+     * {{Entity}} data provider
+     * @return array
+     */
     public function {{entity}}Provider()
     {
-        return [
-        ];
+        return [];
     }
 }

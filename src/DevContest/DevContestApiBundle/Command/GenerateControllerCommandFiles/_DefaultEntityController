@@ -11,20 +11,16 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-
 /**
  * Class {{Entity}}Controller
  * @package DevContest\{{Bundle}}\Controller
- *
- *
- *
  */
 class {{Entity}}Controller extends AbstractController
 {
     /**
      * Get {{Entities}}
      *
-     * @param Request $request
+     * @param Request               $request
      * @param ParamFetcherInterface $paramFetcher
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      *
@@ -44,7 +40,7 @@ class {{Entity}}Controller extends AbstractController
      */
     public function get{{Entities}}Action(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return parent::getObjects('{{Bundle}}:{{Entity}}', $request, $paramFetcher);        
+        return parent::getObjects('{{Bundle}}:{{Entity}}', $request, $paramFetcher);
     }
 
     /**
@@ -68,7 +64,7 @@ class {{Entity}}Controller extends AbstractController
      */
     public function get{{Entity}}Action($id)
     {
-        return parent::getObject('{{Bundle}}:{{Entity}}', $id);        
+        return parent::getObject('{{Bundle}}:{{Entity}}', $id);
     }
 
     /**
@@ -90,14 +86,14 @@ class {{Entity}}Controller extends AbstractController
      */
     public function post{{Entities}}Action(Request $request)
     {
-        return parent::postObjects('{{Bundle}}:{{Entity}}', $request);        
+        return parent::postObjects('{{Bundle}}:{{Entity}}', $request);
     }
 
     /**
      * Update {{Entity}}
      *
      * @param Request $request
-     * @param integer $id Id of the {{Entity}}
+     * @param integer $id      Id of the {{Entity}}
      * @return array
      *
      * @ApiDoc(
@@ -114,14 +110,14 @@ class {{Entity}}Controller extends AbstractController
      */
     public function put{{Entities}}Action(Request $request, $id)
     {
-        return parent::putObjects('{{Bundle}}:{{Entity}}', $request, $id);        
+        return parent::putObjects('{{Bundle}}:{{Entity}}', $request, $id);
     }
 
     /**
      * Delete {{Entity}}
      *
      * @param Request $request
-     * @param integer $id Id of the {{Entity}}
+     * @param integer $id      Id of the {{Entity}}
      * @return array
      *
      * @ApiDoc(
@@ -137,6 +133,6 @@ class {{Entity}}Controller extends AbstractController
      */
     public function delete{{Entities}}Action(Request $request, $id)
     {
-        return parent::deleteObjects('{{Bundle}}:{{Entity}}', $request, $id);        
+        return parent::deleteObjects('{{Bundle}}:{{Entity}}', $request, $id);
     }
-} 
+}
