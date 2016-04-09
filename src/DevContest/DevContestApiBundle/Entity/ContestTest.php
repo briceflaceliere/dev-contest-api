@@ -13,9 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ContestTest
 {
-    public function __construct() {
-        $this->userContestTests = new ArrayCollection();
-    }
 
     /**
      * @var integer
@@ -27,6 +24,49 @@ class ContestTest
     private $id;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $number;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Contest", inversedBy="contestTests")
+     * @ORM\JoinColumn(referencedColumnName="dc_id")
+     */
+    protected $contest;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Test", inversedBy="contestTests")
+     * @ORM\JoinColumn(referencedColumnName="dc_id")
+     */
+    protected $test;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UserContestTest", mappedBy="dc_contest_test_id")
+     */
+    protected $userContestTests;
+
+    /**
+     * @ORM\OneToOne(targetEntity="ContestTest", inversedBy="previousContestTest")
+     * @ORM\JoinColumn(referencedColumnName="dc_id", nullable=true)
+     */
+    protected $nextContestTest;
+
+    /**
+     * @ORM\OneToOne(targetEntity="ContestTest", mappedBy="nextContestTest")
+     */
+    protected $previousContestTest;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->userContestTests = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -35,13 +75,6 @@ class ContestTest
     {
         return $this->id;
     }
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $number;
 
     /**
      * Set number
@@ -67,11 +100,6 @@ class ContestTest
         return $this->number;
     }
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Contest", inversedBy="contestTests")
-     * @ORM\JoinColumn(referencedColumnName="dc_id")
-     */
-    protected $contest;
 
     /**
      * @return Contest
@@ -88,14 +116,9 @@ class ContestTest
     public function setContest(Contest $contest)
     {
         $this->contest = $contest;
+
         return $this;
     }
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Test", inversedBy="contestTests")
-     * @ORM\JoinColumn(referencedColumnName="dc_id")
-     */
-    protected $test;
 
     /**
      * Get test
@@ -116,14 +139,9 @@ class ContestTest
     public function setTest(Test $test)
     {
         $this->test = $test;
+
         return $this;
     }
-
-    /**
-     * @ORM\OneToMany(targetEntity="UserContestTest", mappedBy="dc_contest_test_id")
-     */
-    protected $userContestTests;
-
 
     /**
      * @return ArrayCollection
@@ -142,6 +160,7 @@ class ContestTest
     public function setUserContestTests(ArrayCollection $userContestTests)
     {
         $this->userContestTests = $userContestTests;
+
         return $this;
     }
 
@@ -154,14 +173,9 @@ class ContestTest
     public function addUserContestTest(UserContestTest $userContestTest)
     {
         $this->userContestTests->add($userContestTest);
+
         return $this;
     }
-
-    /**
-     * @ORM\OneToOne(targetEntity="ContestTest", inversedBy="previousContestTest")
-     * @ORM\JoinColumn(referencedColumnName="dc_id", nullable=true)
-     */
-    protected $nextContestTest;
 
     /**
      * @return ContestTest|null
@@ -178,13 +192,9 @@ class ContestTest
     public function setNextContestTest(ContestTest $nextContestTest)
     {
         $this->nextContestTest = $nextContestTest;
+
         return $this;
     }
-
-    /**
-     * @ORM\OneToOne(targetEntity="ContestTest", mappedBy="nextContestTest")
-     */
-    protected $previousContestTest;
 
     /**
      * @return ContestTest|null
@@ -193,7 +203,4 @@ class ContestTest
     {
         return $this->previousContestTest;
     }
-
-
 }
-

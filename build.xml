@@ -25,25 +25,20 @@
             <logger type="overview-pyramid" outfile="${project.basedir}/build/pdepend/overview-pyramid.svg" />
         </phpdepend>
 
-        <phpmd file="${project.basedir}/${source}">
-            <formatter type="xml" outfile="${project.basedir}/build/phpmd.xml" />
-        </phpmd>
-
         <phpcpd file="${project.basedir}/${source}">
             <formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>
         </phpcpd>
 
         <exec logoutput="true" dir="${project.basedir}" command="${project.basedir}/bin/phploc --log-csv '${project.basedir}/build/logs/phploc.csv' '${project.basedir}/${source}'" escape="false" />
 
-        <phpcodesniffer standard="${project.basedir}/app/ruleset.xml" tabWidth="4" showWarnings="false">
+        <phpcodesniffer standard="${project.basedir}/app/ruleset.xml" tabWidth="4">
             <fileset dir="${project.basedir}/${source}">
                 <include name="**/*.php"/>
             </fileset>
             <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
         </phpcodesniffer>
-        <phingcall target="phpunit" />
 
-        <exec logoutput="true" command="${project.basedir}/bin/phpcb --log '${project.basedir}/build/logs' --source '${project.basedir}/${source}' --output '${project.basedir}/build/code-browser'" escape="false" />
+        <phingcall target="phpunit" />
 
     </target>
 
@@ -55,7 +50,7 @@
     </target>
 
     <target name="checkstyle">
-        <exec logoutput="true" command="bin/phpcs --extensions='php' --severity=1 --error-severity=1 --warning-severity=8 --standard=${project.basedir}/app/ruleset.xml --tab-width=4 ${project.basedir}/${source}" />
+        <exec logoutput="true" command="bin/phpcs --extensions='php' --standard=${project.basedir}/app/ruleset.xml --tab-width=4 ${project.basedir}/${source}" />
     </target>
 
     <target name="fix">

@@ -16,10 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Test
 {
-    public function __construct() {
-        $this->contestTests = new ArrayCollection();
-    }
-
     /**
      * @var integer
      *
@@ -32,17 +28,6 @@ class Test
      * @JMS\Since("0.1")
      */
     private $id;
-
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * @var string
@@ -57,6 +42,51 @@ class Test
      * @Assert\Regex("/^\w+/")
      */
     private $title;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(type="text")
+     *
+     * @JMS\Expose
+     * @JMS\Type("string")
+     * @JMS\Since("0.1")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Regex("/^\w+/")
+     */
+    private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ContestTest", mappedBy="dc_test_id")
+     */
+    protected $contestTests;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Language")
+     * @ORM\JoinTable(
+     *   joinColumns={@ORM\JoinColumn(referencedColumnName="dc_id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(referencedColumnName="dc_name")})
+     */
+    protected $languages;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->contestTests = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set title
@@ -82,19 +112,6 @@ class Test
         return $this->title;
     }
 
-    /**
-     * @var text
-     *
-     * @ORM\Column(type="text")
-     * 
-     * @JMS\Expose
-     * @JMS\Type("string")
-     * @JMS\Since("0.1")
-     *
-     * @Assert\NotBlank()
-     * @Assert\Regex("/^\w+/")
-     */
-    private $description;
 
     /**
      * Set description
@@ -120,12 +137,6 @@ class Test
         return $this->description;
     }
 
-
-    /**
-     * @ORM\OneToMany(targetEntity="ContestTest", mappedBy="dc_test_id")
-     */
-    protected $contestTests;
-
     /**
      * @return mixed
      */
@@ -141,16 +152,9 @@ class Test
     public function setContestTests(ArrayCollection $contestTests)
     {
         $this->contestTests = $contestTests;
+
         return $this;
     }
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Language")
-     * @ORM\JoinTable(
-     *   joinColumns={@ORM\JoinColumn(referencedColumnName="dc_id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(referencedColumnName="dc_name")})
-     */
-    protected $languages;
 
     /**
      * Get languages
@@ -171,6 +175,7 @@ class Test
     public function setLanguages(ArrayCollection $languages)
     {
         $this->languages = $languages;
+
         return $this;
     }
 
@@ -183,8 +188,7 @@ class Test
     public function addLanguage(Language $language)
     {
         $this->languages->add($language);
+
         return $this;
     }
-
 }
-

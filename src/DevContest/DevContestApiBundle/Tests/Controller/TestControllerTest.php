@@ -5,6 +5,10 @@ namespace DevContest\DevContestApiBundle\Tests\Controller;
 use DevContest\DevContestApiBundle\Tests\WebTestCase;
 use Doctrine\ORM\Tools\SchemaTool;
 
+/**
+ * Class tests the TestController
+ * @package DevContest\DevContestApiBundle\Tests\Controller
+ */
 class TestControllerTest extends WebTestCase
 {
 
@@ -12,6 +16,9 @@ class TestControllerTest extends WebTestCase
         'DevContest\DevContestApiBundle\DataFixtures\ORM\LoadTestData',
     ];
 
+    /**
+     * Test of getTestsAction method
+     */
     public function testGetTestsAction()
     {
         $response = $this->defaultGetListTest($this->getUrl('get_tests'));
@@ -19,6 +26,9 @@ class TestControllerTest extends WebTestCase
         $this->assertGreaterThan(0, count($data['items']));
     }
 
+    /**
+     * Test of getTestAction method
+     */
     public function testGetTestAction()
     {
         $test1Id = $this->fixtures->getReference('test1')->getId();
@@ -30,6 +40,9 @@ class TestControllerTest extends WebTestCase
         $this->assertEquals('Test 1 : la vie des pingouins', $data['title']);
     }
 
+    /**
+     * Test of deleteTestAction method
+     */
     public function testDeleleTestsAction()
     {
         $test1Id = $this->fixtures->getReference('test1')->getId();
@@ -38,6 +51,8 @@ class TestControllerTest extends WebTestCase
     }
 
     /**
+     * Test of postTestAction method
+     * @param array $test
      * @dataProvider testProvider
      */
     public function testPostTestsAction($test)
@@ -50,6 +65,8 @@ class TestControllerTest extends WebTestCase
     }
 
     /**
+     * Test of putTestAction method
+     * @param array $test
      * @dataProvider testProvider
      */
     public function testPutTestsAction($test)
@@ -66,6 +83,10 @@ class TestControllerTest extends WebTestCase
         $this->assertEquals($test['title'], $data['title']);
     }
 
+    /**
+     * Test data provider
+     * @return array
+     */
     public function testProvider()
     {
         return [

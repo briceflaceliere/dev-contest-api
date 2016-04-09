@@ -8,12 +8,15 @@
 
 namespace DevContest\DevContestApiBundle\DataFixtures\ORM;
 
-
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Clients data fixtures
+ * @package DevContest\DevContestApiBundle\DataFixtures\ORM
+ */
 class LoadClientData implements FixtureInterface, ContainerAwareInterface
 {
     /**
@@ -37,6 +40,10 @@ class LoadClientData implements FixtureInterface, ContainerAwareInterface
         return $this->container;
     }
 
+    /**
+     * Load clients fixtures
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
@@ -45,4 +52,4 @@ class LoadClientData implements FixtureInterface, ContainerAwareInterface
         $client->setAllowedGrantTypes(array('token', 'authorization_code'));
         $clientManager->updateClient($client);
     }
-} 
+}

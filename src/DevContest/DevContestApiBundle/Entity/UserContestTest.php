@@ -22,6 +22,39 @@ class UserContestTest
     private $id;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $startTs;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $endTs;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $score;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UserContest", inversedBy="userContestTests")
+     * @ORM\JoinColumn(referencedColumnName="dc_id")
+     */
+    protected $userContest;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="ContestTest", inversedBy="userContestTests")
+     * @ORM\JoinColumn(referencedColumnName="dc_id")
+     */
+    protected $contestTest;
+
+    /**
      * Get id
      *
      * @return integer
@@ -30,13 +63,6 @@ class UserContestTest
     {
         return $this->id;
     }
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $startTs;
 
     /**
      * Set startTs
@@ -63,13 +89,6 @@ class UserContestTest
     }
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $endTs;
-
-    /**
      * Set endTs
      *
      * @param \DateTime $endTs
@@ -92,13 +111,6 @@ class UserContestTest
     {
         return $this->endTs;
     }
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $score;
 
     /**
      * Set score
@@ -125,12 +137,6 @@ class UserContestTest
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="UserContest", inversedBy="userContestTests")
-     * @ORM\JoinColumn(referencedColumnName="dc_id")
-     */
-    protected $userContest;
-
-    /**
      * @return UserContest
      */
     public function getUserContest()
@@ -145,14 +151,9 @@ class UserContestTest
     public function setUserContest(UserContest $userContest)
     {
         $this->userContest = $userContest;
+
         return $this;
     }
-
-    /**
-     * @ORM\ManyToOne(targetEntity="ContestTest", inversedBy="userContestTests")
-     * @ORM\JoinColumn(referencedColumnName="dc_id")
-     */
-    protected $contestTest;
 
     /**
      * @return UserContest
@@ -169,9 +170,7 @@ class UserContestTest
     public function setContestTest(ContestTest $contestTest)
     {
         $this->contestTest = $contestTest;
+
         return $this;
     }
-
-
 }
-

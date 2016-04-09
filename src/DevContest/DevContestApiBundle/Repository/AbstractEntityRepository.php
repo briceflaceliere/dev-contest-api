@@ -26,4 +26,4 @@ abstract class AbstractEntityRepository extends EntityRepository
     {
         return $this->createQueryBuilder('u');
     }
-} 
+}

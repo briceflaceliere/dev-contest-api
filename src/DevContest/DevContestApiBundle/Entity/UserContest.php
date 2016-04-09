@@ -23,6 +23,50 @@ class UserContest
     private $id;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $startTs;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $endTs;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $score;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="userContests")
+     * @ORM\JoinColumn(referencedColumnName="dc_id")
+     */
+    protected $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UserContestTest", mappedBy="userContest")
+     */
+    protected $userContestTests;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Contest", inversedBy="userContests")
+     * @ORM\JoinColumn(referencedColumnName="dc_id")
+     */
+    protected $contest;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Language")
+     * @ORM\JoinColumn(referencedColumnName="dc_name")
+     */
+    protected $language;
+
+    /**
      * Get id
      *
      * @return integer
@@ -31,13 +75,6 @@ class UserContest
     {
         return $this->id;
     }
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $startTs;
 
     /**
      * Set startTs
@@ -64,13 +101,6 @@ class UserContest
     }
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $endTs;
-
-    /**
      * Set endTs
      *
      * @param \DateTime $endTs
@@ -93,13 +123,6 @@ class UserContest
     {
         return $this->endTs;
     }
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $score;
 
     /**
      * Set score
@@ -126,12 +149,6 @@ class UserContest
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="userContests")
-     * @ORM\JoinColumn(referencedColumnName="dc_id")
-     */
-    protected $user;
-
-    /**
      * @return User
      */
     public function getUser()
@@ -146,14 +163,9 @@ class UserContest
     public function setUser(User $user)
     {
         $this->user = $user;
+
         return $this;
     }
-
-    /**
-     * @ORM\OneToMany(targetEntity="UserContestTest", mappedBy="userContest")
-     */
-    protected $userContestTests;
-
 
     /**
      * @return ArrayCollection
@@ -172,6 +184,7 @@ class UserContest
     public function setUserContestTests(ArrayCollection $userContestTests)
     {
         $this->userContestTests = $userContestTests;
+
         return $this;
     }
 
@@ -184,14 +197,9 @@ class UserContest
     public function addUserContestTest(UserContestTest $userContestTest)
     {
         $this->userContestTests->add($userContestTest);
+
         return $this;
     }
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Contest", inversedBy="userContests")
-     * @ORM\JoinColumn(referencedColumnName="dc_id")
-     */
-    protected $contest;
 
     /**
      * Get contest
@@ -212,14 +220,9 @@ class UserContest
     public function setContest(Contest $contest)
     {
         $this->contest = $contest;
+
         return $this;
     }
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Language")
-     * @ORM\JoinColumn(referencedColumnName="dc_name")
-     */
-    protected $language;
 
     /**
      * Get language
@@ -240,7 +243,7 @@ class UserContest
     public function setLanguage(Language $language)
     {
         $this->language = $language;
+
         return $this;
     }
 }
-

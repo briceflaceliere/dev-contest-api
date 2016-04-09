@@ -30,7 +30,7 @@ basepostgres:
         - POSTGRES_PASSWORD=devcontest
         - PGPASSWORD=devcontest
     labels:
-          - "com.devcontest.project=dev-contest-api"
+        - "com.devcontest.project=dev-contest-api"
 
 basedatapostgres:
     image: tianon/true

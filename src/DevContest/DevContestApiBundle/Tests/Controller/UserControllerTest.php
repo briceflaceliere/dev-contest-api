@@ -5,6 +5,10 @@ namespace DevContest\DevContestApiBundle\Tests\Controller;
 use DevContest\DevContestApiBundle\Tests\WebTestCase;
 use Doctrine\ORM\Tools\SchemaTool;
 
+/**
+ * Class tests the UserController
+ * @package DevContest\DevContestApiBundle\Tests\Controller
+ */
 class UserControllerTest extends WebTestCase
 {
 
@@ -12,6 +16,9 @@ class UserControllerTest extends WebTestCase
         'DevContest\DevContestApiBundle\DataFixtures\ORM\LoadUserData',
     ];
 
+    /**
+     * Test of getUsersAction method
+     */
     public function testGetUsersAction()
     {
         $response = $this->defaultGetListTest($this->getUrl('get_users'));
@@ -19,6 +26,9 @@ class UserControllerTest extends WebTestCase
         $this->assertGreaterThan(0, count($data['items']));
     }
 
+    /**
+     * Test of getUserAction method
+     */
     public function testGetUserAction()
     {
         $user1Id = $this->fixtures->getReference('user1')->getId();
@@ -30,6 +40,9 @@ class UserControllerTest extends WebTestCase
         $this->assertEquals('brice', $data['nickname']);
     }
 
+    /**
+     * Test of deleteUsersAction method
+     */
     public function testDeleleUsersAction()
     {
         $user1Id = $this->fixtures->getReference('user1')->getId();
@@ -38,6 +51,8 @@ class UserControllerTest extends WebTestCase
     }
 
     /**
+     * Test of postUsersAction method
+     * @param array $user
      * @dataProvider userProvider
      */
     public function testPostUsersAction($user)
@@ -51,6 +66,8 @@ class UserControllerTest extends WebTestCase
     }
 
     /**
+     * Test of putUsersAction method
+     * @param array $user
      * @dataProvider userProvider
      */
     public function testPutUsersAction($user)
@@ -67,6 +84,10 @@ class UserControllerTest extends WebTestCase
         $this->assertEquals($user['nickname'], $data['nickname']);
     }
 
+    /**
+     * User data provider
+     * @return array
+     */
     public function userProvider()
     {
         return [

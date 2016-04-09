@@ -8,7 +8,6 @@
 
 namespace DevContest\DevContestApiBundle\DataFixtures\ORM;
 
-
 use DevContest\DevContestApiBundle\Entity\Test;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -16,6 +15,10 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Tests data fixtures
+ * @package DevContest\DevContestApiBundle\DataFixtures\ORM
+ */
 class LoadTestData extends AbstractFixture implements ContainerAwareInterface
 {
     /**
@@ -39,6 +42,10 @@ class LoadTestData extends AbstractFixture implements ContainerAwareInterface
         return $this->container;
     }
 
+    /**
+     * Load tests fixtures
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $tests = [
@@ -59,9 +66,9 @@ class LoadTestData extends AbstractFixture implements ContainerAwareInterface
 
             $manager->persist($ref);
 
-            $this->addReference('test' . ($i+1), $ref);
+            $this->addReference('test'.($i+1), $ref);
         }
 
         $manager->flush();
     }
-} 
+}

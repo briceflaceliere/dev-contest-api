@@ -8,9 +8,12 @@
 
 namespace DevContest\DevContestApiBundle\Doctrine;
 
-
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 
+/**
+ * Doctrine naming stategy
+ * @package DevContest\DevContestApiBundle\Doctrine
+ */
 class DevContestNamingStrategy extends UnderscoreNamingStrategy
 {
 
@@ -19,7 +22,7 @@ class DevContestNamingStrategy extends UnderscoreNamingStrategy
      */
     public function classToTableName($className)
     {
-        return 'dc_' . parent::classToTableName($className);
+        return 'dc_'.parent::classToTableName($className);
     }
 
     /**
@@ -27,7 +30,7 @@ class DevContestNamingStrategy extends UnderscoreNamingStrategy
      */
     public function propertyToColumnName($propertyName, $className = null)
     {
-        return 'dc_' . parent::propertyToColumnName($propertyName, $className);
+        return 'dc_'.parent::propertyToColumnName($propertyName, $className);
     }
 
     /**
@@ -35,7 +38,7 @@ class DevContestNamingStrategy extends UnderscoreNamingStrategy
      */
     public function embeddedFieldToColumnName($propertyName, $embeddedColumnName, $className = null, $embeddedClassName = null)
     {
-        return 'dc_' . parent::embeddedFieldToColumnName($propertyName, $embeddedColumnName, $className, $embeddedClassName);
+        return 'dc_'.parent::embeddedFieldToColumnName($propertyName, $embeddedColumnName, $className, $embeddedClassName);
     }
 
 
@@ -44,9 +47,6 @@ class DevContestNamingStrategy extends UnderscoreNamingStrategy
      */
     public function joinColumnName($propertyName, $className = null)
     {
-        return 'dc_' . parent::joinColumnName($propertyName, $className);
+        return 'dc_'.parent::joinColumnName($propertyName, $className);
     }
-
-
-
-} 
+}

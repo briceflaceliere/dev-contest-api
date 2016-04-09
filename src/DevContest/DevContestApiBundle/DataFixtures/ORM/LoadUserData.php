@@ -8,7 +8,6 @@
 
 namespace DevContest\DevContestApiBundle\DataFixtures\ORM;
 
-
 use DevContest\DevContestApiBundle\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -16,6 +15,10 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Users data fixtures
+ * @package DevContest\DevContestApiBundle\DataFixtures\ORM
+ */
 class LoadUserData extends AbstractFixture implements ContainerAwareInterface
 {
     /**
@@ -39,6 +42,10 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
         return $this->container;
     }
 
+    /**
+     * Load users fixtures
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $user1 = new User();
@@ -54,4 +61,4 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
         $this->addReference('user1', $user1);
         $this->addReference('user2', $user2);
     }
-} 
+}
