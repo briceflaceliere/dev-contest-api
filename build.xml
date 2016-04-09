@@ -40,8 +40,6 @@
 
         <phingcall target="phpunit" />
 
-        <exec logoutput="true" command="${project.basedir}/bin/phpcb --log '${project.basedir}/build/logs' --source '${project.basedir}/${source}' --output '${project.basedir}/build/code-browser'" escape="false" />
-
     </target>
 
     <target name="test" depends="phpunit, checkstyle" />

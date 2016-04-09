@@ -36,8 +36,7 @@
         "squizlabs/php_codesniffer": "2.*",
         "phploc/phploc": "*",
         "pdepend/pdepend" : "*",
-        "sebastian/phpcpd": "*",
-        "mayflower/php-codebrowser": "~1.1"
+        "sebastian/phpcpd": "*"
     },
     "scripts": {
         "post-install-cmd": [
