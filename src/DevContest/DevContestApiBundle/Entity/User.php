@@ -55,6 +55,23 @@ class User implements UserInterface, \Serializable, EquatableInterface
     protected $username;
 
     /**
+     * Email
+     *
+     * @var string
+     *
+     * @ORM\Column(type="string", length=100, unique=true)
+     *
+     * @JMS\Expose
+     * @JMS\Type("string")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"private"})
+     *
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     */
+    protected $email;
+
+    /**
      * Password
      *
      * @ORM\Column(type="string", length=100)
@@ -120,6 +137,31 @@ class User implements UserInterface, \Serializable, EquatableInterface
 
         return $this;
     }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return $this
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+
 
     /**
      * {@inheritDoc}
