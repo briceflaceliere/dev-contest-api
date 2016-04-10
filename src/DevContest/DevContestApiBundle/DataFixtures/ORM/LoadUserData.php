@@ -48,12 +48,18 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
      */
     public function load(ObjectManager $manager)
     {
+        $encoder = $this->container->get('security.password_encoder');
+
         $user1 = new User();
-        $user1->setNickname('brice');
+        $user1->setUsername('brice');
+        $encoded = $encoder->encodePassword($user1, 'bricepwd');
+        $user1->setPassword($encoded);
         $manager->persist($user1);
 
         $user2 = new User();
-        $user2->setNickname('yoli');
+        $user2->setUsername('yoli');
+        $encoded = $encoder->encodePassword($user2, 'yolipwd');
+        $user2->setPassword($encoded);
         $manager->persist($user2);
 
         $manager->flush();
