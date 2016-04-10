@@ -36,7 +36,7 @@ class {{Entity}}Controller extends AbstractController
      * @Rest\QueryParam(name="page", requirements="\d+", default="1", description="Page of the result")
      * @Rest\QueryParam(name="limit", requirements="([0-9]{1,2}|100)", default="25", description="Limit of the result")
      *
-     * @Rest\View
+     * @Rest\View(serializerGroups={"all", "list"})
      */
     public function get{{Entities}}Action(Request $request, ParamFetcherInterface $paramFetcher)
     {
@@ -59,7 +59,7 @@ class {{Entity}}Controller extends AbstractController
      *   output  = "DevContest\{{Bundle}}\Entity\{{Entity}}"
      * )
      *
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"all", "detail"})
      * @Rest\Route(requirements={"id"="[0-9]+"})
      */
     public function get{{Entity}}Action($id)
