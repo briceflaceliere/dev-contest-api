@@ -13,19 +13,41 @@ security:
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        in_memory:
-            memory:
-                users:
-                    restapi:  { password: secretpw, roles: [ 'ROLE_API' ] }
+        devcontest:
+            id: dev_contest.api.provider.user_provider
 
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+#        oauth_token:
+#            pattern:    ^/oauth/v2/token
+#            security:   false
+#
+#        oauth_authorize:
+#            pattern:    ^/oauth/v2/auth
+#            anonymous: true
+#            form_login:
+#                provider: dev_contest.api.provider.user_provider
+#                check_path: /oauth/v2/auth_login_check
+#                login_path: /oauth/v2/auth_login
+
+
+#        api:
+#            pattern:    ^/api
+#            fos_oauth:  true
+#            stateless:  true
+#            anonymous:  false
+
         main:
             pattern: ^/
-            anonymous: ~
-            stateless:  true
+            logout:       true
+            anonymous:    true
+            stateless:  ~
+            provider: devcontest
             http_basic:
-                realm: "Demo REST API (username: restapi, password: secretpw)"
+                realm: "REST Service Realm"
+
+    access_control:
+        - { path: ^/api, roles: [ ROLE_USER ] }

@@ -17,7 +17,7 @@ framework:
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_proxies: ~
-    session:         false
+    session:         ~ #false
     fragments:       ~
 
 # Twig Configuration
@@ -116,6 +116,8 @@ fos_oauth_server:
     access_token_class:  DevContest\DevContestApiBundle\Entity\AccessToken
     refresh_token_class: DevContest\DevContestApiBundle\Entity\RefreshToken
     auth_code_class:     DevContest\DevContestApiBundle\Entity\AuthCode
+    service:
+        user_provider: dev_contest.api.provider.user_provider
 
 jms_serializer:
     metadata:
