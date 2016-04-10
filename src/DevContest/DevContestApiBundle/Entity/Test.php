@@ -26,6 +26,7 @@ class Test
      * @JMS\Expose
      * @JMS\Type("integer")
      * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      */
     private $id;
 
@@ -37,6 +38,7 @@ class Test
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      *
      * @Assert\NotBlank()
      * @Assert\Regex("/^\w+/")
@@ -51,6 +53,7 @@ class Test
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      *
      * @Assert\NotBlank()
      * @Assert\Regex("/^\w+/")

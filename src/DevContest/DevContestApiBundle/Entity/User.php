@@ -33,6 +33,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
      * @JMS\Expose
      * @JMS\Type("integer")
      * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      */
     protected $id;
 
@@ -46,6 +47,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      *
      * @Assert\NotBlank()
      * @Assert\Regex("/^\w+/")

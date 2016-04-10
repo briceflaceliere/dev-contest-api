@@ -5,3 +5,4 @@ Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination:
             type: integer
             serialized_name:
                 total_pages
+            groups: [all, list]
