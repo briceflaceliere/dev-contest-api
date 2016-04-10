@@ -93,10 +93,10 @@ class UserController extends AbstractController
      *
      * @Rest\View()
      */
-    public function postUsersAction(Request $request)
+    /*public function postUsersAction(Request $request)
     {
         return parent::postObjects('DevContestApiBundle:User', $request);
-    }
+    }*/
 
     /**
      * Update user
@@ -117,10 +117,10 @@ class UserController extends AbstractController
      * @Rest\Route(requirements={"id"="[0-9]+"})
      * @Rest\View()
      */
-    public function putUsersAction(Request $request, $id)
+    /*public function putUsersAction(Request $request, $id)
     {
         return parent::putObjects('DevContestApiBundle:User', $request, $id);
-    }
+    }*/
 
     /**
      * Delete user

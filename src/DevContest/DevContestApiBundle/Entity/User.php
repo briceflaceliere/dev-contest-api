@@ -5,21 +5,20 @@ namespace DevContest\DevContestApiBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * User class
  *
- * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(name="nickname_idx", columns={"dc_nickname"})
- * })
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\UserRepository")
  *
  * @JMS\ExclusionPolicy("all")
- * @UniqueEntity("nickname")
+ * @UniqueEntity("username")
  */
-class User
+class User implements UserInterface, \Serializable, EquatableInterface
 {
 
     /**
@@ -38,11 +37,11 @@ class User
     protected $id;
 
     /**
-     * Nickname
+     * Username
      *
      * @var string
      *
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="string", length=40, unique=true)
      *
      * @JMS\Expose
      * @JMS\Type("string")
@@ -51,7 +50,28 @@ class User
      * @Assert\NotBlank()
      * @Assert\Regex("/^\w+/")
      */
-    protected $nickname;
+    protected $username;
+
+    /**
+     * Password
+     *
+     * @ORM\Column(type="string", length=100)
+     */
+    protected $password;
+
+    /**
+     * Salt
+     *
+     * @ORM\Column(type="string", length=32)
+     */
+    protected $salt;
+
+    /**
+     * Salt
+     *
+     * @ORM\Column(type="json_array")
+     */
+    protected $roles;
 
     /**
      * @ORM\OneToMany(targetEntity="UserContest", mappedBy="user")
@@ -59,18 +79,13 @@ class User
     protected $userContests;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $githubId;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
         $this->userContests = new ArrayCollection();
+        $this->roles = ['ROLE_USER'];
+        $this->salt = md5(uniqid(null, true));
     }
 
     /**
@@ -84,29 +99,111 @@ class User
     }
 
     /**
-     * Get Nickname
-     *
-     * @return string
+     * {@inheritDoc}
      */
-    public function getNickname()
+    public function getUsername()
     {
-        return $this->nickname;
+        return $this->username;
     }
 
     /**
-     * Set Nickname
+     * Set username
      *
-     * @param string $nickname
-     * @return $this;
+     * @param string $username
+     * @return $this
      */
-    public function setNickname($nickname)
+    public function setUsername($username)
     {
-        $this->nickname = $nickname;
+        $this->username = $username;
 
         return $this;
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set password
+     *
+     * @param mixed $password
+     * @return $this
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Set the roles of users
+     *
+     * @param array $roles
+     * @return $this
+     */
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Add the role of users
+     *
+     * @param string $role
+     * @return $this
+     */
+    public function addRole($role)
+    {
+        if (!in_array($role, $this->roles)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove the role of users
+     *
+     * @param string $role
+     * @return $this
+     */
+    public function removeRole($role)
+    {
+        if (($key = array_search($role, $this->roles)) !== false) {
+            unset($this->roles[$key]);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get userContests
+     *
      * @return ArrayCollection
      */
     public function getUserContests()
@@ -141,21 +238,39 @@ class User
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getGithubId()
+    public function eraseCredentials()
     {
-        return $this->githubId;
     }
 
     /**
-     * @param string $githubId
-     * @return $this
+     * {@inheritDoc}
      */
-    public function setGithubId($githubId)
+    public function serialize()
     {
-        $this->githubId = $githubId;
+        return serialize([$this->id]);
+    }
 
-        return $this;
+    /**
+     * {@inheritDoc}
+     */
+    public function unserialize($serialized)
+    {
+        list($this->id) = unserialize($serialized);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isEqualTo(UserInterface $user)
+    {
+        if (!$user instanceof User) {
+            return false;
+        } elseif ($user->getUsername() != $this->getUsername()) {
+            return false;
+        }
+
+        return true;
     }
 }
