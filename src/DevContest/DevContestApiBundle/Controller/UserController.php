@@ -45,7 +45,7 @@ class UserController extends AbstractController
      * @Rest\QueryParam(name="page", requirements="\d+", default="1", description="Page of the result")
      * @Rest\QueryParam(name="limit", requirements="([0-9]{1,2}|100)", default="25", description="Limit of the result")
      *
-     * @Rest\View
+     * @Rest\View(serializerGroups={"all", "list"})
      */
     public function getUsersAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
@@ -68,10 +68,36 @@ class UserController extends AbstractController
      *   output  = "DevContest\DevContestApiBundle\Entity\User"
      * )
      *
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"all", "detail"})
      * @Rest\Route(requirements={"id"="[0-9]+"})
+     *
      */
     public function getUserAction($id)
+    {
+        return parent::getObject('DevContestApiBundle:User', $id);
+    }
+
+    /**
+     * Get private user detail
+     *
+     * @param integer $id Id of the user
+     * @return \DevContest\DevContestApiBundle\Entity\User
+     *
+     * @ApiDoc(
+     *   resource = "Users",
+     *   statusCodes = {
+     *     200 = "Success",
+     *     403 = "Insufficient access rights",
+     *     404 = "User not found"
+     *   },
+     *   output  = "DevContest\DevContestApiBundle\Entity\User"
+     * )
+     *
+     * @Rest\View(serializerGroups={"all", "detail", "private"})
+     * @Rest\Route(requirements={"id"="[0-9]+"})
+     *
+     */
+    public function getUserPrivateAction($id)
     {
         return parent::getObject('DevContestApiBundle:User', $id);
     }
