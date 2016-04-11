@@ -2,15 +2,6 @@ services:
   dev_contest.api.doctrine.dev_contest_naming_strategy:
     class: DevContest\DevContestApiBundle\Doctrine\DevContestNamingStrategy
     arguments: []
-  dev_contest.api.repository.user_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory_service: doctrine.orm.default_entity_manager
-    factory_method: getRepository
-    arguments:
-        - DevContest\DevContestApiBundle\Entity\User
-  dev_contest.api.provider.user_provider:
-    class: DevContest\DevContestApiBundle\Provider\UserProvider
-    arguments: [@dev_contest.api.repository.user_repository]
 #    dev_contest_api.example:
 #        class: DevContest\DevContestApiBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]

@@ -72,20 +72,22 @@ fos_rest:
     routing_loader:
         default_format: json
         include_format: false
-    view:
-        mime_types:
-            json: ['application/json', 'application/json;version=1.0', 'application/json;version=1.1', 'application/json;version=1.2']
-        view_response_listener: 'force'
-        formats:
-            xml:  false
-            json: true
-        templating_formats:
-            html: false
+#    view:
+#        mime_types:
+#            json: ['application/json', 'application/json;version=1.0', 'application/json;version=1.1', 'application/json;version=1.2']
+#        view_response_listener: 'force'
+#        formats:
+#            xml:  false
+#            json: true
+#        templating_formats:
+#            html: false
     format_listener:
+        enabled: true
         rules:
             - { path: ^/api, priorities: [json], fallback_format: json, prefer_extension: true }
-        media_type:
-            version_regex: '/(v|version)=(?P<version>[0-9\.]+)/'
+            - { path: '^/', priorities: [ 'html', 'application/json'], fallback_format: ~, prefer_extension: true }
+#        media_type:
+#            version_regex: '/(v|version)=(?P<version>[0-9\.]+)/'
     exception:
         codes:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
@@ -95,7 +97,7 @@ fos_rest:
     allowed_methods_listener: true
     access_denied_listener:
         json: true
-    body_listener: true
+#    body_listener: true
 
 fos_http_cache:
     cache_control:
@@ -116,8 +118,7 @@ fos_oauth_server:
     access_token_class:  DevContest\DevContestApiBundle\Entity\AccessToken
     refresh_token_class: DevContest\DevContestApiBundle\Entity\RefreshToken
     auth_code_class:     DevContest\DevContestApiBundle\Entity\AuthCode
-    service:
-        user_provider: dev_contest.api.provider.user_provider
+
 
 jms_serializer:
     metadata:
