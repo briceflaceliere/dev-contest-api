@@ -9,7 +9,9 @@
 namespace DevContest\DevContestApiBundle\Controller;
 
 
+use DevContest\DevContestApiBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 
@@ -18,26 +20,16 @@ class SecurityController extends Controller
 {
     public function loginAction(Request $request)
     {
-        $session = $request->getSession();
+        $authenticationUtils = $this->get('security.authentication_utils');
 
-        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-        } elseif (null !== $session && $session->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
-        } else {
-            $error = '';
-        }
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
 
-        if ($error) {
-            $error = $error->getMessage(
-            ); // WARNING! Symfony source code identifies this line as a potential security threat.
-        }
-
-        $lastUsername = (null === $session) ? '' : $session->get(SecurityContext::LAST_USERNAME);
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render(
-            'AcmeDemoBundle:Security:login.html.twig',
+            'DevContestApiBundle:Security:login.html.twig',
             array(
                 'last_username' => $lastUsername,
                 'error' => $error,
@@ -45,8 +37,21 @@ class SecurityController extends Controller
         );
     }
 
-    public function loginCheckAction(Request $request)
+    public function indexAction(Request $request)
     {
+        $token = $this->container->get('security.context')->getToken();
+        $user = $token->getUser();
+
+        if($user instanceof User) {
+            return new JsonResponse(array(
+                'id' => $user->getId(),
+                'username' => $user->getUsername()
+            ));
+        }
+
+        return new JsonResponse(array(
+            'message' => 'User is not identified'
+        ));
 
     }
 

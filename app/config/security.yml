@@ -21,39 +21,6 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        login:
-            pattern:  ^/demo/secured/login$
-            security: false
-
-
-        oauth_token:
-            pattern:    ^/oauth/v2/token
-            security:   false
-
-        oauth_authorize:
-            pattern:    ^/oauth/v2/auth
-            form_login:
-                provider: user_provider
-                check_path: _security_check
-                login_path: _demo_login
-            anonymous: true
-
-        secured_area:
-            pattern:    ^/demo/secured/
-            form_login:
-                provider: user_provider
-                check_path: _security_check
-                login_path: _demo_login
-            logout:
-                path:   _demo_logout
-                target: _demo
-
-
-        api:
-            pattern:    ^/api
-            fos_oauth:  true
-            stateless:  true
-
 
 #        oauth_token:
 #            pattern:    ^/oauth/v2/token
@@ -61,29 +28,28 @@ security:
 #
 #        oauth_authorize:
 #            pattern:    ^/oauth/v2/auth
-#            anonymous: true
 #            form_login:
-#                provider: dev_contest.api.provider.user_provider
-#                check_path: /oauth/v2/auth_login_check
-#                login_path: /oauth/v2/auth_login
+#                provider: user_provider
+#                check_path: _security_check
+#                login_path: _demo_login
+#            anonymous: true
 
+        main:
+            pattern:    ^/
+            anonymous: ~
+            form_login:
+                login_path: devcontest_login
+                check_path: devcontest_login
 
-#        api:
-#            pattern:    ^/api
-#            fos_oauth:  true
-#            stateless:  true
-#            anonymous:  false
 
 #        main:
-#            pattern: ^/
-#            logout:       true
-#            anonymous:    true
-#            stateless:  ~
-#            provider: devcontest
-#            http_basic:
-#                realm: "REST Service Realm"
+#            pattern:    ^/
+#            fos_oauth:  true
+#            stateless:  true
+
 
     access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
-        - { path: ^/demo/secured/hello/admin/, roles: ROLE_ADMIN }
+        - { path: ^/api/doc, roles: ROLE_ADMIN }
 

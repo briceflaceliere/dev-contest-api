@@ -18,7 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @JMS\ExclusionPolicy("all")
  * @UniqueEntity("username")
  */
-class User implements UserInterface, \Serializable, EquatableInterface
+class User implements UserInterface, EquatableInterface
 {
 
     /**
@@ -288,21 +288,6 @@ class User implements UserInterface, \Serializable, EquatableInterface
     {
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function serialize()
-    {
-        return serialize([$this->id]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function unserialize($serialized)
-    {
-        list($this->id) = unserialize($serialized);
-    }
 
     /**
      * {@inheritDoc}
