@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new DevContest\DevContestApiBundle\DevContestApiBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
