@@ -74,7 +74,7 @@ class User implements UserInterface, EquatableInterface
     /**
      * Password
      *
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     protected $password;
 
@@ -96,6 +96,20 @@ class User implements UserInterface, EquatableInterface
      * @ORM\OneToMany(targetEntity="UserContest", mappedBy="user")
      */
     protected $userContests;
+
+    /**
+     * Github id
+     *
+     * @ORM\Column(type="integer", unique=true, nullable=true)
+     */
+    protected $githubId;
+
+    /**
+     * Bitbucket id
+     *
+     * @ORM\Column(type="integer", unique=true, nullable=true)
+     */
+    protected $bitbucketId;
 
     /**
      * Constructor
@@ -277,6 +291,48 @@ class User implements UserInterface, EquatableInterface
     public function addUserContest(UserContest $userContest)
     {
         $this->userContest->add($userContest);
+
+        return $this;
+    }
+
+    /**
+     * Get github id
+     *
+     * @return int
+     */
+    public function getGithubId()
+    {
+        return $this->githubId;
+    }
+
+    /**
+     * Set github api
+     *
+     * @param int $githubId
+     * @return $this
+     */
+    public function setGithubId(int $githubId)
+    {
+        $this->githubId = $githubId;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBitbucketId()
+    {
+        return $this->bitbucketId;
+    }
+
+    /**
+     * @param mixed $bitbucketId
+     * @return $this
+     */
+    public function setBitbucketId(int $bitbucketId)
+    {
+        $this->bitbucketId = $bitbucketId;
 
         return $this;
     }

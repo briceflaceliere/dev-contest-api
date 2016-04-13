@@ -14,7 +14,7 @@ security:
 
     providers:
         user_provider:
-            entity: { class: DevContestApiBundle:User }
+            id: dev_contest.api.user_provider
 
     firewalls:
         dev:
@@ -37,6 +37,17 @@ security:
         main:
             pattern:    ^/
             anonymous: ~
+            oauth:
+                resource_owners:
+                    github:          "/login/check-github"
+                    bitbucket:       "/login/check-bitbucket"
+                login_path:        /login
+                use_forward:       false
+                failure_path:      /login
+
+                oauth_user_provider:
+                    service: dev_contest.api.user_provider
+
             form_login:
                 login_path: devcontest_login
                 check_path: devcontest_login
