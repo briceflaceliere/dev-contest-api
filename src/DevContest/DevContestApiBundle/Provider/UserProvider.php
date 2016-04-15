@@ -33,7 +33,7 @@ class UserProvider implements UserProviderInterface, OAuthAwareUserProviderInter
 
     public function loadUserByUsername($username)
     {
-        $user = $this->userRepository->findOneByUsernameOrEmail($username, $username);
+        $user = $this->userRepository->loadUserByUsername($username, $username);
         if ($user && $user instanceof User) {
            return $user;
         }
@@ -67,7 +67,7 @@ class UserProvider implements UserProviderInterface, OAuthAwareUserProviderInter
     {
         $resourceOwnerName = $response->getResourceOwner()->getName();
         $identifier = $response->getResponse()[$response->getPath('identifier')];
-var_dump($response); exit();
+//var_dump($response); exit();
         //Search by identifier
         $user = $this->userRepository->findOneBy([$resourceOwnerName . 'Id' => $identifier]);
 

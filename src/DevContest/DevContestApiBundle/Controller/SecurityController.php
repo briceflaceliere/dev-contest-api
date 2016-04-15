@@ -9,50 +9,57 @@
 namespace DevContest\DevContestApiBundle\Controller;
 
 
-use DevContest\DevContestApiBundle\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use DevContest\DevContestApiBundle\Form\Type\OauthLoginType;
+use DevContest\DevContestApiBundle\Security\OauthLogin;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Request\ParamFetcherInterface;
+use FOS\RestBundle\Util\Codes;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContext;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 
-class SecurityController extends Controller
+class SecurityController extends AbstractController
 {
-    public function loginAction(Request $request)
+    /**
+     * Get token for user
+     *
+     * @param Request $request
+     * @return array
+     *
+     * @ApiDoc(
+     *   resource = "Token",
+     *   statusCodes = {
+     *     201 = "Success",
+     *     403 = "Insufficient access rights"
+     *   },
+     *   input   = "DevContest\DevContestApiBundle\Form\Type\OauthLoginType"
+     * )
+     *
+     * @Rest\View()
+     * @Rest\Post("/token/user")
+     */
+    public function postLoginUserAction(Request $request)
     {
-        $authenticationUtils = $this->get('security.authentication_utils');
+        $oauthLogin = new OauthLogin();
+        $form = $this->createForm(new OauthLoginType(), $oauthLogin);
 
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+        $form->submit($request);
+        if ($form->isValid()) {
+            var_dump($oauthLogin);exit();
 
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render(
-            'DevContestApiBundle:Security:login.html.twig',
-            array(
-                'last_username' => $lastUsername,
-                'error' => $error,
-            )
-        );
-    }
-
-    public function indexAction(Request $request)
-    {
-        $token = $this->container->get('security.context')->getToken();
-        $user = $token->getUser();
-
-        if($user instanceof User) {
-            return new JsonResponse(array(
-                'id' => $user->getId(),
-                'username' => $user->getUsername()
-            ));
+            return $this->view(
+                null,
+                Codes::HTTP_NO_CONTENT
+            );
         }
 
-        return new JsonResponse(array(
-            'message' => 'User is not identified'
-        ));
-
+        return [
+            'form' => $form,
+        ];
     }
+
+
 
 }

@@ -30,37 +30,19 @@ security:
 #            pattern:    ^/oauth/v2/auth
 #            form_login:
 #                provider: user_provider
-#                check_path: _security_check
-#                login_path: _demo_login
+#                check_path: hwi_oauth_connect
+#                login_path: hwi_oauth_connect
 #            anonymous: true
 
         main:
             pattern:    ^/
-            anonymous: ~
-            oauth:
-                resource_owners:
-                    github:          "/login/check-github"
-                    bitbucket:       "/login/check-bitbucket"
-                login_path:        /login
-                use_forward:       false
-                failure_path:      /login
-
-                oauth_user_provider:
-                    service: dev_contest.api.user_provider
-
-            form_login:
-                login_path: devcontest_login
-                check_path: devcontest_login
-
-
-#        main:
-#            pattern:    ^/
-#            fos_oauth:  true
-#            stateless:  true
+            anonymous: true
+            stateless: true
 
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
-        - { path: ^/api/doc, roles: ROLE_ADMIN }
+#        - { path: ^/api/doc, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
+
 
