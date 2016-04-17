@@ -10,6 +10,11 @@ services:
   dev_contest.api.user_provider:
     class: DevContest\DevContestApiBundle\Provider\UserProvider
     arguments: [@dev_contest.api.repository.user]
+  oauth_authenticator:
+     class: DevContest\DevContestApiBundle\Security\OauthAuthentificator
+     public: false
+     arguments: [@lexik_jwt_authentication.handler.authentication_success, @lexik_jwt_authentication.handler.authentication_failure]
+
 #    dev_contest_api.example:
 #        class: DevContest\DevContestApiBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]

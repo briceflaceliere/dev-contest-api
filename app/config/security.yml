@@ -21,28 +21,28 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        login:
+            pattern:  ^/api/login
+            stateless: true
+            anonymous: true
+            simple_preauth:
+                authenticator: oauth_authenticator
 
-#        oauth_token:
-#            pattern:    ^/oauth/v2/token
-#            security:   false
-#
-#        oauth_authorize:
-#            pattern:    ^/oauth/v2/auth
 #            form_login:
-#                provider: user_provider
-#                check_path: hwi_oauth_connect
-#                login_path: hwi_oauth_connect
-#            anonymous: true
+#                check_path:               /api/login_check
+#                success_handler:          lexik_jwt_authentication.handler.authentication_success
+#                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+#                require_previous_session: false
 
         main:
             pattern:    ^/
-            anonymous: true
             stateless: true
+            lexik_jwt: ~
 
 
     access_control:
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/api/doc, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
+        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/doc,   roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 
 

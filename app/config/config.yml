@@ -17,7 +17,7 @@ framework:
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_proxies: ~
-    session:         ~ #false
+    session:         false
     fragments:       ~
 
 # Twig Configuration
@@ -112,14 +112,6 @@ fos_http_cache:
                     last_modified: "-1 hour"
                     vary: [Accept-Encoding, Accept-Language]
 
-#fos_oauth_server:
-#    db_driver: orm       # Drivers available: orm, mongodb, or propel
-#    client_class:        DevContest\DevContestApiBundle\Entity\Client
-#    access_token_class:  DevContest\DevContestApiBundle\Entity\AccessToken
-#    refresh_token_class: DevContest\DevContestApiBundle\Entity\RefreshToken
-#    auth_code_class:     DevContest\DevContestApiBundle\Entity\AuthCode
-
-
 jms_serializer:
     metadata:
         directories:
@@ -137,21 +129,8 @@ nelmio_api_doc:
             formats:
                 json:  application/json
 
-#hwi_oauth:
-#    # list of names of the firewalls in which this bundle is active, this setting MUST be set
-#    firewall_names: [main]
-#    resource_owners:
-#        github:
-#            type:                github
-#            client_id:           5e07670cbafaf197ecc3
-#            client_secret:       254aaf00606fe8e6fa0decabcdd311298e0c29d9
-#            scope:               "user:email"
-#            options:
-#                csrf:            true
-#        bitbucket:
-#            type:                bitbucket2
-#            client_id:           zGSN2hcB97bPjpEdym
-#            client_secret:       akWbT9j5qZdU6Xp78R7WK54nkSTAMQkA
-#            scope:               "account"
-#            options:
-#                csrf:            true
+lexik_jwt_authentication:
+    private_key_path: %jwt_private_key_path%
+    public_key_path:  %jwt_public_key_path%
+    pass_phrase:      %jwt_key_pass_phrase%
+    token_ttl:        %jwt_token_ttl%

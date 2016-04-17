@@ -12,7 +12,9 @@ parameters:
     mailer_password: null
     locale: fr
     secret:            ThisTokenIsNotSoSecretChangeIt
-    github_client_id: ~
-    github_client_secret: ~
     router.request_context.host: 'localhost:8039'
     router.request_context.scheme: http
+    jwt_private_key_path: %kernel.root_dir%/var/jwt/private.pem   # ssh private key path
+    jwt_public_key_path:  %kernel.root_dir%/var/jwt/public.pem    # ssh public key path
+    jwt_key_pass_phrase:  ''                                      # ssh key pass phrase
+    jwt_token_ttl:        86400

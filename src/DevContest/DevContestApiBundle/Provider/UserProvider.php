@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
-class UserProvider implements UserProviderInterface, OAuthAwareUserProviderInterface
+class UserProvider implements UserProviderInterface
 {
     /**
      * @var UserRepository
@@ -31,9 +31,14 @@ class UserProvider implements UserProviderInterface, OAuthAwareUserProviderInter
         $this->userRepository = $userRepository;
     }
 
+    public function getUsernameForOauth($apiKey)
+    {
+        return $apiKey;
+    }
+
     public function loadUserByUsername($username)
     {
-        $user = $this->userRepository->loadUserByUsername($username, $username);
+        $user = $this->userRepository->loadUserByUsername($username);
         if ($user && $user instanceof User) {
            return $user;
         }
@@ -54,41 +59,6 @@ class UserProvider implements UserProviderInterface, OAuthAwareUserProviderInter
         return $this->loadUserByUsername($user->getUsername());
     }
 
-    /**
-     * Loads the user by a given UserResponseInterface object.
-     *
-     * @param UserResponseInterface $response
-     *
-     * @return UserInterface
-     *
-     * @throws UsernameNotFoundException if the user is not found
-     */
-    public function loadUserByOAuthUserResponse(UserResponseInterface $response)
-    {
-        $resourceOwnerName = $response->getResourceOwner()->getName();
-        $identifier = $response->getResponse()[$response->getPath('identifier')];
-//var_dump($response); exit();
-        //Search by identifier
-        $user = $this->userRepository->findOneBy([$resourceOwnerName . 'Id' => $identifier]);
-
-        //Search by email
-        if (!$user) {
-            $user = $this->userRepository->findOneByEmail($response->getEmail());
-        }
-
-        if (!$user) {
-            $user = new User();
-        }
-
-        $user->setUsername($response->getUsername());
-        $user->setEmail($response->getEmail());
-        $setter = 'set' . ucfirst($resourceOwnerName) . 'Id';
-        $user->$setter($identifier);
-
-        $this->userRepository->update($user);
-
-        return $user;
-    }
 
 
     public function supportsClass($class)
