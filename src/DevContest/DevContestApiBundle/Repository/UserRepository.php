@@ -2,6 +2,8 @@
 
 namespace DevContest\DevContestApiBundle\Repository;
 
+use DevContest\DevContestApiBundle\Entity\User;
+
 /**
  * UserRepository
  *
@@ -10,5 +12,37 @@ namespace DevContest\DevContestApiBundle\Repository;
  */
 class UserRepository extends AbstractEntityRepository
 {
+    /**
+     * Update user from Auth0 data
+     *
+     * @param User  $user
+     * @param array $data
+     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws \Exception
+     */
+    public function updateUserFromAuth0(User $user, array $data)
+    {
+        $this->_em->getConnection()->beginTransaction();
+        try {
+            $this->_em->createQueryBuilder()
+                ->update($this->_entityName, 'u')
+                ->set('u.auth0Id', 'null')
+                ->where('u.auth0Id = ?1')
+                ->setParameter(1, $data['user_id'])
+                ->getQuery()
+                ->execute();
 
+            $user->setEmail($data['email'])
+                ->setUsername($data['name'])
+                ->setPicture($data['picture'])
+                ->setAuth0Id($data['user_id']);
+
+            $this->_em->persist($user);
+            $this->_em->flush();
+            $this->_em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $this->_em->getConnection()->rollBack();
+            throw $e;
+        }
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace DevContest\DevContestApiBundle\Entity;
 
+use DevContest\DevContestApiBundle\Security\OwnerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
@@ -18,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @JMS\ExclusionPolicy("all")
  * @UniqueEntity("username")
  */
-class User implements UserInterface, \Serializable, EquatableInterface
+class User implements UserInterface, EquatableInterface, OwnerInterface
 {
 
     /**
@@ -36,6 +37,16 @@ class User implements UserInterface, \Serializable, EquatableInterface
      * @JMS\Groups({"all"})
      */
     protected $id;
+
+    /**
+     * Auth 0 Id
+     *
+     * @var string
+     *
+     * @ORM\Column(type="string", length=100, unique=true, nullable=true)
+     *
+     */
+    protected $auth0Id;
 
     /**
      * Username
@@ -72,25 +83,27 @@ class User implements UserInterface, \Serializable, EquatableInterface
     protected $email;
 
     /**
-     * Password
+     * Picture
      *
-     * @ORM\Column(type="string", length=100)
-     */
-    protected $password;
-
-    /**
-     * Salt
+     * @var string
      *
-     * @ORM\Column(type="string", length=32)
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @JMS\Expose
+     * @JMS\Type("string")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
+     *
+     * @Assert\Url()
      */
-    protected $salt;
+    protected $picture;
 
     /**
      * Salt
      *
      * @ORM\Column(type="json_array")
      */
-    protected $roles;
+    protected $roles = ['ROLE_USER'];
 
     /**
      * @ORM\OneToMany(targetEntity="UserContest", mappedBy="user")
@@ -103,8 +116,6 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function __construct()
     {
         $this->userContests = new ArrayCollection();
-        $this->roles = ['ROLE_USER'];
-        $this->salt = md5(uniqid(null, true));
     }
 
     /**
@@ -116,6 +127,26 @@ class User implements UserInterface, \Serializable, EquatableInterface
     {
         return $this->id;
     }
+
+    /**
+     * @return string
+     */
+    public function getAuth0Id()
+    {
+        return $this->auth0Id;
+    }
+
+    /**
+     * @param string $auth0Id
+     * @return $this
+     */
+    public function setAuth0Id($auth0Id)
+    {
+        $this->auth0Id = $auth0Id;
+
+        return $this;
+    }
+
 
     /**
      * {@inheritDoc}
@@ -161,43 +192,27 @@ class User implements UserInterface, \Serializable, EquatableInterface
         return $this;
     }
 
-
-
     /**
-     * {@inheritDoc}
+     * Get picture
+     *
+     * @return string
      */
-    public function getPassword()
+    public function getPicture()
     {
-        return $this->password;
+        return $this->picture;
     }
 
     /**
-     * Set password
+     * Set picture
      *
-     * @param mixed $password
+     * @param string $picture
      * @return $this
      */
-    public function setPassword($password)
+    public function setPicture($picture)
     {
-        $this->password = $password;
+        $this->picture = $picture;
 
         return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSalt()
-    {
-        return $this->salt;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoles()
-    {
-        return $this->roles;
     }
 
     /**
@@ -211,6 +226,16 @@ class User implements UserInterface, \Serializable, EquatableInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    /**
+     * Get the roles of users
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        return $this->roles;
     }
 
     /**
@@ -282,39 +307,51 @@ class User implements UserInterface, \Serializable, EquatableInterface
     }
 
     /**
-     * @inheritDoc
+     * @return null
+     */
+    public function getPassword()
+    {
+        return null;
+    }
+
+    /**
+     * @return null
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * @return void
      */
     public function eraseCredentials()
     {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function serialize()
-    {
-        return serialize([$this->id]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function unserialize($serialized)
-    {
-        list($this->id) = unserialize($serialized);
-    }
-
-    /**
-     * {@inheritDoc}
+     * User is equal to UserInterface
+     * @param UserInterface $user
+     * @return bool
      */
     public function isEqualTo(UserInterface $user)
     {
         if (!$user instanceof User) {
             return false;
-        } elseif ($user->getUsername() != $this->getUsername()) {
+        }
+
+        if ($this->getEmail() !== $user->getEmail()) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * @return UserInterface
+     */
+    public function getOwner()
+    {
+        return $this;
     }
 }

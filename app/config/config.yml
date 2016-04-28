@@ -25,6 +25,9 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
+    globals:
+        a0_client_id: %a0_client_id%
+        a0_domain: %a0_domain%
 
 # Assetic Configuration
 assetic:
@@ -110,12 +113,6 @@ fos_http_cache:
                     last_modified: "-1 hour"
                     vary: [Accept-Encoding, Accept-Language]
 
-fos_oauth_server:
-    db_driver: orm       # Drivers available: orm, mongodb, or propel
-    client_class:        DevContest\DevContestApiBundle\Entity\Client
-    access_token_class:  DevContest\DevContestApiBundle\Entity\AccessToken
-    refresh_token_class: DevContest\DevContestApiBundle\Entity\RefreshToken
-    auth_code_class:     DevContest\DevContestApiBundle\Entity\AuthCode
 
 jms_serializer:
     metadata:
@@ -130,6 +127,17 @@ jms_serializer:
 nelmio_api_doc:
     name: DevContest API documentation
     sandbox:
+        authentication:
+            name: Authorization
+            delivery: header
+            type: bearer
+
         request_format:
             formats:
                 json:  application/json
+
+jwt_auth:
+    client_id:              %a0_client_id%
+    client_secret:          %a0_client_secret%
+    secret_base64_encoded:  %a0_secret_base64%
+    domain:                 %a0_domain%

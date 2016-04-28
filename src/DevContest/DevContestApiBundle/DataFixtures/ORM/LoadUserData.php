@@ -53,15 +53,11 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
         $user1 = new User();
         $user1->setUsername('brice');
         $user1->setEmail('brice@nomail.com');
-        $encoded = $encoder->encodePassword($user1, 'bricepwd');
-        $user1->setPassword($encoded);
         $manager->persist($user1);
 
         $user2 = new User();
         $user2->setUsername('yoli');
         $user2->setEmail('yoli@nomail.com');
-        $encoded = $encoder->encodePassword($user2, 'yolipwd');
-        $user2->setPassword($encoded);
         $manager->persist($user2);
 
         $manager->flush();

@@ -23,9 +23,9 @@ class AppKernel extends Kernel
             new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle(),
             new Hautelook\TemplatedUriBundle\HautelookTemplatedUriBundle(),
             new Bazinga\Bundle\RestExtraBundle\BazingaRestExtraBundle(),
-            new DevContest\DevContestApiBundle\DevContestApiBundle(),
-            new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new \Auth0\JWTAuthBundle\JWTAuthBundle(),
+            new DevContest\DevContestApiBundle\DevContestApiBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

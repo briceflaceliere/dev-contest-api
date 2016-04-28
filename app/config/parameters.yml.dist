@@ -12,7 +12,9 @@ parameters:
     mailer_password: null
     locale: fr
     secret:            ThisTokenIsNotSoSecretChangeIt
-    github_client_id: ~
-    github_client_secret: ~
     router.request_context.host: 'localhost:8039'
     router.request_context.scheme: http
+    a0_client_id: ''
+    a0_client_secret: ''
+    a0_secret_base64: true
+    a0_domain: 'xxxx.eu.auth0.com'

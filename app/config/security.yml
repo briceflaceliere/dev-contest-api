@@ -8,15 +8,12 @@ security:
             key_length:           40
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_API:         ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_API:         [ROLE_USER, ROLE_OWNER]
+        ROLE_ADMIN:       [ROLE_API, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        in_memory:
-            memory:
-                users:
-                    restapi:  { password: secretpw, roles: [ 'ROLE_API' ] }
+        a0:
+            id: dev_contest.api.security.a0_user_provider
 
     firewalls:
         dev:
@@ -27,5 +24,8 @@ security:
             pattern: ^/
             anonymous: ~
             stateless:  true
-            http_basic:
-                realm: "Demo REST API (username: restapi, password: secretpw)"
+            simple_preauth:
+                authenticator: jwt_auth.jwt_authenticator
+
+    access_control:
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
