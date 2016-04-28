@@ -19,8 +19,7 @@ https://trello.com/b/ryMwROFV/devcontest
 
 - Lancer les container docker : `dca up -d`
 - Installation des dependances php : `dca-cmd composer install`
-- Création de la bdd de test : `dca-cmd app/console --env=test doctrine:database:create`
-- Update du schema : `dca-cmd app/console doctrine:schema:create`
+- Création de la bdd de test : `dca-cmd app/phing reset`
 
 
 2) Utilisation
@@ -31,6 +30,7 @@ https://trello.com/b/ryMwROFV/devcontest
     - Mailhog : 'http://localhost:8035/'
     - Executer une commande symfony : `dca-cmd app/console cmdSymfony`
     - Insertion des fixtures : `dca-cmd app/console doctrine:fixtures:load`
+    - Reset database : `dca-cmd app/phing reset`
     - Fix automatique des erreur de style: `dca-cmd bin/phing fix`
     - Executer les tests: `dca-cmd bin/phing test`
 
