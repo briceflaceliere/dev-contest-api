@@ -9,13 +9,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Class TestController
  * @package DevContest\DevContestApiBundle\Controller
- *
- *
- *
  */
 class TestController extends AbstractController
 {
@@ -38,7 +36,8 @@ class TestController extends AbstractController
      * @Rest\QueryParam(name="page", requirements="\d+", default="1", description="Page of the result")
      * @Rest\QueryParam(name="limit", requirements="([0-9]{1,2}|100)", default="25", description="Limit of the result")
      *
-     *  @Rest\View(serializerGroups={"all", "list"})
+     * @Rest\View(serializerGroups={"all", "list"})
+     * @Security("has_role('ROLE_USER')")
      */
     public function getTestsAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
@@ -63,6 +62,7 @@ class TestController extends AbstractController
      *
      * @Rest\View(serializerGroups={"all", "detail"})
      * @Rest\Route(requirements={"id"="[0-9]+"})
+     * @Security("has_role('ROLE_USER')")
      */
     public function getTestAction($id)
     {
@@ -85,6 +85,7 @@ class TestController extends AbstractController
      * )
      *
      * @Rest\View()
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function postTestsAction(Request $request)
     {
@@ -109,6 +110,7 @@ class TestController extends AbstractController
      *
      * @Rest\Route(requirements={"id"="[0-9]+"})
      * @Rest\View()
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function putTestsAction(Request $request, $id)
     {
@@ -132,6 +134,7 @@ class TestController extends AbstractController
      *
      * @Rest\Route(requirements={"id"="[0-9]+"})
      * @Rest\View()
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteTestsAction(Request $request, $id)
     {

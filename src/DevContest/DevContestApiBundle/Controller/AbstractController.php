@@ -52,13 +52,18 @@ abstract class AbstractController extends FOSRestController
      *
      * @param String  $repository
      * @param integer $id         Id of the object
+     * @param bool    $private
      * @return \DevContest\DevContestApiBundle\Entity\[Object]
      */
-    public function getObject($repository, $id)
+    public function getObject($repository, $id, $private = false)
     {
         $object = $this->getDoctrine()
             ->getRepository($repository)
             ->find($id);
+
+        if ($private && !$this->isGranted('ROLE_OWNER', $object)) {
+            throw $this->createAccessDeniedException('Insufficient access rights');
+        }
 
         if (!$object) {
             throw new ResourceNotFoundException($this->getEntityName($repository)." not found");
@@ -108,13 +113,18 @@ abstract class AbstractController extends FOSRestController
      * @param String  $repository
      * @param Request $request
      * @param integer $id         Id of the object
+     * @param bool    $private
      * @return array
      */
-    public function putObjects($repository, Request $request, $id)
+    public function putObjects($repository, Request $request, $id, $private = false)
     {
         $entity = $this->getDoctrine()
             ->getRepository($repository)
             ->find($id);
+
+        if ($private && !$this->isGranted('ROLE_OWNER', $entity)) {
+            throw $this->createAccessDeniedException('Insufficient access rights');
+        }
 
         $entityFormType = $this->getEntityFormType($repository);
         $form = $this->createForm(new $entityFormType(), $entity);
@@ -142,13 +152,18 @@ abstract class AbstractController extends FOSRestController
      * @param String  $repository
      * @param Request $request
      * @param integer $id         Id of the [object]
+     * @param bool    $private
      * @return array
      */
-    public function deleteObjects($repository, Request $request, $id)
+    public function deleteObjects($repository, Request $request, $id, $private = false)
     {
         $entity = $this->getDoctrine()
             ->getRepository($repository)
             ->find($id);
+
+        if ($private && !$this->isGranted('ROLE_OWNER', $entity)) {
+            throw $this->createAccessDeniedException('Insufficient access rights');
+        }
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);

@@ -12,3 +12,9 @@ services:
     dev_contest.api.security.a0_user_provider:
         class: DevContest\DevContestApiBundle\Security\A0UserProvider
         arguments: [@jwt_auth.auth0_service, @dev_contest.api.repository.user]
+
+    owner_voter:
+        class: DevContest\DevContestApiBundle\Security\OwnerVoter
+        public: false
+        tags:
+            - { name: security.voter }
