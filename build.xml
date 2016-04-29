@@ -46,6 +46,8 @@
 
     <target name="phpunit">
         <exec command="app/console --env=test doctrine:database:create --if-not-exists" />
+        <exec command="app/console --env=test doctrine:schema:drop --force" />
+        <exec command="app/console --env=test app/console cache:clear" />
         <exec logoutput="true" dir="${project.basedir}/${source}" command="${project.basedir}/bin/phpunit -c ${project.basedir}/app/" escape="false" />
     </target>
 

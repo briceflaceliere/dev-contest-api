@@ -1,0 +1,4 @@
+
+dev_contest.api.{{entity}}:
+    type: rest
+    resource: DevContest\{{Bundle}}\Controller\{{Entity}}Controller
