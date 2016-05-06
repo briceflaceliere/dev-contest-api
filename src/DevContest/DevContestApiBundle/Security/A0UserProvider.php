@@ -8,7 +8,6 @@
 
 namespace DevContest\DevContestApiBundle\Security;
 
-use Auth0\JWTAuthBundle\Security\Auth0Service;
 use Auth0\JWTAuthBundle\Security\Core\JWTUserProviderInterface;
 use DevContest\DevContestApiBundle\Entity\AnonymousUser;
 use DevContest\DevContestApiBundle\Entity\User;
@@ -50,6 +49,13 @@ class A0UserProvider implements JWTUserProviderInterface
      */
     public function loadUserByJWT($jwt)
     {
+        // Devcontest JWT
+        if (isset($jwt->user_id) && substr_count($jwt->user_id, 'devcontest')) {
+            list($connect, $localId) = explode('|', $jwt->user_id);
+            return $this->userRepository->find($localId);
+        }
+
+        // Auth0 JWT
         $data = $this->auth0Service->getUserProfileByA0UID($jwt->token, $jwt->sub);
 
         $user = $this->userRepository->findOneByEmail($data['email']);

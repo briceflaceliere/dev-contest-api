@@ -37,7 +37,6 @@ class TestController extends AbstractController
      * @Rest\QueryParam(name="limit", requirements="([0-9]{1,2}|100)", default="25", description="Limit of the result")
      *
      * @Rest\View(serializerGroups={"all", "list"})
-     * @Security("has_role('ROLE_USER')")
      */
     public function getTestsAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
@@ -62,7 +61,6 @@ class TestController extends AbstractController
      *
      * @Rest\View(serializerGroups={"all", "detail"})
      * @Rest\Route(requirements={"id"="[0-9]+"})
-     * @Security("has_role('ROLE_USER')")
      */
     public function getTestAction($id)
     {
@@ -71,6 +69,7 @@ class TestController extends AbstractController
 
     /**
      * Create Test
+     * (Scope: Admin)
      *
      * @param Request $request
      * @return array
@@ -94,6 +93,7 @@ class TestController extends AbstractController
 
     /**
      * Update Test
+     * (Scope: Admin)
      *
      * @param Request $request
      * @param integer $id      Id of the Test
@@ -119,6 +119,7 @@ class TestController extends AbstractController
 
     /**
      * Delete Test
+     * (Scope: Admin)
      *
      * @param Request $request
      * @param integer $id      Id of the Test

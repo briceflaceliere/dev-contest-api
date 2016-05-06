@@ -13,6 +13,10 @@ services:
         class: DevContest\DevContestApiBundle\Security\A0UserProvider
         arguments: [@jwt_auth.auth0_service, @dev_contest.api.repository.user]
 
+    jwt_auth.auth0_service:
+        class: "DevContest\DevContestApiBundle\Security\Auth0Service"
+        arguments: [%jwt_auth.client_id%, %jwt_auth.client_secret%, %jwt_auth.domain%, %jwt_auth.secret_base64_encoded%]
+
     owner_voter:
         class: DevContest\DevContestApiBundle\Security\OwnerVoter
         public: false

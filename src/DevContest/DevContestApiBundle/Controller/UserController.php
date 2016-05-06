@@ -77,6 +77,7 @@ class UserController extends AbstractController
 
     /**
      * Get me user
+     * (Scope: User)
      *
      * @return \DevContest\DevContestApiBundle\Entity\User
      *
@@ -100,6 +101,7 @@ class UserController extends AbstractController
 
     /**
      * Get private user detail
+     * (Scope: User)
      *
      * @param integer $id Id of the user
      * @return \DevContest\DevContestApiBundle\Entity\User
@@ -120,13 +122,14 @@ class UserController extends AbstractController
      */
     public function getUserPrivateAction($id)
     {
-        $user = parent::getObject('DevContestApiBundle:User', $id, true);
+        $user = parent::getObject('DevContestApiBundle:User', $id, 'ROLE_OWNER');
 
         return $user;
     }
 
     /**
      * Delete user
+     * (Scope: User)
      *
      * @param Request $request
      * @param integer $id      Id of the user
@@ -146,6 +149,6 @@ class UserController extends AbstractController
      */
     public function deleteUsersAction(Request $request, $id)
     {
-        return parent::deleteObjects('DevContestApiBundle:User', $request, $id, true);
+        return parent::deleteObjects('DevContestApiBundle:User', $request, $id, 'ROLE_OWNER');
     }
 }

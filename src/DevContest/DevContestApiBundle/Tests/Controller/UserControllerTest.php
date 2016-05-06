@@ -2,8 +2,10 @@
 
 namespace DevContest\DevContestApiBundle\Tests\Controller;
 
+use DevContest\DevContestApiBundle\Tests\SubTest\DeleteSubTest;
+use DevContest\DevContestApiBundle\Tests\SubTest\GetSubTest;
+use DevContest\DevContestApiBundle\Tests\SubTest\PaginatorSubTest;
 use DevContest\DevContestApiBundle\Tests\WebTestCase;
-use Doctrine\ORM\Tools\SchemaTool;
 
 /**
  * Class tests the UserController
@@ -21,14 +23,10 @@ class UserControllerTest extends WebTestCase
      */
     public function testGetUsersAction()
     {
-        $response = $this->defaultGetListTest($this->getUrl('get_users'));
-
-        $data = json_decode($response->getContent(), true);
-        $this->assertGreaterThan(0, count($data['items']));
-        $this->assertArrayHasKey('id', $data['items'][0]);
-        $this->assertArrayHasKey('username', $data['items'][0]);
-        $this->assertArrayNotHasKey('email', $data['items'][0]);
-        $this->assertArrayNotHasKey('password', $data['items'][0]);
+        $subTest = new PaginatorSubTest($this->getUrl('get_users'));
+        $subTest->setItemsNotEmpty(true)
+                ->setItemsKeys(['id', 'username']);
+        $this->aclTest($subTest, [null, 'user1', 'api', 'admin'], []);
     }
 
     /**
@@ -38,14 +36,9 @@ class UserControllerTest extends WebTestCase
     {
         $user1Id = $this->fixtures->getReference('user1')->getId();
 
-        $response = $this->defaultGetTest($this->getUrl('get_user', ['id' => $user1Id]));
-
-        $data = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('id', $data);
-        $this->assertArrayHasKey('username', $data);
-        $this->assertArrayNotHasKey('email', $data);
-        $this->assertArrayNotHasKey('password', $data);
-        $this->assertEquals('brice', $data['username']);
+        $subTest = new GetSubTest($this->getUrl('get_user', ['id' => $user1Id]));
+        $subTest->setItemKeys(['id', 'username']);
+        $this->aclTest($subTest, [null, 'user1', 'user2', 'api', 'admin'], []);
     }
 
     /**
@@ -55,14 +48,9 @@ class UserControllerTest extends WebTestCase
     {
         $user1Id = $this->fixtures->getReference('user1')->getId();
 
-        $response = $this->defaultGetTest($this->getUrl('get_user_private', ['id' => $user1Id]));
-
-        $data = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('username', $data);
-        $this->assertArrayHasKey('email', $data);
-        $this->assertArrayNotHasKey('password', $data);
-        $this->assertEquals('brice', $data['username']);
-        $this->assertEquals('brice@nomail.com', $data['email']);
+        $subTest = new GetSubTest($this->getUrl('get_user_private', ['id' => $user1Id]));
+        $subTest->setItemKeys(['id', 'username', 'email']);
+        $this->aclTest($subTest, ['user1', 'api', 'admin'], [null, 'user2']);
     }
 
 
@@ -73,7 +61,8 @@ class UserControllerTest extends WebTestCase
     {
         $user1Id = $this->fixtures->getReference('user1')->getId();
 
-        $response = $this->defaultDeleteTest($this->getUrl('delete_users', ['id' => $user1Id]));
+        $subTest = new DeleteSubTest($this->getUrl('delete_users', ['id' => $user1Id]));
+        $this->aclTest($subTest, ['user1', 'api', 'admin'], [null, 'user2']);
     }
 
 

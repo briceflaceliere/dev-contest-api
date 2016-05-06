@@ -50,23 +50,23 @@ abstract class AbstractController extends FOSRestController
     /**
      * Get [object]
      *
-     * @param String  $repository
-     * @param integer $id         Id of the object
-     * @param bool    $private
+     * @param String         $repository
+     * @param integer        $id         Id of the object
+     * @param string|null    $role
      * @return \DevContest\DevContestApiBundle\Entity\[Object]
      */
-    public function getObject($repository, $id, $private = false)
+    public function getObject($repository, $id, $role = null)
     {
         $object = $this->getDoctrine()
             ->getRepository($repository)
             ->find($id);
 
-        if ($private && !$this->isGranted('ROLE_OWNER', $object)) {
-            throw $this->createAccessDeniedException('Insufficient access rights');
-        }
-
         if (!$object) {
             throw new ResourceNotFoundException($this->getEntityName($repository)." not found");
+        }
+
+        if ($role && !$this->isGranted($role, $object)) {
+            throw $this->createAccessDeniedException('Insufficient access rights');
         }
 
         return $object;
@@ -86,6 +86,7 @@ abstract class AbstractController extends FOSRestController
 
         $entity = new $entityName();
         $form = $this->createForm(new $entityFormType(), $entity);
+
 
         $form->submit($request);
         if ($form->isValid()) {
@@ -110,19 +111,23 @@ abstract class AbstractController extends FOSRestController
     /**
      * Update [object]
      *
-     * @param String  $repository
-     * @param Request $request
-     * @param integer $id         Id of the object
-     * @param bool    $private
+     * @param String         $repository
+     * @param Request        $request
+     * @param integer        $id         Id of the object
+     * @param string|null    $role
      * @return array
      */
-    public function putObjects($repository, Request $request, $id, $private = false)
+    public function putObjects($repository, Request $request, $id, $role = null)
     {
         $entity = $this->getDoctrine()
             ->getRepository($repository)
             ->find($id);
 
-        if ($private && !$this->isGranted('ROLE_OWNER', $entity)) {
+        if (!$entity) {
+            throw new ResourceNotFoundException($this->getEntityName($repository)." not found");
+        }
+
+        if ($role && !$this->isGranted($role, $entity)) {
             throw $this->createAccessDeniedException('Insufficient access rights');
         }
 
@@ -149,19 +154,23 @@ abstract class AbstractController extends FOSRestController
     /**
      * Delete [object]
      *
-     * @param String  $repository
-     * @param Request $request
-     * @param integer $id         Id of the [object]
-     * @param bool    $private
+     * @param String         $repository
+     * @param Request        $request
+     * @param integer        $id         Id of the [object]
+     * @param string|null    $role
      * @return array
      */
-    public function deleteObjects($repository, Request $request, $id, $private = false)
+    public function deleteObjects($repository, Request $request, $id, $role = null)
     {
         $entity = $this->getDoctrine()
             ->getRepository($repository)
             ->find($id);
 
-        if ($private && !$this->isGranted('ROLE_OWNER', $entity)) {
+        if (!$entity) {
+            throw new ResourceNotFoundException($this->getEntityName($repository)." not found");
+        }
+
+        if ($role && !$this->isGranted($role, $entity)) {
             throw $this->createAccessDeniedException('Insufficient access rights');
         }
 

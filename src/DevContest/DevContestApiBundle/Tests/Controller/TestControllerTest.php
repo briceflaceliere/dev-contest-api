@@ -2,8 +2,11 @@
 
 namespace DevContest\DevContestApiBundle\Tests\Controller;
 
+use DevContest\DevContestApiBundle\Tests\SubTest\DeleteSubTest;
+use DevContest\DevContestApiBundle\Tests\SubTest\GetSubTest;
+use DevContest\DevContestApiBundle\Tests\SubTest\PaginatorSubTest;
+use DevContest\DevContestApiBundle\Tests\SubTest\PostPutSubTest;
 use DevContest\DevContestApiBundle\Tests\WebTestCase;
-use Doctrine\ORM\Tools\SchemaTool;
 
 /**
  * Class tests the TestController
@@ -13,6 +16,7 @@ class TestControllerTest extends WebTestCase
 {
 
     protected $loadFixtures = [
+        'DevContest\DevContestApiBundle\DataFixtures\ORM\LoadUserData',
         'DevContest\DevContestApiBundle\DataFixtures\ORM\LoadTestData',
     ];
 
@@ -21,9 +25,10 @@ class TestControllerTest extends WebTestCase
      */
     public function testGetTestsAction()
     {
-        $response = $this->defaultGetListTest($this->getUrl('get_tests'));
-        $data = json_decode($response->getContent(), true);
-        $this->assertGreaterThan(0, count($data['items']));
+        $subTest = new PaginatorSubTest($this->getUrl('get_tests'));
+        $subTest->setItemsNotEmpty(true)
+                ->setItemsKeys(['id', 'title', 'description']);
+        $this->aclTest($subTest, [null, 'user1', 'api', 'admin'], []);
     }
 
     /**
@@ -33,11 +38,9 @@ class TestControllerTest extends WebTestCase
     {
         $test1Id = $this->fixtures->getReference('test1')->getId();
 
-        $response = $this->defaultGetTest($this->getUrl('get_test', ['id' => $test1Id]));
-
-        $data = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('title', $data);
-        $this->assertEquals('Test 1 : la vie des pingouins', $data['title']);
+        $subTest = new GetSubTest($this->getUrl('get_test', ['id' => $test1Id]));
+        $subTest->setItemKeys(['id', 'title', 'description']);
+        $this->aclTest($subTest, [null, 'user1', 'api', 'admin'], []);
     }
 
     /**
@@ -47,7 +50,8 @@ class TestControllerTest extends WebTestCase
     {
         $test1Id = $this->fixtures->getReference('test1')->getId();
 
-        $response = $this->defaultDeleteTest($this->getUrl('delete_tests', ['id' => $test1Id]));
+        $subTest = new DeleteSubTest($this->getUrl('delete_tests', ['id' => $test1Id]));
+        $this->aclTest($subTest, ['admin'], [null, 'user1', 'api']);
     }
 
     /**
@@ -57,11 +61,9 @@ class TestControllerTest extends WebTestCase
      */
     public function testPostTestsAction($test)
     {
-        $response = $this->defaultPostTest($this->getUrl('post_tests'), ['test' => $test]);
-
-        $this->client->request('POST', $this->getUrl('post_tests'), ['test' => $test]);
-        $response = $this->client->getResponse();
-        $this->assertEquals(201, $response->getStatusCode(), $response->getContent());
+        $subTest = new PostPutSubTest($this->getUrl('post_tests'), 'POST', ['test' => $test]);
+        $subTest->addCheckValue('title', $test['title']);
+        $this->aclTest($subTest, ['admin'], [null, 'user1', 'api']);
     }
 
     /**
@@ -72,15 +74,9 @@ class TestControllerTest extends WebTestCase
     public function testPutTestsAction($test)
     {
         $test1Id = $this->fixtures->getReference('test1')->getId();
-
-        $response = $this->defaultPutTest($this->getUrl('put_tests', ['id' => $test1Id]), ['test' => $test]);
-
-        // Check update
-        $this->client->request('GET', $this->getUrl('get_test', ['id' => $test1Id]));
-        $response = $this->client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
-        $data = json_decode($response->getContent(), true);
-        $this->assertEquals($test['title'], $data['title']);
+        $subTest = new PostPutSubTest($this->getUrl('put_tests', ['id' => $test1Id]), 'PUT', ['test' => $test]);
+        $subTest->addCheckValue('title', $test['title']);
+        $this->aclTest($subTest, ['admin'], [null, 'user1', 'api']);
     }
 
     /**

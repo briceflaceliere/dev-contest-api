@@ -6,6 +6,7 @@
          backupGlobals="false"
          colors="true"
          bootstrap="bootstrap.php.cache"
+         printerClass="\DevContest\DevContestApiBundle\Tests\TestPrinter"
         >
     <testsuites>
         <testsuite name="DevContest Api">
@@ -14,7 +15,6 @@
             <directory>../src/*Bundle/Tests</directory>
         </testsuite>
     </testsuites>
-
     <!--
     <php>
         <server name="KERNEL_DIR" value="/path/to/your/app/" />

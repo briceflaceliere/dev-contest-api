@@ -60,9 +60,23 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
         $user2->setEmail('yoli@nomail.com');
         $manager->persist($user2);
 
+        $api = new User();
+        $api->setUsername('api');
+        $api->setEmail('api@nomail.com');
+        $api->addRole('ROLE_API');
+        $manager->persist($api);
+
+        $admin = new User();
+        $admin->setUsername('admin');
+        $admin->setEmail('admin@nomail.com');
+        $admin->addRole('ROLE_ADMIN');
+        $manager->persist($admin);
+
         $manager->flush();
 
         $this->addReference('user1', $user1);
         $this->addReference('user2', $user2);
+        $this->addReference('admin', $admin);
+        $this->addReference('api', $api);
     }
 }

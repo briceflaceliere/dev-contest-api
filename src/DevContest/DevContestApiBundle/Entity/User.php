@@ -307,6 +307,25 @@ class User implements UserInterface, EquatableInterface, OwnerInterface
     }
 
     /**
+     * Get Jwt Token payload
+     *
+     * @return array
+     */
+    public function getJwtPayload()
+    {
+        return [
+            'name'           => $this->getUsername(),
+            'nickname'       => $this->getUsername(),
+            'picture'        => $this->getPicture(),
+            'user_id'        => 'devcontest|' . $this->getId(),
+            'email'          => $this->getEmail(),
+            'email_verified' => true,
+            'given_name'     => $this->getUsername(),
+            'family_name'    =>  $this->getUsername(),
+        ];
+    }
+
+    /**
      * @return null
      */
     public function getPassword()
