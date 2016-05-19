@@ -30,11 +30,12 @@ class Auth0Service extends BaseAuth0Service
     /**
      * Encode the auth0 JWT Token
      *
-     * @param array $decToken
-     * @return stdClass
+     * @param $decToken
+     * @param int $lifetime
+     * @return string
      */
-    public function encodeJWT($decToken)
+    public function encodeJWT($decToken, $lifetime = 36000)
     {
-        return Auth0JWT::encode($this->client_id, $this->client_secret, null, $decToken);
+        return Auth0JWT::encode($this->client_id, $this->client_secret, null, $decToken, $lifetime);
     }
 }

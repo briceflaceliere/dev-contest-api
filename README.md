@@ -33,6 +33,8 @@ https://trello.com/b/ryMwROFV/devcontest
     - Reset database : `dca-cmd app/phing reset`
     - Fix automatique des erreur de style: `dca-cmd bin/phing fix`
     - Executer les tests: `dca-cmd bin/phing test`
+    - Généré un token d'api: `dca-cmd app/console devcontest:generate:token email@nomail.com --ttl=36000000`
+`
 
 3) Dependances
 ----------------------------------
