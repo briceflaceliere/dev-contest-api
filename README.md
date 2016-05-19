@@ -34,7 +34,8 @@ https://trello.com/b/ryMwROFV/devcontest
     - Fix automatique des erreur de style: `dca-cmd bin/phing fix`
     - Executer les tests: `dca-cmd bin/phing test`
     - Généré un token d'api: `dca-cmd app/console devcontest:generate:token email@nomail.com --ttl=36000000`
-`
+    - Ajout d'un role sur un user: `dca-cmd app/console devcontest:role:add email@nomail.com ROLE_API`
+    - Supprime un role sur un user: `dca-cmd app/console devcontest:role:rm email@nomail.com ROLE_API`
 
 3) Dependances
 ----------------------------------

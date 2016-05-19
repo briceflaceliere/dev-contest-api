@@ -11,9 +11,9 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
- * Generate api token for user
+ * Remove role for user
  */
-class GenerateTokenCommand extends ContainerAwareCommand
+class RoleRmCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -21,19 +21,17 @@ class GenerateTokenCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('devcontest:generate:token')
-            ->setDescription('Generate token for user')
+            ->setName('devcontest:role:rm')
+            ->setDescription('Remove role for user')
             ->addArgument(
                 'email',
                 InputArgument::REQUIRED,
                 'The user email'
             )
-            ->addOption(
-                'ttl',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Time to live for token in second (default: 36000)',
-                36000
+            ->addArgument(
+                'role',
+                InputArgument::REQUIRED,
+                'Role to remove'
             );
     }
 
@@ -43,13 +41,14 @@ class GenerateTokenCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $email = $input->getArgument('email');
+        $role = $input->getArgument('role');
         $entityManager = $this->getContainer()->get('doctrine')->getManager();
         $userRepository = $entityManager->getRepository('DevContestApiBundle:User');
 
         if ($user = $userRepository->findOneByEmail($email)) {
-            $token = $this->getContainer()->get('jwt_auth.auth0_service')->encodeJWT($user->getJwtPayload(), $input->getOption('ttl'));
-            $output->writeln('Token:');
-            $output->writeln($token);
+            $user->removeRole($role);
+            $entityManager->persist($user);
+            $entityManager->flush();
         } else {
             throw new \Exception(sprintf('User %s not found', $email));
         }
