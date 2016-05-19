@@ -5,7 +5,7 @@ parameters:
     database_name: devcontest
     database_user: devcontest
     database_password: devcontest
-    database_name_test: devcontest_test
+    database_name_test: devcontest
     mailer_transport: smtp
     mailer_host: mailhog
     mailer_user: null

@@ -31,6 +31,8 @@
 
         <exec logoutput="true" dir="${project.basedir}" command="${project.basedir}/bin/phploc --log-csv '${project.basedir}/build/logs/phploc.csv' '${project.basedir}/${source}'" escape="false" />
 
+        <exec logoutput="true" command="bin/phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard" />
+
         <phpcodesniffer standard="${project.basedir}/app/ruleset.xml" tabWidth="4">
             <fileset dir="${project.basedir}/${source}">
                 <include name="**/*.php"/>
@@ -61,6 +63,7 @@
     </target>
 
     <target name="checkstyle">
+        <exec logoutput="true" command="bin/phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard" />
         <exec logoutput="true" command="bin/phpcs --extensions='php' --standard=${project.basedir}/app/ruleset.xml --tab-width=4 ${project.basedir}/${source}" />
     </target>
 
