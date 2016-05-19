@@ -14,7 +14,7 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
     router.request_context.host: 'localhost:8039'
     router.request_context.scheme: http
-    a0_client_id: '5I8PF2evEkVMdcVzS1pioH08jKGvXlQ6'
+    a0_client_id: 5I8PF2evEkVMdcVzS1pioH08jKGvXlQ6
     a0_client_secret: 'mE8Z9byDUHe_mJ4is9Bxn4uNun7o2lihEwhYhNgYw65jfiP7Uy2VJ-wHiiTq5Xx9'
     a0_secret_base64: true
     a0_domain: 'devcontests.eu.auth0.com'

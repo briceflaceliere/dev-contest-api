@@ -48,15 +48,15 @@
         <exec logoutput="true" command="app/console doctrine:database:create --if-not-exists" />
         <exec logoutput="true" command="app/console doctrine:schema:drop --force" />
         <exec logoutput="true" command="app/console doctrine:schema:update --force" />
-        <exec logoutput="true" command="app/console app/console init:acl" />
         <exec logoutput="true" command="app/console doctrine:fixtures:load -n" />
         <exec logoutput="true" command="app/console cache:clear " />
     </target>
 
     <target name="phpunit">
-        <exec command="app/console --env=test doctrine:database:create --if-not-exists" />
-        <exec command="app/console --env=test doctrine:schema:drop --force" />
-        <exec command="app/console --env=test cache:clear" />
+        <exec logoutput="true" command="app/console --env=test doctrine:database:create --if-not-exists" />
+        <exec logoutput="true" command="app/console --env=test doctrine:schema:drop --force" />
+        <exec logoutput="true" command="app/console --env=test doctrine:schema:update --force" />
+        <exec logoutput="true" command="app/console --env=test cache:clear" />
         <exec logoutput="true" dir="${project.basedir}/${source}" command="${project.basedir}/bin/phpunit -c ${project.basedir}/app/" escape="false" />
     </target>
 
