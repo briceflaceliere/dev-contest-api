@@ -321,7 +321,7 @@ class User implements UserInterface, EquatableInterface, OwnerInterface
             'email'          => $this->getEmail(),
             'email_verified' => true,
             'given_name'     => $this->getUsername(),
-            'family_name'    =>  $this->getUsername(),
+            'family_name'    => $this->getUsername(),
         ];
     }
 

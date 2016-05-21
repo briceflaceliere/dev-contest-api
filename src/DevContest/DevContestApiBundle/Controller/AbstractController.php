@@ -50,7 +50,7 @@ abstract class AbstractController extends FOSRestController
     /**
      * Get [object]
      *
-     * @param String         $repository
+     * @param string         $repository
      * @param integer        $id         Id of the object
      * @param string|null    $role
      * @return \DevContest\DevContestApiBundle\Entity\[Object]

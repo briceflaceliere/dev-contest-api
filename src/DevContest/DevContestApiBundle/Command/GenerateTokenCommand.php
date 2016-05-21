@@ -53,7 +53,5 @@ class GenerateTokenCommand extends ContainerAwareCommand
         } else {
             throw new \Exception(sprintf('User %s not found', $email));
         }
-
     }
-
 }

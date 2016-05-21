@@ -31,20 +31,11 @@
 
         <exec logoutput="true" dir="${project.basedir}" command="${project.basedir}/bin/phploc --log-csv '${project.basedir}/build/logs/phploc.csv' '${project.basedir}/${source}'" escape="false" />
 
-        <exec logoutput="true" command="bin/phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard" />
-
-        <phpcodesniffer standard="${project.basedir}/app/ruleset.xml" tabWidth="4">
-            <fileset dir="${project.basedir}/${source}">
-                <include name="**/*.php"/>
-            </fileset>
-            <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
-        </phpcodesniffer>
-
         <phingcall target="phpunit" />
 
     </target>
 
-    <target name="test" depends="phpunit, checkstyle" />
+    <target name="test" depends="phpunit" />
 
     <target name="reset">
         <exec logoutput="true" command="app/console doctrine:database:create --if-not-exists" />
@@ -60,16 +51,6 @@
         <exec logoutput="true" command="app/console --env=test doctrine:schema:update --force" />
         <exec logoutput="true" command="app/console --env=test cache:clear" />
         <exec logoutput="true" dir="${project.basedir}/${source}" command="${project.basedir}/bin/phpunit -c ${project.basedir}/app/" escape="false" />
-    </target>
-
-    <target name="checkstyle">
-        <exec logoutput="true" command="bin/phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard" />
-        <exec logoutput="true" command="bin/phpcs --extensions='php' --standard=${project.basedir}/app/ruleset.xml --tab-width=4 ${project.basedir}/${source}" />
-    </target>
-
-    <target name="fix">
-        <exec logoutput="true" command="bin/phpcbf --extensions='php' --standard=${project.basedir}/app/ruleset.xml --tab-width=4 ${project.basedir}/${source}" />
-        <phingcall target="checkstyle" />
     </target>
 
 

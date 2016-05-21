@@ -52,7 +52,5 @@ class RoleRmCommand extends ContainerAwareCommand
         } else {
             throw new \Exception(sprintf('User %s not found', $email));
         }
-
     }
-
 }
