@@ -9,6 +9,7 @@ security:
 
     role_hierarchy:
         ROLE_API:         [ROLE_USER, ROLE_OWNER]
+        ROLE_ENGINE:      [ROLE_API]
         ROLE_ADMIN:       [ROLE_API, ROLE_ALLOWED_TO_SWITCH]
 
     providers:

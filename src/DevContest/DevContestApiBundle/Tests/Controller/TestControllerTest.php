@@ -28,7 +28,7 @@ class TestControllerTest extends WebTestCase
         $subTest = new PaginatorSubTest($this->getUrl('get_tests'));
         $subTest->setItemsNotEmpty(true)
                 ->setItemsKeys(['id', 'title', 'description']);
-        $this->aclTest($subTest, [null, 'user1', 'api', 'admin'], []);
+        $this->aclTest($subTest, [null, 'user1', 'api', 'engine', 'admin'], []);
     }
 
     /**
@@ -40,7 +40,7 @@ class TestControllerTest extends WebTestCase
 
         $subTest = new GetSubTest($this->getUrl('get_test', ['id' => $test1Id]));
         $subTest->setItemKeys(['id', 'title', 'description']);
-        $this->aclTest($subTest, [null, 'user1', 'api', 'admin'], []);
+        $this->aclTest($subTest, [null, 'user1', 'api', 'engine', 'admin'], []);
     }
 
     /**
@@ -51,7 +51,7 @@ class TestControllerTest extends WebTestCase
         $test1Id = $this->fixtures->getReference('test1')->getId();
 
         $subTest = new DeleteSubTest($this->getUrl('delete_tests', ['id' => $test1Id]));
-        $this->aclTest($subTest, ['admin'], [null, 'user1', 'api']);
+        $this->aclTest($subTest, ['admin'], [null, 'user1', 'api', 'engine']);
     }
 
     /**
@@ -63,7 +63,7 @@ class TestControllerTest extends WebTestCase
     {
         $subTest = new PostPutSubTest($this->getUrl('post_tests'), 'POST', ['test' => $test]);
         $subTest->addCheckValue('title', $test['title']);
-        $this->aclTest($subTest, ['admin'], [null, 'user1', 'api']);
+        $this->aclTest($subTest, ['admin'], [null, 'user1', 'api', 'engine']);
     }
 
     /**
@@ -76,7 +76,7 @@ class TestControllerTest extends WebTestCase
         $test1Id = $this->fixtures->getReference('test1')->getId();
         $subTest = new PostPutSubTest($this->getUrl('put_tests', ['id' => $test1Id]), 'PUT', ['test' => $test]);
         $subTest->addCheckValue('title', $test['title']);
-        $this->aclTest($subTest, ['admin'], [null, 'user1', 'api']);
+        $this->aclTest($subTest, ['admin'], [null, 'user1', 'api', 'engine']);
     }
 
     /**

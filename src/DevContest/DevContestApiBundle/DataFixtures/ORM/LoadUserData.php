@@ -66,6 +66,13 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
         $api->addRole('ROLE_API');
         $manager->persist($api);
 
+        $engine = new User();
+        $engine->setUsername('engine');
+        $engine->setEmail('engine@nomail.com');
+        $engine->addRole('ROLE_ENGINE');
+        $manager->persist($engine);
+
+
         $admin = new User();
         $admin->setUsername('admin');
         $admin->setEmail('admin@nomail.com');
@@ -78,5 +85,6 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
         $this->addReference('user2', $user2);
         $this->addReference('admin', $admin);
         $this->addReference('api', $api);
+        $this->addReference('engine', $engine);
     }
 }

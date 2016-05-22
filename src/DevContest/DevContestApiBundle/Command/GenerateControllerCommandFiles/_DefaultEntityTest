@@ -28,7 +28,7 @@ class {{Entity}}ControllerTest extends WebTestCase
         $subTest = new PaginatorSubTest($this->getUrl('get_{{entities}}'));
         $subTest->setItemsNotEmpty(true);
         // $subTest->setItemKeys(['id', 'username']);
-        $this->aclTest($subTest, [null, 'user1', 'api', 'admin'], []);
+        $this->aclTest($subTest, [null, 'user1', 'api', 'engine', 'admin'], []);
     }
 
     /**
@@ -40,7 +40,7 @@ class {{Entity}}ControllerTest extends WebTestCase
 
         $subTest = new GetSubTest($this->getUrl('get_{{entity}}', ['id' => ${{entity}}1Id]));
         // $subTest->setItemKeys(['id', 'username']);
-        $this->aclTest($subTest, [null, 'user1', 'api', 'admin'], []);
+        $this->aclTest($subTest, [null, 'user1', 'api', 'engine', 'admin'], []);
     }
 
     /**
@@ -51,7 +51,7 @@ class {{Entity}}ControllerTest extends WebTestCase
         ${{entity}}1Id = $this->fixtures->getReference('{{entity}}1')->getId();
 
         $subTest = new DeleteSubTest($this->getUrl('delete_{{entities}}', ['id' => ${{entity}}1Id]));
-        $this->aclTest($subTest, [null, 'user1', 'api', 'admin'], []);
+        $this->aclTest($subTest, [null, 'user1', 'api', 'engine', 'admin'], []);
     }
 
     /**
@@ -64,7 +64,7 @@ class {{Entity}}ControllerTest extends WebTestCase
     {
         $subTest = new PostPutSubTest($this->getUrl('post_{{entities}}'), 'POST', ['{{entity}}' => ${{entity}}]);
         //$subTest->addCheckValue('title', ${{entity}}['title']);
-        $this->aclTest($subTest, [null, 'user1', 'api', 'admin'], []);
+        $this->aclTest($subTest, [null, 'user1', 'api', 'engine', 'admin'], []);
     }
 
     /**
@@ -77,7 +77,7 @@ class {{Entity}}ControllerTest extends WebTestCase
     {
         $subTest = new PostPutSubTest($this->getUrl('put_{{entities}}'), 'PUT', ['{{entity}}' => ${{entity}}]);
         //$subTest->addCheckValue('title', ${{entity}}['title']);
-        $this->aclTest($subTest, [null, 'user1', 'api', 'admin'], []);
+        $this->aclTest($subTest, [null, 'user1', 'api', 'engine', 'admin'], []);
     }
 
     /**

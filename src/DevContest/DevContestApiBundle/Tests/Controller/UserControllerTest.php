@@ -26,7 +26,7 @@ class UserControllerTest extends WebTestCase
         $subTest = new PaginatorSubTest($this->getUrl('get_users'));
         $subTest->setItemsNotEmpty(true)
                 ->setItemsKeys(['id', 'username']);
-        $this->aclTest($subTest, [null, 'user1', 'api', 'admin'], []);
+        $this->aclTest($subTest, [null, 'user1', 'api', 'engine', 'admin'], []);
     }
 
     /**
@@ -38,7 +38,7 @@ class UserControllerTest extends WebTestCase
 
         $subTest = new GetSubTest($this->getUrl('get_user', ['id' => $user1Id]));
         $subTest->setItemKeys(['id', 'username']);
-        $this->aclTest($subTest, [null, 'user1', 'user2', 'api', 'admin'], []);
+        $this->aclTest($subTest, [null, 'user1', 'user2', 'api', 'engine', 'admin'], []);
     }
 
     /**
@@ -50,7 +50,7 @@ class UserControllerTest extends WebTestCase
 
         $subTest = new GetSubTest($this->getUrl('get_user_private', ['id' => $user1Id]));
         $subTest->setItemKeys(['id', 'username', 'email']);
-        $this->aclTest($subTest, ['user1', 'api', 'admin'], [null, 'user2']);
+        $this->aclTest($subTest, ['user1', 'api', 'engine', 'admin'], [null, 'user2']);
     }
 
 
@@ -62,7 +62,7 @@ class UserControllerTest extends WebTestCase
         $user1Id = $this->fixtures->getReference('user1')->getId();
 
         $subTest = new DeleteSubTest($this->getUrl('delete_users', ['id' => $user1Id]));
-        $this->aclTest($subTest, ['user1', 'api', 'admin'], [null, 'user2']);
+        $this->aclTest($subTest, ['user1', 'api', 'engine', 'admin'], [null, 'user2']);
     }
 
 
