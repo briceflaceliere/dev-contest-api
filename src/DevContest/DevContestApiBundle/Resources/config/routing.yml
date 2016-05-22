@@ -4,3 +4,9 @@ dev_contest.api.user:
 dev_contest.api.test:
     type: rest
     resource: DevContest\DevContestApiBundle\Controller\TestController
+dev_contest.api.contest:
+    type: rest
+    resource: DevContest\DevContestApiBundle\Controller\ContestController
+dev_contest.api.language:
+    type: rest
+    resource: DevContest\DevContestApiBundle\Controller\LanguageController

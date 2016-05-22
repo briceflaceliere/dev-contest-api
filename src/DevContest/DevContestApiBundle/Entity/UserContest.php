@@ -63,7 +63,7 @@ class UserContest
 
     /**
      * @ORM\ManyToOne(targetEntity="Language")
-     * @ORM\JoinColumn(referencedColumnName="dc_name")
+     * @ORM\JoinColumn(referencedColumnName="dc_id")
      */
     protected $language;
 
