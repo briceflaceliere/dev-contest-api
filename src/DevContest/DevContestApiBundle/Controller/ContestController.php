@@ -1,6 +1,6 @@
 <?php
 
-namespace DevContest\{{Bundle}}\Controller;
+namespace DevContest\DevContestApiBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -13,20 +13,20 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
- * Class {{Entity}}Controller
- * @package DevContest\{{Bundle}}\Controller
+ * Class ContestController
+ * @package DevContest\DevContestApiBundle\Controller
  */
-class {{Entity}}Controller extends AbstractController
+class ContestController extends AbstractController
 {
     /**
-     * Get {{Entities}}
+     * Get Contests
      *
      * @param Request               $request
      * @param ParamFetcherInterface $paramFetcher
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      *
      * @ApiDoc(
-     *   resource = "{{Entities}}",
+     *   resource = "Contests",
      *   statusCodes = {
      *     200 = "Success",
      *     403 = "Insufficient access rights"
@@ -39,92 +39,92 @@ class {{Entity}}Controller extends AbstractController
      *
      * @Rest\View(serializerGroups={"all", "list"})
      */
-    public function get{{Entities}}Action(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getContestsAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return parent::getObjects('{{Bundle}}:{{Entity}}', $request, $paramFetcher);
+        return parent::getObjects('DevContestApiBundle:Contest', $request, $paramFetcher);
     }
 
     /**
-     * Get {{Entity}}
+     * Get Contest
      *
-     * @param integer $id Id of the {{Entity}}
-     * @return \DevContest\{{Bundle}}\Entity\{{Entity}}
+     * @param integer $id Id of the Contest
+     * @return \DevContest\DevContestApiBundle\Entity\Contest
      *
      * @ApiDoc(
-     *   resource = "{{Entities}}",
+     *   resource = "Contests",
      *   statusCodes = {
      *     200 = "Success",
      *     403 = "Insufficient access rights",
-     *     404 = "{{Entity}} not found"
+     *     404 = "Contest not found"
      *   },
-     *   output  = "DevContest\{{Bundle}}\Entity\{{Entity}}"
+     *   output  = "DevContest\DevContestApiBundle\Entity\Contest"
      * )
      *
      * @Rest\View(serializerGroups={"all", "detail"})
      * @Rest\Route(requirements={"id"="[0-9]+"})
      */
-    public function get{{Entity}}Action($id)
+    public function getContestAction($id)
     {
-        return parent::getObject('{{Bundle}}:{{Entity}}', $id);
+        return parent::getObject('DevContestApiBundle:Contest', $id);
     }
 
     /**
-     * Create {{Entity}}
+     * Create Contest
      *
      * @param Request $request
      * @return array
      *
      * @ApiDoc(
-     *   resource = "{{Entities}}",
+     *   resource = "Contests",
      *   statusCodes = {
      *     201 = "Success",
      *     403 = "Insufficient access rights"
      *   },
-     *   input   = "DevContest\{{Bundle}}\Form\Type\{{Entity}}Type"
+     *   input   = "DevContest\DevContestApiBundle\Form\Type\ContestType"
      * )
      *
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function post{{Entities}}Action(Request $request)
+    public function postContestsAction(Request $request)
     {
-        return parent::postObjects('{{Bundle}}:{{Entity}}', $request);
+        return parent::postObjects('DevContestApiBundle:Contest', $request);
     }
 
     /**
-     * Update {{Entity}}
+     * Update Contest
      *
      * @param Request $request
-     * @param integer $id      Id of the {{Entity}}
+     * @param integer $id      Id of the Contest
      * @return array
      *
      * @ApiDoc(
-     *   resource = "{{Entities}}",
+     *   resource = "Contests",
      *   statusCodes = {
      *     204 = "Success",
      *     403 = "Insufficient access rights"
      *   },
-     *   input   = "DevContest\{{Bundle}}\Form\Type\{{Entity}}Type"
+     *   input   = "DevContest\DevContestApiBundle\Form\Type\ContestType"
      * )
      *
      * @Rest\Route(requirements={"id"="[0-9]+"})
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function put{{Entities}}Action(Request $request, $id)
+    public function putContestsAction(Request $request, $id)
     {
-        return parent::putObjects('{{Bundle}}:{{Entity}}', $request, $id);
+        return parent::putObjects('DevContestApiBundle:Contest', $request, $id);
     }
 
     /**
-     * Delete {{Entity}}
+     * Delete Contest
      *
      * @param Request $request
-     * @param integer $id      Id of the {{Entity}}
+     * @param integer $id      Id of the Contest
      * @return array
      *
      * @ApiDoc(
-     *   resource = "{{Entities}}",
+     *   resource = "Contests",
      *   statusCodes = {
      *     204 = "Success",
      *     403 = "Insufficient access rights"
@@ -135,8 +135,8 @@ class {{Entity}}Controller extends AbstractController
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function delete{{Entities}}Action(Request $request, $id)
+    public function deleteContestsAction(Request $request, $id)
     {
-        return parent::deleteObjects('{{Bundle}}:{{Entity}}', $request, $id);
+        return parent::deleteObjects('DevContestApiBundle:Contest', $request, $id);
     }
 }

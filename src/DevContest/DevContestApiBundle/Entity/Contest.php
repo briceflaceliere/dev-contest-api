@@ -4,6 +4,9 @@ namespace DevContest\DevContestApiBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Contest entity
@@ -13,6 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
  * })
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\ContestRepository")
  * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
+ *
+ * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity("name")
  */
 class Contest
 {
@@ -22,6 +28,11 @@ class Contest
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMS\Expose
+     * @JMS\Type("integer")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      */
     private $id;
 
@@ -29,6 +40,12 @@ class Contest
      * @var string
      *
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank()
+     *
+     * @JMS\Expose
+     * @JMS\Type("string")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      */
     private $name;
 
@@ -36,6 +53,11 @@ class Contest
      * @var string
      *
      * @ORM\Column(type="string", length=100, nullable=true)
+     *
+     * @JMS\Expose
+     * @JMS\Type("string")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      */
     private $logo;
 
@@ -43,6 +65,11 @@ class Contest
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @JMS\Expose
+     * @JMS\Type("DateTime")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      */
     private $startTs;
 
@@ -50,6 +77,11 @@ class Contest
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @JMS\Expose
+     * @JMS\Type("DateTime")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      */
     private $endTs;
 
@@ -68,7 +100,12 @@ class Contest
      * @ORM\ManyToMany(targetEntity="Language")
      * @ORM\JoinTable(
      *   joinColumns={@ORM\JoinColumn(referencedColumnName="dc_id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(referencedColumnName="dc_name")})
+     *   inverseJoinColumns={@ORM\JoinColumn(referencedColumnName="dc_id")})
+     *
+     * @JMS\Expose
+     * @JMS\Type("DateTime")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      */
     protected $languages;
 

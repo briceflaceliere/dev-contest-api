@@ -17,6 +17,7 @@ class {{Entity}}ControllerTest extends WebTestCase
 {
 
     protected $loadFixtures = [
+        'DevContest\{{Bundle}}\DataFixtures\ORM\LoadUserData',
         'DevContest\{{Bundle}}\DataFixtures\ORM\Load{{Entity}}Data',
     ];
 
@@ -51,7 +52,7 @@ class {{Entity}}ControllerTest extends WebTestCase
         ${{entity}}1Id = $this->fixtures->getReference('{{entity}}1')->getId();
 
         $subTest = new DeleteSubTest($this->getUrl('delete_{{entities}}', ['id' => ${{entity}}1Id]));
-        $this->aclTest($subTest, [null, 'user1', 'api', 'engine', 'admin'], []);
+        $this->aclTest($subTest, ['admin'], [null, 'user1', 'api', 'engine']);
     }
 
     /**
@@ -64,7 +65,7 @@ class {{Entity}}ControllerTest extends WebTestCase
     {
         $subTest = new PostPutSubTest($this->getUrl('post_{{entities}}'), 'POST', ['{{entity}}' => ${{entity}}]);
         //$subTest->addCheckValue('title', ${{entity}}['title']);
-        $this->aclTest($subTest, [null, 'user1', 'api', 'engine', 'admin'], []);
+        $this->aclTest($subTest, ['admin'], [null, 'user1', 'api', 'engine']);
     }
 
     /**
@@ -75,9 +76,11 @@ class {{Entity}}ControllerTest extends WebTestCase
      */
     public function testPut{{Entities}}Action(${{entity}})
     {
-        $subTest = new PostPutSubTest($this->getUrl('put_{{entities}}'), 'PUT', ['{{entity}}' => ${{entity}}]);
+        ${{entity}}1Id = $this->fixtures->getReference('{{entity}}1')->getId();
+
+        $subTest = new PostPutSubTest($this->getUrl('put_{{entities}}', ['id' => ${{entity}}1Id]), 'PUT', ['{{entity}}' => ${{entity}}]);
         //$subTest->addCheckValue('title', ${{entity}}['title']);
-        $this->aclTest($subTest, [null, 'user1', 'api', 'engine', 'admin'], []);
+        $this->aclTest($subTest, ['admin'], [null, 'user1', 'api', 'engine']);
     }
 
     /**

@@ -71,7 +71,7 @@ class Test
      * @ORM\ManyToMany(targetEntity="Language")
      * @ORM\JoinTable(
      *   joinColumns={@ORM\JoinColumn(referencedColumnName="dc_id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(referencedColumnName="dc_name")})
+     *   inverseJoinColumns={@ORM\JoinColumn(referencedColumnName="dc_id")})
      */
     protected $languages;
 

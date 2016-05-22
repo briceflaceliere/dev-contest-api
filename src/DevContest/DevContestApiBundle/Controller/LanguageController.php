@@ -1,6 +1,6 @@
 <?php
 
-namespace DevContest\{{Bundle}}\Controller;
+namespace DevContest\DevContestApiBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -13,20 +13,20 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
- * Class {{Entity}}Controller
- * @package DevContest\{{Bundle}}\Controller
+ * Class LanguageController
+ * @package DevContest\DevContestApiBundle\Controller
  */
-class {{Entity}}Controller extends AbstractController
+class LanguageController extends AbstractController
 {
     /**
-     * Get {{Entities}}
+     * Get Languages
      *
      * @param Request               $request
      * @param ParamFetcherInterface $paramFetcher
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      *
      * @ApiDoc(
-     *   resource = "{{Entities}}",
+     *   resource = "Languages",
      *   statusCodes = {
      *     200 = "Success",
      *     403 = "Insufficient access rights"
@@ -39,92 +39,92 @@ class {{Entity}}Controller extends AbstractController
      *
      * @Rest\View(serializerGroups={"all", "list"})
      */
-    public function get{{Entities}}Action(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getLanguagesAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return parent::getObjects('{{Bundle}}:{{Entity}}', $request, $paramFetcher);
+        return parent::getObjects('DevContestApiBundle:Language', $request, $paramFetcher);
     }
 
     /**
-     * Get {{Entity}}
+     * Get Language
      *
-     * @param integer $id Id of the {{Entity}}
-     * @return \DevContest\{{Bundle}}\Entity\{{Entity}}
+     * @param integer $id Id of the Language
+     * @return \DevContest\DevContestApiBundle\Entity\Language
      *
      * @ApiDoc(
-     *   resource = "{{Entities}}",
+     *   resource = "Languages",
      *   statusCodes = {
      *     200 = "Success",
      *     403 = "Insufficient access rights",
-     *     404 = "{{Entity}} not found"
+     *     404 = "Language not found"
      *   },
-     *   output  = "DevContest\{{Bundle}}\Entity\{{Entity}}"
+     *   output  = "DevContest\DevContestApiBundle\Entity\Language"
      * )
      *
      * @Rest\View(serializerGroups={"all", "detail"})
      * @Rest\Route(requirements={"id"="[0-9]+"})
      */
-    public function get{{Entity}}Action($id)
+    public function getLanguageAction($id)
     {
-        return parent::getObject('{{Bundle}}:{{Entity}}', $id);
+        return parent::getObject('DevContestApiBundle:Language', $id);
     }
 
     /**
-     * Create {{Entity}}
+     * Create Language
      *
      * @param Request $request
      * @return array
      *
      * @ApiDoc(
-     *   resource = "{{Entities}}",
+     *   resource = "Languages",
      *   statusCodes = {
      *     201 = "Success",
      *     403 = "Insufficient access rights"
      *   },
-     *   input   = "DevContest\{{Bundle}}\Form\Type\{{Entity}}Type"
+     *   input   = "DevContest\DevContestApiBundle\Form\Type\LanguageType"
      * )
      *
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function post{{Entities}}Action(Request $request)
+    public function postLanguagesAction(Request $request)
     {
-        return parent::postObjects('{{Bundle}}:{{Entity}}', $request);
+        return parent::postObjects('DevContestApiBundle:Language', $request);
     }
 
     /**
-     * Update {{Entity}}
+     * Update Language
      *
      * @param Request $request
-     * @param integer $id      Id of the {{Entity}}
+     * @param integer $id      Id of the Language
      * @return array
      *
      * @ApiDoc(
-     *   resource = "{{Entities}}",
+     *   resource = "Languages",
      *   statusCodes = {
      *     204 = "Success",
      *     403 = "Insufficient access rights"
      *   },
-     *   input   = "DevContest\{{Bundle}}\Form\Type\{{Entity}}Type"
+     *   input   = "DevContest\DevContestApiBundle\Form\Type\LanguageType"
      * )
      *
      * @Rest\Route(requirements={"id"="[0-9]+"})
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function put{{Entities}}Action(Request $request, $id)
+    public function putLanguagesAction(Request $request, $id)
     {
-        return parent::putObjects('{{Bundle}}:{{Entity}}', $request, $id);
+        return parent::putObjects('DevContestApiBundle:Language', $request, $id);
     }
 
     /**
-     * Delete {{Entity}}
+     * Delete Language
      *
      * @param Request $request
-     * @param integer $id      Id of the {{Entity}}
+     * @param integer $id      Id of the Language
      * @return array
      *
      * @ApiDoc(
-     *   resource = "{{Entities}}",
+     *   resource = "Languages",
      *   statusCodes = {
      *     204 = "Success",
      *     403 = "Insufficient access rights"
@@ -135,8 +135,8 @@ class {{Entity}}Controller extends AbstractController
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function delete{{Entities}}Action(Request $request, $id)
+    public function deleteLanguagesAction(Request $request, $id)
     {
-        return parent::deleteObjects('{{Bundle}}:{{Entity}}', $request, $id);
+        return parent::deleteObjects('DevContestApiBundle:Language', $request, $id);
     }
 }
