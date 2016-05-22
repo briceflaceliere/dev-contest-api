@@ -8,15 +8,19 @@ Knp\Component\Pager\Pagination\AbstractPagination:
                 getter: getItems
             type: array
             serialized_name: items
+            groups: [all, list]
         currentPageNumber:
             expose: true
             type: integer
             serialized_name: page
+            groups: [all, list]
         numItemsPerPage:
             expose: true
             type: integer
             serialized_name: limit
+            groups: [all, list]
         totalCount:
             expose: true
             type: integer
             serialized_name: total_items
+            groups: [all, list]

@@ -9,13 +9,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Class TestController
  * @package DevContest\DevContestApiBundle\Controller
- *
- *
- *
  */
 class TestController extends AbstractController
 {
@@ -38,7 +36,7 @@ class TestController extends AbstractController
      * @Rest\QueryParam(name="page", requirements="\d+", default="1", description="Page of the result")
      * @Rest\QueryParam(name="limit", requirements="([0-9]{1,2}|100)", default="25", description="Limit of the result")
      *
-     * @Rest\View
+     * @Rest\View(serializerGroups={"all", "list"})
      */
     public function getTestsAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
@@ -61,7 +59,7 @@ class TestController extends AbstractController
      *   output  = "DevContest\DevContestApiBundle\Entity\Test"
      * )
      *
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"all", "detail"})
      * @Rest\Route(requirements={"id"="[0-9]+"})
      */
     public function getTestAction($id)
@@ -71,6 +69,7 @@ class TestController extends AbstractController
 
     /**
      * Create Test
+     * (Scope: Admin)
      *
      * @param Request $request
      * @return array
@@ -85,6 +84,7 @@ class TestController extends AbstractController
      * )
      *
      * @Rest\View()
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function postTestsAction(Request $request)
     {
@@ -93,6 +93,7 @@ class TestController extends AbstractController
 
     /**
      * Update Test
+     * (Scope: Admin)
      *
      * @param Request $request
      * @param integer $id      Id of the Test
@@ -109,6 +110,7 @@ class TestController extends AbstractController
      *
      * @Rest\Route(requirements={"id"="[0-9]+"})
      * @Rest\View()
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function putTestsAction(Request $request, $id)
     {
@@ -117,6 +119,7 @@ class TestController extends AbstractController
 
     /**
      * Delete Test
+     * (Scope: Admin)
      *
      * @param Request $request
      * @param integer $id      Id of the Test
@@ -132,6 +135,7 @@ class TestController extends AbstractController
      *
      * @Rest\Route(requirements={"id"="[0-9]+"})
      * @Rest\View()
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteTestsAction(Request $request, $id)
     {

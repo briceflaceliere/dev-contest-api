@@ -16,13 +16,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Class UserController
  * @package DevContest\DevContestApiBundle\Controller
- *
- *
- *
  */
 class UserController extends AbstractController
 {
@@ -45,7 +43,7 @@ class UserController extends AbstractController
      * @Rest\QueryParam(name="page", requirements="\d+", default="1", description="Page of the result")
      * @Rest\QueryParam(name="limit", requirements="([0-9]{1,2}|100)", default="25", description="Limit of the result")
      *
-     * @Rest\View
+     * @Rest\View(serializerGroups={"all", "list"})
      */
     public function getUsersAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
@@ -68,8 +66,9 @@ class UserController extends AbstractController
      *   output  = "DevContest\DevContestApiBundle\Entity\User"
      * )
      *
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"all", "detail"})
      * @Rest\Route(requirements={"id"="[0-9]+"})
+     *
      */
     public function getUserAction($id)
     {
@@ -77,53 +76,60 @@ class UserController extends AbstractController
     }
 
     /**
-     * Create user
+     * Get me user
+     * (Scope: User)
      *
-     * @param Request $request
-     * @return array
+     * @return \DevContest\DevContestApiBundle\Entity\User
      *
      * @ApiDoc(
      *   resource = "Users",
      *   statusCodes = {
-     *     201 = "Success",
-     *     403 = "Insufficient access rights"
+     *     200 = "Success",
+     *     403 = "Insufficient access rights",
+     *     404 = "User not found"
      *   },
-     *   input   = "DevContest\DevContestApiBundle\Form\Type\UserType"
+     *   output  = "DevContest\DevContestApiBundle\Entity\User"
      * )
      *
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"all", "detail", "private"})
+     * @Security("has_role('ROLE_USER')")
      */
-    public function postUsersAction(Request $request)
+    public function getMeAction()
     {
-        return parent::postObjects('DevContestApiBundle:User', $request);
+        return $this->getUserPrivateAction($this->getUser()->getId());
     }
 
     /**
-     * Update user
+     * Get private user detail
+     * (Scope: User)
      *
-     * @param Request $request
-     * @param integer $id      Id of the user
-     * @return array
+     * @param integer $id Id of the user
+     * @return \DevContest\DevContestApiBundle\Entity\User
      *
      * @ApiDoc(
      *   resource = "Users",
      *   statusCodes = {
-     *     204 = "Success",
-     *     403 = "Insufficient access rights"
+     *     200 = "Success",
+     *     403 = "Insufficient access rights",
+     *     404 = "User not found"
      *   },
-     *   input   = "DevContest\DevContestApiBundle\Form\Type\UserType"
+     *   output  = "DevContest\DevContestApiBundle\Entity\User"
      * )
      *
+     * @Rest\View(serializerGroups={"all", "detail", "private"})
      * @Rest\Route(requirements={"id"="[0-9]+"})
-     * @Rest\View()
+     * @Security("has_role('ROLE_USER')")
      */
-    public function putUsersAction(Request $request, $id)
+    public function getUserPrivateAction($id)
     {
-        return parent::putObjects('DevContestApiBundle:User', $request, $id);
+        $user = parent::getObject('DevContestApiBundle:User', $id, 'ROLE_OWNER');
+
+        return $user;
     }
 
     /**
      * Delete user
+     * (Scope: User)
      *
      * @param Request $request
      * @param integer $id      Id of the user
@@ -139,9 +145,10 @@ class UserController extends AbstractController
      *
      * @Rest\Route(requirements={"id"="[0-9]+"})
      * @Rest\View()
+     * @Security("has_role('ROLE_USER')")
      */
     public function deleteUsersAction(Request $request, $id)
     {
-        return parent::deleteObjects('DevContestApiBundle:User', $request, $id);
+        return parent::deleteObjects('DevContestApiBundle:User', $request, $id, 'ROLE_OWNER');
     }
 }

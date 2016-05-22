@@ -1,7 +1,24 @@
 services:
-  dev_contest.api.doctrine.dev_contest_naming_strategy:
-    class: DevContest\DevContestApiBundle\Doctrine\DevContestNamingStrategy
-    arguments: []
-#    dev_contest_api.example:
-#        class: DevContest\DevContestApiBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    dev_contest.api.doctrine.dev_contest_naming_strategy:
+        class: DevContest\DevContestApiBundle\Doctrine\DevContestNamingStrategy
+        arguments: []
+
+    dev_contest.api.repository.user:
+        class: DevContest\DevContestApiBundle\Repository\UserRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments: ['DevContestApiBundle:User']
+
+    dev_contest.api.security.a0_user_provider:
+        class: DevContest\DevContestApiBundle\Security\A0UserProvider
+        arguments: [@jwt_auth.auth0_service, @dev_contest.api.repository.user]
+
+    jwt_auth.auth0_service:
+        class: "DevContest\DevContestApiBundle\Security\Auth0Service"
+        arguments: [%jwt_auth.client_id%, %jwt_auth.client_secret%, %jwt_auth.domain%, %jwt_auth.secret_base64_encoded%]
+
+    owner_voter:
+        class: DevContest\DevContestApiBundle\Security\OwnerVoter
+        public: false
+        tags:
+            - { name: security.voter }

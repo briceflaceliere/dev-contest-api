@@ -2,24 +2,25 @@
 
 namespace DevContest\DevContestApiBundle\Entity;
 
+use DevContest\DevContestApiBundle\Security\OwnerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * User class
  *
- * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(name="nickname_idx", columns={"dc_nickname"})
- * })
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\UserRepository")
+ * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  *
  * @JMS\ExclusionPolicy("all")
- * @UniqueEntity("nickname")
+ * @UniqueEntity("username")
  */
-class User
+class User implements UserInterface, EquatableInterface, OwnerInterface
 {
 
     /**
@@ -34,36 +35,81 @@ class User
      * @JMS\Expose
      * @JMS\Type("integer")
      * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      */
     protected $id;
 
     /**
-     * Nickname
+     * Auth 0 Id
      *
      * @var string
      *
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="string", length=100, unique=true, nullable=true)
+     *
+     */
+    protected $auth0Id;
+
+    /**
+     * Username
+     *
+     * @var string
+     *
+     * @ORM\Column(type="string", length=40, unique=true)
      *
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      *
      * @Assert\NotBlank()
      * @Assert\Regex("/^\w+/")
      */
-    protected $nickname;
+    protected $username;
+
+    /**
+     * Email
+     *
+     * @var string
+     *
+     * @ORM\Column(type="string", length=100, unique=true)
+     *
+     * @JMS\Expose
+     * @JMS\Type("string")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"private"})
+     *
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     */
+    protected $email;
+
+    /**
+     * Picture
+     *
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @JMS\Expose
+     * @JMS\Type("string")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
+     *
+     * @Assert\Url()
+     */
+    protected $picture;
+
+    /**
+     * Salt
+     *
+     * @ORM\Column(type="json_array")
+     */
+    protected $roles = ['ROLE_USER'];
 
     /**
      * @ORM\OneToMany(targetEntity="UserContest", mappedBy="user")
      */
     protected $userContests;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $githubId;
 
     /**
      * Constructor
@@ -84,29 +130,150 @@ class User
     }
 
     /**
-     * Get Nickname
-     *
      * @return string
      */
-    public function getNickname()
+    public function getAuth0Id()
     {
-        return $this->nickname;
+        return $this->auth0Id;
     }
 
     /**
-     * Set Nickname
-     *
-     * @param string $nickname
-     * @return $this;
+     * @param string $auth0Id
+     * @return $this
      */
-    public function setNickname($nickname)
+    public function setAuth0Id($auth0Id)
     {
-        $this->nickname = $nickname;
+        $this->auth0Id = $auth0Id;
+
+        return $this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     * @return $this
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
 
         return $this;
     }
 
     /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return $this
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get picture
+     *
+     * @return string
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+    /**
+     * Set picture
+     *
+     * @param string $picture
+     * @return $this
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * Set the roles of users
+     *
+     * @param array $roles
+     * @return $this
+     */
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Get the roles of users
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Add the role of users
+     *
+     * @param string $role
+     * @return $this
+     */
+    public function addRole($role)
+    {
+        if (!in_array($role, $this->roles)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove the role of users
+     *
+     * @param string $role
+     * @return $this
+     */
+    public function removeRole($role)
+    {
+        if (($key = array_search($role, $this->roles)) !== false) {
+            unset($this->roles[$key]);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get userContests
+     *
      * @return ArrayCollection
      */
     public function getUserContests()
@@ -141,21 +308,70 @@ class User
     }
 
     /**
-     * @return string
+     * Get Jwt Token payload
+     *
+     * @return array
      */
-    public function getGithubId()
+    public function getJwtPayload()
     {
-        return $this->githubId;
+        return [
+            'name'           => $this->getUsername(),
+            'nickname'       => $this->getUsername(),
+            'picture'        => $this->getPicture(),
+            'user_id'        => 'devcontest|' . $this->getId(),
+            'email'          => $this->getEmail(),
+            'email_verified' => true,
+            'given_name'     => $this->getUsername(),
+            'family_name'    => $this->getUsername(),
+        ];
     }
 
     /**
-     * @param string $githubId
-     * @return $this
+     * @return null
      */
-    public function setGithubId($githubId)
+    public function getPassword()
     {
-        $this->githubId = $githubId;
+        return null;
+    }
 
+    /**
+     * @return null
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * @return void
+     */
+    public function eraseCredentials()
+    {
+    }
+
+    /**
+     * User is equal to UserInterface
+     * @param UserInterface $user
+     * @return bool
+     */
+    public function isEqualTo(UserInterface $user)
+    {
+        if (!$user instanceof User) {
+            return false;
+        }
+
+        if ($this->getEmail() !== $user->getEmail()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @return UserInterface
+     */
+    public function getOwner()
+    {
         return $this;
     }
 }

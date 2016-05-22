@@ -12,6 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\TestRepository")
+ * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
+ *
  * @JMS\ExclusionPolicy("all")
  */
 class Test
@@ -26,6 +28,7 @@ class Test
      * @JMS\Expose
      * @JMS\Type("integer")
      * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      */
     private $id;
 
@@ -37,6 +40,7 @@ class Test
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      *
      * @Assert\NotBlank()
      * @Assert\Regex("/^\w+/")
@@ -51,6 +55,7 @@ class Test
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      *
      * @Assert\NotBlank()
      * @Assert\Regex("/^\w+/")

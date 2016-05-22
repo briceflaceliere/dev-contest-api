@@ -48,17 +48,43 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
      */
     public function load(ObjectManager $manager)
     {
+        $encoder = $this->container->get('security.password_encoder');
+
         $user1 = new User();
-        $user1->setNickname('brice');
+        $user1->setUsername('brice');
+        $user1->setEmail('brice@nomail.com');
         $manager->persist($user1);
 
         $user2 = new User();
-        $user2->setNickname('yoli');
+        $user2->setUsername('yoli');
+        $user2->setEmail('yoli@nomail.com');
         $manager->persist($user2);
+
+        $api = new User();
+        $api->setUsername('api');
+        $api->setEmail('api@nomail.com');
+        $api->addRole('ROLE_API');
+        $manager->persist($api);
+
+        $engine = new User();
+        $engine->setUsername('engine');
+        $engine->setEmail('engine@nomail.com');
+        $engine->addRole('ROLE_ENGINE');
+        $manager->persist($engine);
+
+
+        $admin = new User();
+        $admin->setUsername('admin');
+        $admin->setEmail('admin@nomail.com');
+        $admin->addRole('ROLE_ADMIN');
+        $manager->persist($admin);
 
         $manager->flush();
 
         $this->addReference('user1', $user1);
         $this->addReference('user2', $user2);
+        $this->addReference('admin', $admin);
+        $this->addReference('api', $api);
+        $this->addReference('engine', $engine);
     }
 }

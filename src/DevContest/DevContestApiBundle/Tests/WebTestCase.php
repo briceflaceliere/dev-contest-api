@@ -8,6 +8,8 @@
 
 namespace DevContest\DevContestApiBundle\Tests;
 
+use DevContest\DevContestApiBundle\Entity\User;
+use DevContest\DevContestApiBundle\Tests\SubTest\SubTestInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Liip\FunctionalTestBundle\Test\WebTestCase as ParentWebTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +25,12 @@ class WebTestCase extends ParentWebTestCase
     protected $fixtures;
 
     protected $client;
+
+    protected $connectedUser;
+
+    protected $headers = [];
+
+    protected $tmpAuthorization;
 
     /**
      * @inheritdoc
@@ -47,110 +55,98 @@ class WebTestCase extends ParentWebTestCase
         $this->client = static::createClient();
     }
 
+
     /**
-     * Default check for get list action
-     *
-     * @param string $url
+     * @param SubTestInterface $subTest
+     * @param array $authorisedUsers List of authorized users (fixtureReference, null for disconnect users)
+     * @param array $unauthorizedUsers  List of unauthorized users (fixtureReference, null for disconnect users)
      * @return Response
+     * @throws \Exception
      */
-    protected function defaultGetListTest($url)
+    public function aclTest(SubTestInterface $subTest, array $authorisedUsers = [null], array $unauthorizedUsers = [])
     {
-        $this->client->request('GET', $url);
+        $this->tmpAuthorization = $this->headers['HTTP_Authorization']; //save authorization
 
-        $response = $this->client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
-        $this->assertJson($response->getContent());
+        foreach ($unauthorizedUsers as $userRef) {
+            $this->disconnectUser();
+            if ($userRef != null && $user = $this->fixtures->getReference($userRef)) {
+                if (!$user instanceof User) {
+                    throw new \Exception($userRef . ' is not user fixture reference');
+                }
+                $this->connectUser($user);
+            }
+            $subTest->unauthorizedTest($this);
+        }
 
-        $data = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('page', $data);
-        $this->assertArrayHasKey('limit', $data);
-        $this->assertArrayHasKey('items', $data);
-        $this->assertTrue(is_array($data['items']));
-        $this->assertArrayHasKey('total_items', $data);
-        $this->assertArrayHasKey('total_pages', $data);
+        //Authorized users
+        foreach ($authorisedUsers as $userRef) {
+            $this->setUp();
+            $this->disconnectUser();
+            if ($userRef != null && $user = $this->fixtures->getReference($userRef)) {
+                if (!$user instanceof User) {
+                    throw new \Exception($userRef . ' is not user fixture reference');
+                }
+                $this->connectUser($user);
+            }
+            $subTest->authorizedTest($this);
+        }
 
-        return $response;
+        $this->headers['HTTP_Authorization'] = $this->tmpAuthorization; //restore authorization
     }
 
     /**
-     * Default check for get action
+     * Connect user for test
      *
-     * @param string $url
-     * @return Response
+     * @param User $user
+     * @return void
+     * @throws \Exception
      */
-    protected function defaultGetTest($url)
+    public function connectUser(User $user)
     {
-        $this->client->request('GET', $url);
-        $response = $this->client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
-        $this->assertJson($response->getContent());
+        if (!$jwtToken = $this->getContainer()->get('jwt_auth.auth0_service')->encodeJWT($user->getJwtPayload())) {
+            throw new \Exception('Unable to generate a jwt token');
+        }
 
-        return $response;
+        $this->connectedUser = $user;
+        $this->headers['HTTP_Authorization'] = sprintf('Bearer %s', $jwtToken);
     }
 
     /**
-     * Default check for delete action
+     * Disconnect user for test
      *
-     * @param string $url
-     * @return Response
+     * @return bool
      */
-    protected function defaultDeleteTest($url)
+    public function disconnectUser()
     {
+        if (isset($this->headers['HTTP_Authorization'])) {
+            unset($this->headers['HTTP_Authorization']);
+            $this->connectedUser = null;
+            return true;
+        }
 
-        // Check exist
-        $this->client->request('HEAD', $url);
-        $response = $this->client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
-
-        // Delete
-        $this->client->request('DELETE', $url);
-        $deleteResponse = $this->client->getResponse();
-        $this->assertEquals(204, $deleteResponse->getStatusCode(), $deleteResponse->getContent());
-
-        // Check not exist
-        $this->client->request('HEAD', $url);
-        $response = $this->client->getResponse();
-        $this->assertEquals(404, $response->getStatusCode(), $response->getContent());
-
-        return $deleteResponse;
+        return false;
     }
 
     /**
-     * Default check for post action
+     * Get connected user
      *
-     * @param string $url
-     * @param array $data
-     * @return Response
+     * @return User|null
      */
-    protected function defaultPostTest($url, $data)
+    public function getConnectedUser()
     {
-        // Create
-        $this->client->request('POST', $url, $data);
-        $postResponse = $this->client->getResponse();
-        $this->assertEquals(201, $postResponse->getStatusCode(), $postResponse->getContent());
-        $this->assertNotEmpty($postResponse->headers->get('Location'));
-
-        // Check create
-        $this->client->request('HEAD', $postResponse->headers->get('Location'));
-        $response = $this->client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
-
-        return $postResponse;
+        return $this->connectedUser;
     }
 
     /**
-     * Default check for put action
-     *
+     * @param string $method
      * @param string $url
      * @param array $data
      * @return Response
      */
-    protected function defaultPutTest($url, $data)
+    public function request($method, $url, array $data = [])
     {
-        $this->client->request('PUT', $url, $data);
-        $response = $this->client->getResponse();
-        $this->assertEquals(204, $response->getStatusCode(), $response->getContent());
-
-        return $response;
+        $this->client->request($method, $url, $data, [], $this->headers);
+        return $this->client->getResponse();
     }
+
 }
