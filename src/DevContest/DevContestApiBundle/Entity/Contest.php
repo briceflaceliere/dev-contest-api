@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(name="contest_name_idx", columns={"dc_name"})
  * })
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\ContestRepository")
+ * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  */
 class Contest
 {

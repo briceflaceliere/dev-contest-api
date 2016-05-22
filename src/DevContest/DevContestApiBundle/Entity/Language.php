@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\LanguageRepository")
+ * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  */
 class Language
 {

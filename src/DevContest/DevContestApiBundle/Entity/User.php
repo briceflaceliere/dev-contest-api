@@ -15,6 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * User class
  *
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\UserRepository")
+ * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  *
  * @JMS\ExclusionPolicy("all")
  * @UniqueEntity("username")

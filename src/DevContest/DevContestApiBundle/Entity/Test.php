@@ -12,6 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\TestRepository")
+ * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
+ *
  * @JMS\ExclusionPolicy("all")
  */
 class Test
