@@ -4,13 +4,19 @@ namespace DevContest\DevContestApiBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * ContestStep
  *
- * @ORM\Table()
+ * @ORM\Table(uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="conteststep_test_contest_idx", columns={"dc_test_id", "dc_contest_id"})
+ * })
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\ContestStepRepository")
  * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
+ *
+ * @JMS\ExclusionPolicy("all")
  */
 class ContestStep
 {
@@ -21,41 +27,62 @@ class ContestStep
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMS\Expose
+     * @JMS\Type("integer")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      */
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $number;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Contest", inversedBy="contestSteps")
      * @ORM\JoinColumn(referencedColumnName="dc_id")
+     *
+     * @JMS\Expose
+     * @JMS\Type("integer")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
+     *
      */
     protected $contest;
 
     /**
      * @ORM\ManyToOne(targetEntity="Test", inversedBy="contestSteps")
      * @ORM\JoinColumn(referencedColumnName="dc_id")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type(type="integer")
      */
     protected $test;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserContestTest", mappedBy="dc_contest_test_id")
+     * @ORM\OneToMany(targetEntity="UserContestTest", mappedBy="contestStep")
      */
     protected $userContestTests;
 
     /**
-     * @ORM\OneToOne(targetEntity="ContestStep", inversedBy="previousContestStep")
-     * @ORM\JoinColumn(referencedColumnName="dc_id", nullable=true)
+     * @ORM\OneToOne(targetEntity="ContestStep", mappedBy="previousContestStep")
+     *
+     * @Assert\Type(type="integer")
+     *
+     * @JMS\Expose
+     * @JMS\Type("integer")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      */
     protected $nextContestStep;
 
     /**
-     * @ORM\OneToOne(targetEntity="ContestStep", mappedBy="nextContestStep")
+     * @ORM\OneToOne(targetEntity="ContestStep", inversedBy="nextContestStep")
+     * @ORM\JoinColumn(referencedColumnName="dc_id", nullable=true, unique=true)
+     *
+     * @JMS\Expose
+     * @JMS\Type("integer")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
+     *
+     * @Assert\Type(type="integer")
      */
     protected $previousContestStep;
 
@@ -76,31 +103,6 @@ class ContestStep
     {
         return $this->id;
     }
-
-    /**
-     * Set number
-     *
-     * @param integer $number
-     *
-     * @return $this
-     */
-    public function setNumber($number)
-    {
-        $this->number = $number;
-
-        return $this;
-    }
-
-    /**
-     * Get number
-     *
-     * @return integer
-     */
-    public function getNumber()
-    {
-        return $this->number;
-    }
-
 
     /**
      * @return Contest
@@ -186,16 +188,6 @@ class ContestStep
         return $this->nextContestStep;
     }
 
-    /**
-     * @param ContestStep $nextContestStep
-     * @return $this
-     */
-    public function setNextContestStep(ContestStep $nextContestStep)
-    {
-        $this->nextContestStep = $nextContestStep;
-
-        return $this;
-    }
 
     /**
      * @return ContestStep|null
@@ -203,5 +195,16 @@ class ContestStep
     public function getPreviousContestStep()
     {
         return $this->previousContestStep;
+    }
+
+    /**
+     * @param ContestStep $previousContestStep
+     * @return $this
+     */
+    public function setPreviousContestStep(ContestStep $previousContestStep)
+    {
+        $this->previousContestStep = $previousContestStep;
+
+        return $this;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace DevContest\DevContestApiBundle\Controller;
 
+use Doctrine\ORM\QueryBuilder;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -28,14 +29,16 @@ abstract class AbstractController extends FOSRestController
      * @param ParamFetcherInterface $paramFetcher
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
-    public function getObjects($repository, Request $request, ParamFetcherInterface $paramFetcher)
+    public function getObjects($repository, Request $request, ParamFetcherInterface $paramFetcher, QueryBuilder $entities = null)
     {
         $limit = $paramFetcher->get('limit');
         $page = $paramFetcher->get('page');
 
-        $entities = $this->getDoctrine()
-            ->getRepository($repository)
-            ->qFindAll();
+        if (!$entities) {
+            $entities = $this->getDoctrine()
+                ->getRepository($repository)
+                ->qFindAll();
+        }
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(

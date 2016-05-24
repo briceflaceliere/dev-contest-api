@@ -86,8 +86,8 @@ class Contest
     private $endTs;
 
     /**
-     * @ORM\OneToMany(targetEntity="ContestStep", mappedBy="dc_contest_id")
-     * @ORM\OrderBy({"dc_number" = "ASC"})
+     * @ORM\OneToMany(targetEntity="ContestStep", mappedBy="contest")
+     * @ORM\OrderBy({"previousContestStep" = "ASC"})
      */
     protected $contestSteps;
 

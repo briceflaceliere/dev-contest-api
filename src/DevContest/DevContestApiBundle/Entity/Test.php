@@ -63,7 +63,7 @@ class Test
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="ContestStep", mappedBy="dc_test_id")
+     * @ORM\OneToMany(targetEntity="ContestStep", mappedBy="test")
      */
     protected $contestSteps;
 

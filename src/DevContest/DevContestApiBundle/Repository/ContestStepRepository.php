@@ -10,4 +10,16 @@ namespace DevContest\DevContestApiBundle\Repository;
  */
 class ContestStepRepository extends AbstractEntityRepository
 {
+    /**
+     * Get findAll query builder
+     *
+     * @param integer $contestId
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function qFindByContestId(int $contestId)
+    {
+        return $this->createQueryBuilder('u')
+                    ->where('u.contest = :contestId')
+                    ->setParameter('contestId', $contestId);
+    }
 }

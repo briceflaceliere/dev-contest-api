@@ -10,9 +10,6 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * Language
  *
- * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(name="language_name_idx", columns={"dc_name"})
- * })
  * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\LanguageRepository")
  * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  *
@@ -38,7 +35,7 @@ class Language
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="string", length=40, unique=true)
      *
      * @JMS\Expose
      * @JMS\Type("string")

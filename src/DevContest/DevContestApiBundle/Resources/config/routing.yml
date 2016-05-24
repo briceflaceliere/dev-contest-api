@@ -10,3 +10,7 @@ dev_contest.api.contest:
 dev_contest.api.language:
     type: rest
     resource: DevContest\DevContestApiBundle\Controller\LanguageController
+dev_contest.api.conteststep:
+    type: rest
+    parent: dev_contest.api.contest
+    resource: DevContest\DevContestApiBundle\Controller\ContestStepController
