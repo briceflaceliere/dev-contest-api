@@ -63,9 +63,9 @@ class Test
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="ContestTest", mappedBy="dc_test_id")
+     * @ORM\OneToMany(targetEntity="ContestStep", mappedBy="dc_test_id")
      */
-    protected $contestTests;
+    protected $contestSteps;
 
     /**
      * @ORM\ManyToMany(targetEntity="Language")
@@ -80,7 +80,7 @@ class Test
      */
     public function __construct()
     {
-        $this->contestTests = new ArrayCollection();
+        $this->contestSteps = new ArrayCollection();
     }
 
     /**
@@ -145,18 +145,18 @@ class Test
     /**
      * @return mixed
      */
-    public function getContestTests()
+    public function getContestSteps()
     {
-        return $this->contestTests;
+        return $this->contestSteps;
     }
 
     /**
-     * @param mixed $contestTests
+     * @param ArrayCollection $contestSteps
      * @return $this
      */
-    public function setContestTests(ArrayCollection $contestTests)
+    public function setContestSteps(ArrayCollection $contestSteps)
     {
-        $this->contestTests = $contestTests;
+        $this->contestSteps = $contestSteps;
 
         return $this;
     }

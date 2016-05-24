@@ -50,10 +50,10 @@ class UserContestTest
     protected $userContest;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ContestTest", inversedBy="userContestTests")
+     * @ORM\ManyToOne(targetEntity="ContestStep", inversedBy="userContestTests")
      * @ORM\JoinColumn(referencedColumnName="dc_id")
      */
-    protected $contestTest;
+    protected $contestStep;
 
     /**
      * Get id
@@ -159,18 +159,18 @@ class UserContestTest
     /**
      * @return UserContest
      */
-    public function getContestTest()
+    public function getContestStep()
     {
-        return $this->contestTest;
+        return $this->contestStep;
     }
 
     /**
-     * @param ContestTest $contestTest
+     * @param ContestStep $contestStep
      * @return $this
      */
-    public function setContestTest(ContestTest $contestTest)
+    public function setContestStep(ContestStep $contestStep)
     {
-        $this->contestTest = $contestTest;
+        $this->contestStep = $contestStep;
 
         return $this;
     }

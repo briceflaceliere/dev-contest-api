@@ -6,13 +6,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ContestTest
+ * ContestStep
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\ContestTestRepository")
+ * @ORM\Entity(repositoryClass="DevContest\DevContestApiBundle\Repository\ContestStepRepository")
  * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  */
-class ContestTest
+class ContestStep
 {
 
     /**
@@ -32,13 +32,13 @@ class ContestTest
     private $number;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Contest", inversedBy="contestTests")
+     * @ORM\ManyToOne(targetEntity="Contest", inversedBy="contestSteps")
      * @ORM\JoinColumn(referencedColumnName="dc_id")
      */
     protected $contest;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Test", inversedBy="contestTests")
+     * @ORM\ManyToOne(targetEntity="Test", inversedBy="contestSteps")
      * @ORM\JoinColumn(referencedColumnName="dc_id")
      */
     protected $test;
@@ -49,15 +49,15 @@ class ContestTest
     protected $userContestTests;
 
     /**
-     * @ORM\OneToOne(targetEntity="ContestTest", inversedBy="previousContestTest")
+     * @ORM\OneToOne(targetEntity="ContestStep", inversedBy="previousContestStep")
      * @ORM\JoinColumn(referencedColumnName="dc_id", nullable=true)
      */
-    protected $nextContestTest;
+    protected $nextContestStep;
 
     /**
-     * @ORM\OneToOne(targetEntity="ContestTest", mappedBy="nextContestTest")
+     * @ORM\OneToOne(targetEntity="ContestStep", mappedBy="nextContestStep")
      */
-    protected $previousContestTest;
+    protected $previousContestStep;
 
     /**
      * Constructor
@@ -82,7 +82,7 @@ class ContestTest
      *
      * @param integer $number
      *
-     * @return ContestTest
+     * @return $this
      */
     public function setNumber($number)
     {
@@ -179,29 +179,29 @@ class ContestTest
     }
 
     /**
-     * @return ContestTest|null
+     * @return ContestStep|null
      */
-    public function getNextContestTest()
+    public function getNextContestStep()
     {
-        return $this->nextContestTest;
+        return $this->nextContestStep;
     }
 
     /**
-     * @param ContestTest $nextContestTest
+     * @param ContestStep $nextContestStep
      * @return $this
      */
-    public function setNextContestTest(ContestTest $nextContestTest)
+    public function setNextContestStep(ContestStep $nextContestStep)
     {
-        $this->nextContestTest = $nextContestTest;
+        $this->nextContestStep = $nextContestStep;
 
         return $this;
     }
 
     /**
-     * @return ContestTest|null
+     * @return ContestStep|null
      */
-    public function getPreviousContestTest()
+    public function getPreviousContestStep()
     {
-        return $this->previousContestTest;
+        return $this->previousContestStep;
     }
 }

@@ -86,10 +86,10 @@ class Contest
     private $endTs;
 
     /**
-     * @ORM\OneToMany(targetEntity="ContestTest", mappedBy="dc_contest_id")
+     * @ORM\OneToMany(targetEntity="ContestStep", mappedBy="dc_contest_id")
      * @ORM\OrderBy({"dc_number" = "ASC"})
      */
-    protected $contestTests;
+    protected $contestSteps;
 
     /**
      * @ORM\OneToMany(targetEntity="UserContest", mappedBy="contest")
@@ -115,7 +115,7 @@ class Contest
     public function __construct()
     {
         $this->languages = new ArrayCollection();
-        $this->contestTests = new ArrayCollection();
+        $this->contestSteps = new ArrayCollection();
         $this->userContests = new ArrayCollection();
     }
 
@@ -264,9 +264,9 @@ class Contest
     /**
      * @return ArrayCollection
      */
-    public function getContestTests()
+    public function getContestSteps()
     {
-        return $this->contestTests;
+        return $this->contestSteps;
     }
 
     /**
@@ -275,22 +275,22 @@ class Contest
      * @param ArrayCollection $contestTests
      * @return $this
      */
-    public function setContestTests(ArrayCollection $contestTests)
+    public function setContestSteps(ArrayCollection $contestTests)
     {
-        $this->contestTests = $contestTests;
+        $this->contestSteps = $contestTests;
 
         return $this;
     }
 
     /**
-     * Add contest test
+     * Add contest step
      *
-     * @param ContestTest $contestTest
+     * @param ContestStep $contestStep
      * @return $this
      */
-    public function addContestTest(ContestTest $contestTest)
+    public function addContestStep(ContestStep $contestStep)
     {
-        $this->contestTests->add($contestTest);
+        $this->contestSteps->add($contestStep);
 
         return $this;
     }
