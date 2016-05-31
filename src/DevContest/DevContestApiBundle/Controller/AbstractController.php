@@ -27,14 +27,15 @@ abstract class AbstractController extends FOSRestController
      * @param String                $repository
      * @param Request               $request
      * @param ParamFetcherInterface $paramFetcher
+     * @param QueryBuilder          $qb
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
-    public function getObjects($repository, Request $request, ParamFetcherInterface $paramFetcher, QueryBuilder $entities = null)
+    public function getObjects($repository, Request $request, ParamFetcherInterface $paramFetcher, QueryBuilder $qb = null)
     {
         $limit = $paramFetcher->get('limit');
         $page = $paramFetcher->get('page');
 
-        if (!$entities) {
+        if (!$qb) {
             $entities = $this->getDoctrine()
                 ->getRepository($repository)
                 ->qFindAll();
@@ -54,25 +55,27 @@ abstract class AbstractController extends FOSRestController
      * Get [object]
      *
      * @param string         $repository
-     * @param integer        $id         Id of the object
+     * @param mixed          $entity         Id or object
      * @param string|null    $role
      * @return \DevContest\DevContestApiBundle\Entity\[Object]
      */
-    public function getObject($repository, $id, $role = null)
+    public function getObject($repository, $entity, $role = null)
     {
-        $object = $this->getDoctrine()
-            ->getRepository($repository)
-            ->find($id);
+        if (!is_object($entity)) {
+            $entity = $this->getDoctrine()
+                ->getRepository($repository)
+                ->find($entity);
+        }
 
-        if (!$object) {
+        if (!$entity) {
             throw new ResourceNotFoundException($this->getEntityName($repository)." not found");
         }
 
-        if ($role && !$this->isGranted($role, $object)) {
+        if ($role && !$this->isGranted($role, $entity)) {
             throw $this->createAccessDeniedException('Insufficient access rights');
         }
 
-        return $object;
+        return $entity;
     }
 
     /**
@@ -116,15 +119,17 @@ abstract class AbstractController extends FOSRestController
      *
      * @param String         $repository
      * @param Request        $request
-     * @param integer        $id         Id of the object
+     * @param mixed          $entity         Id or object
      * @param string|null    $role
      * @return array
      */
-    public function putObjects($repository, Request $request, $id, $role = null)
+    public function putObjects($repository, Request $request, $entity, $role = null)
     {
-        $entity = $this->getDoctrine()
-            ->getRepository($repository)
-            ->find($id);
+        if (!is_object($entity)) {
+            $entity = $this->getDoctrine()
+                ->getRepository($repository)
+                ->find($entity);
+        }
 
         if (!$entity) {
             throw new ResourceNotFoundException($this->getEntityName($repository)." not found");
@@ -159,15 +164,17 @@ abstract class AbstractController extends FOSRestController
      *
      * @param String         $repository
      * @param Request        $request
-     * @param integer        $id         Id of the [object]
+     * @param mixed        $entity         Id of the [object]
      * @param string|null    $role
      * @return array
      */
-    public function deleteObjects($repository, Request $request, $id, $role = null)
+    public function deleteObjects($repository, Request $request, $entity, $role = null)
     {
-        $entity = $this->getDoctrine()
-            ->getRepository($repository)
-            ->find($id);
+        if (!is_object($entity)) {
+            $entity = $this->getDoctrine()
+                ->getRepository($repository)
+                ->find($entity);
+        }
 
         if (!$entity) {
             throw new ResourceNotFoundException($this->getEntityName($repository)." not found");

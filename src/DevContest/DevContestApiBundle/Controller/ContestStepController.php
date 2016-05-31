@@ -43,11 +43,11 @@ class ContestStepController extends AbstractController
      */
     public function getStepsAction($contestId, Request $request, ParamFetcherInterface $paramFetcher)
     {
-        $entities = $this->getDoctrine()
+        $qb = $this->getDoctrine()
             ->getRepository('DevContestApiBundle:ContestStep')
             ->qFindByContestId($contestId);
 
-        return parent::getObjects('DevContestApiBundle:ContestStep', $request, $paramFetcher, $entities);
+        return parent::getObjects('DevContestApiBundle:ContestStep', $request, $paramFetcher, $qb);
     }
 
     /**
@@ -156,6 +156,10 @@ class ContestStepController extends AbstractController
      */
     public function deleteStepsAction($contestId, $stepId, Request $request)
     {
-        return parent::deleteObjects('DevContestApiBundle:ContestStep', $request, $stepId);
+        $entity = $this->getDoctrine()
+            ->getRepository('DevContestApiBundle:ContestStep')
+            ->findOneBy(['id' => $stepId, 'contest' => $contestId]);
+
+        return parent::deleteObjects('DevContestApiBundle:ContestStep', $request, $entity);
     }
 }

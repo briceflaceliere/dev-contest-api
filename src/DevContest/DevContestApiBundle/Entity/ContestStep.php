@@ -53,6 +53,11 @@ class ContestStep
      *
      * @Assert\NotBlank()
      * @Assert\Type(type="integer")
+     *
+     * @JMS\Expose
+     * @JMS\Type("DevContest\DevContestApiBundle\Entity\Test")
+     * @JMS\Since("0.1")
+     * @JMS\Groups({"all"})
      */
     protected $test;
 
@@ -75,7 +80,7 @@ class ContestStep
 
     /**
      * @ORM\OneToOne(targetEntity="ContestStep", inversedBy="nextContestStep")
-     * @ORM\JoinColumn(referencedColumnName="dc_id", nullable=true, unique=true)
+     * @ORM\JoinColumn(referencedColumnName="dc_id", nullable=true, unique=true, onDelete="CASCADE")
      *
      * @JMS\Expose
      * @JMS\Type("integer")
@@ -201,7 +206,7 @@ class ContestStep
      * @param ContestStep $previousContestStep
      * @return $this
      */
-    public function setPreviousContestStep(ContestStep $previousContestStep)
+    public function setPreviousContestStep(ContestStep $previousContestStep = null)
     {
         $this->previousContestStep = $previousContestStep;
 
