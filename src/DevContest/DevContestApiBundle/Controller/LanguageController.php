@@ -2,14 +2,10 @@
 
 namespace DevContest\DevContestApiBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Request\ParamFetcherInterface;
-use FOS\RestBundle\Util\Codes;
+use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
@@ -22,7 +18,7 @@ class LanguageController extends AbstractController
      * Get Languages
      *
      * @param Request               $request
-     * @param ParamFetcherInterface $paramFetcher
+     * @param ParamFetcher          $paramFetcher
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      *
      * @ApiDoc(
@@ -39,7 +35,7 @@ class LanguageController extends AbstractController
      *
      * @Rest\View(serializerGroups={"all", "list"})
      */
-    public function getLanguagesAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getLanguagesAction(Request $request, ParamFetcher $paramFetcher)
     {
         return parent::getObjects('DevContestApiBundle:Language', $request, $paramFetcher);
     }
@@ -47,7 +43,8 @@ class LanguageController extends AbstractController
     /**
      * Get Language
      *
-     * @param integer $id Id of the Language
+     * @param integer $id       Id of the Language
+     * @param Request $request
      * @return \DevContest\DevContestApiBundle\Entity\Language
      *
      * @ApiDoc(
@@ -63,9 +60,9 @@ class LanguageController extends AbstractController
      * @Rest\View(serializerGroups={"all", "detail"})
      * @Rest\Route(requirements={"id"="[0-9]+"})
      */
-    public function getLanguageAction($id)
+    public function getLanguageAction(int $id, Request $request)
     {
-        return parent::getObject('DevContestApiBundle:Language', $id);
+        return parent::getObject('DevContestApiBundle:Language', $request);
     }
 
     /**
@@ -111,9 +108,9 @@ class LanguageController extends AbstractController
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function putLanguagesAction(Request $request, $id)
+    public function putLanguagesAction(int $id, Request $request)
     {
-        return parent::putObjects('DevContestApiBundle:Language', $request, $id);
+        return parent::putObjects('DevContestApiBundle:Language', $request);
     }
 
     /**
@@ -135,8 +132,8 @@ class LanguageController extends AbstractController
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function deleteLanguagesAction(Request $request, $id)
+    public function deleteLanguagesAction(int $id, Request $request)
     {
-        return parent::deleteObjects('DevContestApiBundle:Language', $request, $id);
+        return parent::deleteObjects('DevContestApiBundle:Language', $request);
     }
 }

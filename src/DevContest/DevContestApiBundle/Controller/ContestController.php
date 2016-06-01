@@ -2,14 +2,10 @@
 
 namespace DevContest\DevContestApiBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Request\ParamFetcherInterface;
-use FOS\RestBundle\Util\Codes;
+use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
@@ -22,7 +18,7 @@ class ContestController extends AbstractController
      * Get Contests
      *
      * @param Request               $request
-     * @param ParamFetcherInterface $paramFetcher
+     * @param ParamFetcher          $paramFetcher
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      *
      * @ApiDoc(
@@ -39,7 +35,7 @@ class ContestController extends AbstractController
      *
      * @Rest\View(serializerGroups={"all", "list"})
      */
-    public function getContestsAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getContestsAction(Request $request, ParamFetcher $paramFetcher)
     {
         return parent::getObjects('DevContestApiBundle:Contest', $request, $paramFetcher);
     }
@@ -48,6 +44,7 @@ class ContestController extends AbstractController
      * Get Contest
      *
      * @param integer $id Id of the Contest
+     * @param Request               $request
      * @return \DevContest\DevContestApiBundle\Entity\Contest
      *
      * @ApiDoc(
@@ -63,9 +60,9 @@ class ContestController extends AbstractController
      * @Rest\View(serializerGroups={"all", "detail"})
      * @Rest\Route(requirements={"id"="[0-9]+"})
      */
-    public function getContestAction($id)
+    public function getContestAction(int $id, Request $request)
     {
-        return parent::getObject('DevContestApiBundle:Contest', $id);
+        return parent::getObject('DevContestApiBundle:Contest', $request);
     }
 
     /**
@@ -111,9 +108,9 @@ class ContestController extends AbstractController
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function putContestsAction(Request $request, $id)
+    public function putContestsAction(int $id, Request $request)
     {
-        return parent::putObjects('DevContestApiBundle:Contest', $request, $id);
+        return parent::putObjects('DevContestApiBundle:Contest', $request);
     }
 
     /**
@@ -135,8 +132,8 @@ class ContestController extends AbstractController
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function deleteContestsAction(Request $request, $id)
+    public function deleteContestsAction(int $id, Request $request)
     {
-        return parent::deleteObjects('DevContestApiBundle:Contest', $request, $id);
+        return parent::deleteObjects('DevContestApiBundle:Contest', $request);
     }
 }

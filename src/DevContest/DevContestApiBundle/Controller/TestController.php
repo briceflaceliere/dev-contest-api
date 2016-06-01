@@ -3,12 +3,9 @@
 namespace DevContest\DevContestApiBundle\Controller;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Request\ParamFetcherInterface;
-use FOS\RestBundle\Util\Codes;
+use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
@@ -21,7 +18,7 @@ class TestController extends AbstractController
      * Get tests
      *
      * @param Request               $request
-     * @param ParamFetcherInterface $paramFetcher
+     * @param ParamFetcher          $paramFetcher
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      *
      * @ApiDoc(
@@ -38,7 +35,7 @@ class TestController extends AbstractController
      *
      * @Rest\View(serializerGroups={"all", "list"})
      */
-    public function getTestsAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getTestsAction(Request $request, ParamFetcher $paramFetcher)
     {
         return parent::getObjects('DevContestApiBundle:Test', $request, $paramFetcher);
     }
@@ -47,6 +44,7 @@ class TestController extends AbstractController
      * Get test
      *
      * @param integer $id Id of the test
+     * @param Request $request
      * @return \DevContest\DevContestApiBundle\Entity\Test
      *
      * @ApiDoc(
@@ -62,9 +60,9 @@ class TestController extends AbstractController
      * @Rest\View(serializerGroups={"all", "detail"})
      * @Rest\Route(requirements={"id"="[0-9]+"})
      */
-    public function getTestAction($id)
+    public function getTestAction(int $id, Request $request)
     {
-        return parent::getObject('DevContestApiBundle:Test', $id);
+        return parent::getObject('DevContestApiBundle:Test', $request);
     }
 
     /**
@@ -112,9 +110,9 @@ class TestController extends AbstractController
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function putTestsAction(Request $request, $id)
+    public function putTestsAction(int $id, Request $request)
     {
-        return parent::putObjects('DevContestApiBundle:Test', $request, $id);
+        return parent::putObjects('DevContestApiBundle:Test', $request);
     }
 
     /**
@@ -137,8 +135,8 @@ class TestController extends AbstractController
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function deleteTestsAction(Request $request, $id)
+    public function deleteTestsAction(int $id, Request $request)
     {
-        return parent::deleteObjects('DevContestApiBundle:Test', $request, $id);
+        return parent::deleteObjects('DevContestApiBundle:Test', $request);
     }
 }

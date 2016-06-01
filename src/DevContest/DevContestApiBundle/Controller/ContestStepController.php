@@ -2,14 +2,10 @@
 
 namespace DevContest\DevContestApiBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Request\ParamFetcherInterface;
-use FOS\RestBundle\Util\Codes;
+use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
@@ -21,9 +17,9 @@ class ContestStepController extends AbstractController
     /**
      * Get ContestSteps
      *
-     * @param integer               $contestId
+     * @param integer               $contest  Id of contest
      * @param Request               $request
-     * @param ParamFetcherInterface $paramFetcher
+     * @param ParamFetcher          $paramFetcher
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      *
      * @ApiDoc(
@@ -39,22 +35,19 @@ class ContestStepController extends AbstractController
      * @Rest\QueryParam(name="limit", requirements="([0-9]{1,2}|100)", default="25", description="Limit of the result")
      *
      * @Rest\View(serializerGroups={"all", "list"})
-     * @Rest\Route(requirements={"contestId"="[0-9]+"})
+     * @Rest\Route(requirements={"contest"="[0-9]+"})
      */
-    public function getStepsAction($contestId, Request $request, ParamFetcherInterface $paramFetcher)
+    public function getStepsAction(int $contest, Request $request, ParamFetcher $paramFetcher)
     {
-        $qb = $this->getDoctrine()
-            ->getRepository('DevContestApiBundle:ContestStep')
-            ->qFindByContestId($contestId);
-
-        return parent::getObjects('DevContestApiBundle:ContestStep', $request, $paramFetcher, $qb);
+        return parent::getObjects('DevContestApiBundle:ContestStep', $request, $paramFetcher);
     }
 
     /**
      * Get ContestStep
      *
-     * @param integer $contestId
-     * @param integer $stepId
+     * @param integer $contest  Id of contest
+     * @param integer $id       Id of contestStep
+     * @param Request $request
      * @return \DevContest\DevContestApiBundle\Entity\ContestStep
      *
      * @ApiDoc(
@@ -68,19 +61,19 @@ class ContestStepController extends AbstractController
      * )
      *
      * @Rest\View(serializerGroups={"all", "detail"})
-     * @Rest\Route(requirements={"stepId"="[0-9]+"})
-     * @Rest\Route(requirements={"contestId"="[0-9]+"})
+     * @Rest\Route(requirements={"id"="[0-9]+"})
+     * @Rest\Route(requirements={"contest"="[0-9]+"})
      */
-    public function getStepAction($contestId, $stepId)
+    public function getStepAction(int $contest, int $id, Request $request)
     {
-        return parent::getObject('DevContestApiBundle:ContestStep', $stepId);
+        return parent::getObject('DevContestApiBundle:ContestStep', $request);
     }
 
     /**
      * Create ContestStep
      *
      * @param Request $request
-     * @param integer $contestId
+     * @param integer $contest  Id of contest
      * @return array
      *
      * @ApiDoc(
@@ -93,10 +86,10 @@ class ContestStepController extends AbstractController
      * )
      *
      * @Rest\View()
-     * @Rest\Route(requirements={"contestId"="[0-9]+"})
+     * @Rest\Route(requirements={"contest"="[0-9]+"})
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function postStepsAction($contestId, Request $request)
+    public function postStepsAction(int $contest, Request $request)
     {
         return parent::postObjects('DevContestApiBundle:ContestStep', $request);
     }
@@ -105,8 +98,8 @@ class ContestStepController extends AbstractController
      * Update ContestStep
      *
      * @param Request $request
-     * @param integer $contestId
-     * @param integer $stepId
+     * @param integer $contest  Id of contest
+     * @param integer $id       Id of contestStep
      * @return array
      *
      * @ApiDoc(
@@ -122,20 +115,20 @@ class ContestStepController extends AbstractController
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      *
-     * @Rest\Route(requirements={"stepId"="[0-9]+"})
-     * @Rest\Route(requirements={"contestId"="[0-9]+"})
+     * @Rest\Route(requirements={"id"="[0-9]+"})
+     * @Rest\Route(requirements={"contest"="[0-9]+"})
      */
-    public function putStepsAction($contestId, $stepId, Request $request)
+    public function putStepsAction(int $contest, int $id, Request $request)
     {
-        return parent::putObjects('DevContestApiBundle:ContestStep', $request, $stepId);
+        return parent::putObjects('DevContestApiBundle:ContestStep', $request);
     }
 
     /**
      * Delete ContestStep
      *
      * @param Request $request
-     * @param integer $contestId
-     * @param integer $stepId
+     * @param integer $contest  Id of contest
+     * @param integer $id       Id of contestStep
      * @return array
      *
      * @ApiDoc(
@@ -149,17 +142,13 @@ class ContestStepController extends AbstractController
      * @Rest\Route(requirements={"id"="[0-9]+"})
      * @Rest\View()
      *
-     * @Rest\Route(requirements={"stepId"="[0-9]+"})
-     * @Rest\Route(requirements={"contestId"="[0-9]+"})
+     * @Rest\Route(requirements={"id"="[0-9]+"})
+     * @Rest\Route(requirements={"contest"="[0-9]+"})
      *
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function deleteStepsAction($contestId, $stepId, Request $request)
+    public function deleteStepsAction(int $contest, int $id, Request $request)
     {
-        $entity = $this->getDoctrine()
-            ->getRepository('DevContestApiBundle:ContestStep')
-            ->findOneBy(['id' => $stepId, 'contest' => $contestId]);
-
-        return parent::deleteObjects('DevContestApiBundle:ContestStep', $request, $entity);
+        return parent::deleteObjects('DevContestApiBundle:ContestStep', $request);
     }
 }

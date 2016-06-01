@@ -2,44 +2,37 @@
 
 namespace DevContest\DevContestApiBundle\Controller;
 
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\NoResultException;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Request\ParamFetcherInterface;
+use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Util\Codes;
 use Symfony\Component\HttpFoundation\Request;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
  * Class AbstractController
  * @package DevContest\DevContestApiBundle\Controller
- *
- *
- *
  */
 abstract class AbstractController extends FOSRestController
 {
     /**
      * Get [objects]
      *
-     * @param String                $repository
+     * @param String                $repositoryName
      * @param Request               $request
-     * @param ParamFetcherInterface $paramFetcher
-     * @param QueryBuilder          $qb
+     * @param ParamFetcher          $paramFetcher
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
-    public function getObjects($repository, Request $request, ParamFetcherInterface $paramFetcher, QueryBuilder $qb = null)
+    public function getObjects($repositoryName, Request $request, ParamFetcher $paramFetcher)
     {
         $limit = $paramFetcher->get('limit');
         $page = $paramFetcher->get('page');
 
-        if (!$qb) {
-            $entities = $this->getDoctrine()
-                ->getRepository($repository)
-                ->qFindAll();
-        }
+        $params = $this->filterRouteParams($request);
+        $entities = $this->getDoctrine()
+            ->getRepository($repositoryName)
+            ->qFindBy($params);
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -54,21 +47,17 @@ abstract class AbstractController extends FOSRestController
     /**
      * Get [object]
      *
-     * @param string         $repository
-     * @param mixed          $entity         Id or object
+     * @param string         $repositoryName
+     * @param Request        $request
      * @param string|null    $role
      * @return \DevContest\DevContestApiBundle\Entity\[Object]
      */
-    public function getObject($repository, $entity, $role = null)
+    public function getObject($repositoryName, $request, $role = null)
     {
-        if (!is_object($entity)) {
-            $entity = $this->getDoctrine()
-                ->getRepository($repository)
-                ->find($entity);
-        }
-
-        if (!$entity) {
-            throw new ResourceNotFoundException($this->getEntityName($repository)." not found");
+        try {
+            $entity = $this->findOneByRequest($repositoryName, $request);
+        } catch (NoResultException $e){
+            throw new ResourceNotFoundException($this->getEntityName($repositoryName)." not found");
         }
 
         if ($role && !$this->isGranted($role, $entity)) {
@@ -81,18 +70,17 @@ abstract class AbstractController extends FOSRestController
     /**
      * Create [object]
      *     *
-     * @param String  $repository
+     * @param String  $repositoryName
      * @param Request $request
      * @return array
      */
-    public function postObjects($repository, Request $request)
+    public function postObjects($repositoryName, Request $request)
     {
-        $entityFormType = $this->getEntityFormType($repository);
-        $entityName     = $this->getEntityFullName($repository);
+        $entityFormType = $this->getEntityFormType($repositoryName);
+        $entityName     = $this->getEntityFullName($repositoryName);
 
         $entity = new $entityName();
         $form = $this->createForm(new $entityFormType(), $entity);
-
 
         $form->submit($request);
         if ($form->isValid()) {
@@ -102,7 +90,7 @@ abstract class AbstractController extends FOSRestController
 
             return $this->redirectView(
                 $this->generateUrl(
-                    'get_'.$this->getEntityRoute($repository),
+                    'get_'.$this->getEntityRoute($repositoryName),
                     ['id' => $entity->getId()]
                 ),
                 Codes::HTTP_CREATED
@@ -117,29 +105,24 @@ abstract class AbstractController extends FOSRestController
     /**
      * Update [object]
      *
-     * @param String         $repository
+     * @param String         $repositoryName
      * @param Request        $request
-     * @param mixed          $entity         Id or object
      * @param string|null    $role
      * @return array
      */
-    public function putObjects($repository, Request $request, $entity, $role = null)
+    public function putObjects($repositoryName, Request $request, $role = null)
     {
-        if (!is_object($entity)) {
-            $entity = $this->getDoctrine()
-                ->getRepository($repository)
-                ->find($entity);
-        }
-
-        if (!$entity) {
-            throw new ResourceNotFoundException($this->getEntityName($repository)." not found");
+        try {
+            $entity = $this->findOneByRequest($repositoryName, $request);
+        } catch (NoResultException $e){
+            throw new ResourceNotFoundException($this->getEntityName($repositoryName)." not found");
         }
 
         if ($role && !$this->isGranted($role, $entity)) {
             throw $this->createAccessDeniedException('Insufficient access rights');
         }
 
-        $entityFormType = $this->getEntityFormType($repository);
+        $entityFormType = $this->getEntityFormType($repositoryName);
         $form = $this->createForm(new $entityFormType(), $entity);
 
         $form->submit($request);
@@ -162,22 +145,17 @@ abstract class AbstractController extends FOSRestController
     /**
      * Delete [object]
      *
-     * @param String         $repository
+     * @param String         $repositoryName
      * @param Request        $request
-     * @param mixed        $entity         Id of the [object]
      * @param string|null    $role
      * @return array
      */
-    public function deleteObjects($repository, Request $request, $entity, $role = null)
+    public function deleteObjects($repositoryName, Request $request, $role = null)
     {
-        if (!is_object($entity)) {
-            $entity = $this->getDoctrine()
-                ->getRepository($repository)
-                ->find($entity);
-        }
-
-        if (!$entity) {
-            throw new ResourceNotFoundException($this->getEntityName($repository)." not found");
+        try {
+            $entity = $this->findOneByRequest($repositoryName, $request);
+        } catch (NoResultException $e){
+            throw new ResourceNotFoundException($this->getEntityName($repositoryName)." not found");
         }
 
         if ($role && !$this->isGranted($role, $entity)) {
@@ -192,25 +170,54 @@ abstract class AbstractController extends FOSRestController
     }
 
     /**
+     * Filter route params for find
+     * @param Request $request
+     * @return array
+     */
+    protected function filterRouteParams(Request $request) {
+        return array_filter($request->get('_route_params'), function($param) {
+            return substr($param, 0, 1) != '_';
+        }, ARRAY_FILTER_USE_KEY);
+    }
+
+    /**
+     * Find one by Request
+     *
+     * @param String $repositoryName
+     * @param Request $request
+     * @return object
+     */
+    protected function findOneByRequest($repositoryName, Request $request)
+    {
+        $params = $this->filterRouteParams($request);
+        return $this->getDoctrine()
+            ->getRepository($repositoryName)
+            ->qFindBy($params)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    /**
      * Get Entity full name from repository
      *
-     * @param  string $repository
+     * @param  string $repositoryName
      * @return string
      */
-    protected function getEntityFullName($repository)
+    protected function getEntityFullName($repositoryName)
     {
-        return $this->getDoctrine()->getManager()->getClassMetadata($repository)->getName();
+        return $this->getDoctrine()->getManager()->getClassMetadata($repositoryName)->getName();
     }
 
     /**
      * Get Entity name from repository
      *
-     * @param  string $repository
+     * @param  string $repositoryName
      * @return string
      */
-    protected function getEntityName($repository)
+    protected function getEntityName($repositoryName)
     {
-        return end(explode('\\', $this->getEntityFullName($repository)));
+        return end(explode('\\', $this->getEntityFullName($repositoryName)));
     }
 
     /**
@@ -219,19 +226,19 @@ abstract class AbstractController extends FOSRestController
      * @param  string $repository
      * @return string
      */
-    protected function getEntityFormType($repository)
+    protected function getEntityFormType($repositoryName)
     {
-        return str_replace('\\Entity\\', '\\Form\\Type\\', $this->getEntityFullName($repository)).'Type';
+        return str_replace('\\Entity\\', '\\Form\\Type\\', $this->getEntityFullName($repositoryName)).'Type';
     }
 
     /**
      * Get route name from repository
      *
-     * @param  string $repository
+     * @param  string $repositoryName
      * @return string
      */
-    protected function getEntityRoute($repository)
+    protected function getEntityRoute($repositoryName)
     {
-        return strtolower($this->getEntityName($repository));
+        return strtolower($this->getEntityName($repositoryName));
     }
 }

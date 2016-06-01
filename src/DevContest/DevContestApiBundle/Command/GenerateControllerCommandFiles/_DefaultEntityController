@@ -48,6 +48,7 @@ class {{Entity}}Controller extends AbstractController
      * Get {{Entity}}
      *
      * @param integer $id Id of the {{Entity}}
+     * @param Request $request
      * @return \DevContest\{{Bundle}}\Entity\{{Entity}}
      *
      * @ApiDoc(
@@ -63,9 +64,9 @@ class {{Entity}}Controller extends AbstractController
      * @Rest\View(serializerGroups={"all", "detail"})
      * @Rest\Route(requirements={"id"="[0-9]+"})
      */
-    public function get{{Entity}}Action($id)
+    public function get{{Entity}}Action($id, Request $request)
     {
-        return parent::getObject('{{Bundle}}:{{Entity}}', $id);
+        return parent::getObject('{{Bundle}}:{{Entity}}', $request);
     }
 
     /**
@@ -111,9 +112,9 @@ class {{Entity}}Controller extends AbstractController
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function put{{Entities}}Action(Request $request, $id)
+    public function put{{Entities}}Action($id, Request $request)
     {
-        return parent::putObjects('{{Bundle}}:{{Entity}}', $request, $id);
+        return parent::putObjects('{{Bundle}}:{{Entity}}', $request);
     }
 
     /**
@@ -135,8 +136,8 @@ class {{Entity}}Controller extends AbstractController
      * @Rest\View()
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function delete{{Entities}}Action(Request $request, $id)
+    public function delete{{Entities}}Action($id, Request $request)
     {
-        return parent::deleteObjects('{{Bundle}}:{{Entity}}', $request, $id);
+        return parent::deleteObjects('{{Bundle}}:{{Entity}}', $request);
     }
 }
