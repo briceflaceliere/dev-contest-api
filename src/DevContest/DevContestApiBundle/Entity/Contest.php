@@ -87,7 +87,7 @@ class Contest
 
     /**
      * @ORM\OneToMany(targetEntity="ContestStep", mappedBy="contest")
-     * @ORM\OrderBy({"previousContestStep" = "ASC"})
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     protected $contestSteps;
 

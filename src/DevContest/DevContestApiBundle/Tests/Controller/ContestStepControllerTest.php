@@ -18,6 +18,7 @@ class ContestStepControllerTest extends WebTestCase
 
     protected $loadFixtures = [
         'DevContest\DevContestApiBundle\DataFixtures\ORM\LoadUserData',
+        'DevContest\DevContestApiBundle\DataFixtures\ORM\LoadContestData',
         'DevContest\DevContestApiBundle\DataFixtures\ORM\LoadContestStepData',
     ];
 
@@ -26,7 +27,9 @@ class ContestStepControllerTest extends WebTestCase
      */
     public function testGetContestStepsAction()
     {
-        $subTest = new PaginatorSubTest($this->getUrl('get_conteststeps'));
+        $contest1Id = $this->fixtures->getReference('contest1')->getId();
+
+        $subTest = new PaginatorSubTest($this->getUrl('get_contests_steps', ['contest' => $contest1Id]));
         $subTest->setItemsNotEmpty(true);
         // $subTest->setItemKeys(['id', 'username']);
         $this->aclTest($subTest, [null, 'user1', 'api', 'engine', 'admin'], []);
@@ -38,8 +41,9 @@ class ContestStepControllerTest extends WebTestCase
     public function testGetContestStepAction()
     {
         $conteststep1Id = $this->fixtures->getReference('conteststep1')->getId();
+        $contest1Id = $this->fixtures->getReference('contest1')->getId();
 
-        $subTest = new GetSubTest($this->getUrl('get_conteststep', ['id' => $conteststep1Id]));
+        $subTest = new GetSubTest($this->getUrl('get_conteststep', ['contest' => $contest1Id, 'id' => $conteststep1Id]));
         // $subTest->setItemKeys(['id', 'username']);
         $this->aclTest($subTest, [null, 'user1', 'api', 'engine', 'admin'], []);
     }
@@ -50,8 +54,9 @@ class ContestStepControllerTest extends WebTestCase
     public function testDeleleContestStepsAction()
     {
         $conteststep1Id = $this->fixtures->getReference('conteststep1')->getId();
+        $contest1Id = $this->fixtures->getReference('contest1')->getId();
 
-        $subTest = new DeleteSubTest($this->getUrl('delete_conteststeps', ['id' => $conteststep1Id]));
+        $subTest = new DeleteSubTest($this->getUrl('delete_conteststeps', ['contest' => $contest1Id, 'id' => $conteststep1Id]));
         $this->aclTest($subTest, ['admin'], [null, 'user1', 'api', 'engine']);
     }
 
@@ -77,8 +82,9 @@ class ContestStepControllerTest extends WebTestCase
     public function testPutContestStepsAction($conteststep)
     {
         $conteststep1Id = $this->fixtures->getReference('conteststep1')->getId();
+        $contest1Id = $this->fixtures->getReference('contest1')->getId();
 
-        $subTest = new PostPutSubTest($this->getUrl('put_conteststeps', ['id' => $conteststep1Id]), 'PUT', ['conteststep' => $conteststep]);
+        $subTest = new PostPutSubTest($this->getUrl('put_conteststeps', ['contest' => $contest1Id, 'id' => $conteststep1Id]), 'PUT', ['conteststep' => $conteststep]);
         //$subTest->addCheckValue('title', $conteststep['title']);
         $this->aclTest($subTest, ['admin'], [null, 'user1', 'api', 'engine']);
     }

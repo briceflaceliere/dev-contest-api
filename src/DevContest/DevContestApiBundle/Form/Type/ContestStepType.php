@@ -26,7 +26,9 @@ class ContestStepType extends AbstractType
     {
         $builder
             ->add('contest')
-            ->add('test')
+            ->add('title')
+            ->add('description')
+            ->add('statement')
             ->add('previousContestStep')
         ;
     }

@@ -50,7 +50,7 @@ class UserContestTest
     protected $userContest;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ContestStep", inversedBy="userContestTests")
+     * @ORM\ManyToOne(targetEntity="ContestStep")
      * @ORM\JoinColumn(referencedColumnName="dc_id")
      */
     protected $contestStep;
