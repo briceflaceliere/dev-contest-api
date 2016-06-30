@@ -20,7 +20,6 @@ use JMS\Serializer\Annotation as JMS;
  */
 class ContestStep
 {
-
     /**
      * @var integer
      *
@@ -43,7 +42,7 @@ class ContestStep
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\Since("0.1")
-     * @JMS\Groups({"all"})
+     * @JMS\Groups({"detail"})
      *
      * @Assert\NotBlank()
      */
@@ -108,6 +107,7 @@ class ContestStep
     public function __construct()
     {
         $this->userContestTests = new ArrayCollection();
+        
     }
 
     /**

@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use DevContest\DevContestApiBundle\Entity\Traits\StatusTrait;
 
 /**
  * Contest entity
@@ -22,6 +23,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Contest
 {
+    use StatusTrait;
+
+    const STATUS_UNSTARTED = 'STATUS_UNSTARTED';
+    const STATUS_STARTED   = 'STATUS_STARTED';
+    const STATUS_COMPLETED = 'STATUS_COMPLETED';
+    const STATUS_DISABLED  = 'STATUS_DISABLED';
+
     /**
      * @var integer
      *
@@ -48,7 +56,7 @@ class Contest
      * @JMS\Groups({"all"})
      */
     private $name;
-
+    
     /**
      * @var string
      *
@@ -117,6 +125,20 @@ class Contest
         $this->languages = new ArrayCollection();
         $this->contestSteps = new ArrayCollection();
         $this->userContests = new ArrayCollection();
+        $this->setStatus(self::STATUS_UNSTARTED);
+    }
+
+    /**
+     * @return array
+     */
+    function getStatusList()
+    {
+        return [
+            self::STATUS_UNSTARTED,
+            self::STATUS_STARTED,
+            self::STATUS_COMPLETED,
+            self::STATUS_DISABLED
+        ];
     }
 
     /**
